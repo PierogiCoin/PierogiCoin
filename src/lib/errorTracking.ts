@@ -30,7 +30,7 @@ export function trackError(
   // Console log in development
   if (process.env.NODE_ENV === 'development') {
     console.error('[Error Tracking]', {
-      severity: severity.toUpperCase(),
+      severityLevel: severity.toUpperCase(),
       ...report,
     })
   }

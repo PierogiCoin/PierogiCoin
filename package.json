@@ -45,6 +45,8 @@
     "@react-three/drei": "^9.102.6",
     "@react-three/fiber": "^8.16.1",
     "@studio-freight/lenis": "^1.0.42",
+    "@upstash/ratelimit": "^2.0.7",
+    "@upstash/redis": "^1.35.6",
     "@vercel/analytics": "^1.2.2",
     "@vercel/blob": "^0.23.2",
     "@vercel/speed-insights": "^1.2.0",
