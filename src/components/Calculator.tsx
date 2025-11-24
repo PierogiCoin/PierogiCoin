@@ -1,12 +1,19 @@
 'use client';
 
-import React, { useRef, useReducer, useMemo, useState } from 'react';
+import React, { useRef, useReducer, useMemo, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { useGSAP } from '@gsap/react';
 import dynamic from 'next/dynamic';
 import { Check, ChevronRight, RefreshCcw, Send, Sparkles, Info } from 'lucide-react';
-import CalculatorIcons from "./icons/CalculatorIcons"; 
+import CalculatorIcons from "./icons/CalculatorIcons";
+import SavedCalculationBanner from './SavedCalculationBanner';
+import {
+  saveCalculatorData,
+  getSavedCalculatorData,
+  markEmailAsSent,
+  clearCalculatorData,
+} from '@/lib/calculatorStorage'; 
 
 gsap.registerPlugin(TextPlugin);
 
@@ -83,9 +90,43 @@ export default function Calculator() {
   const [email, setEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [showBanner, setShowBanner] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  // Check for saved calculation on mount
+  useEffect(() => {
+    const saved = getSavedCalculatorData();
+    if (saved) {
+      setShowBanner(true);
+    }
+  }, []);
+
+  // Save calculation whenever selections or price changes
+  useEffect(() => {
+    // Only save if we have at least type and design selected
+    if (state.selections.type && state.selections.design) {
+      const price = calculation.myPrice;
+      saveCalculatorData(state.selections, price, isSent);
+    }
+  }, [state.selections, calculation.myPrice, isSent]);
+
+  // Handle restore from saved calculation
+  const handleRestoreSavedCalculation = (selections: any) => {
+    dispatch({ type: 'SET_SELECTION', field: 'type', value: selections.type });
+    dispatch({ type: 'SET_SELECTION', field: 'design', value: selections.design });
+    dispatch({ type: 'SET_SELECTION', field: 'features', value: selections.features });
+    dispatch({ type: 'SET_SELECTION', field: 'deadline', value: selections.deadline });
+    
+    // Go to summary step
+    dispatch({ type: 'NEXT_STEP' });
+    dispatch({ type: 'NEXT_STEP' });
+    dispatch({ type: 'NEXT_STEP' });
+    dispatch({ type: 'NEXT_STEP' });
+    
+    setShowBanner(false);
+  };
 
   // --- 3. OBLICZANIE CENY (MAGIA) ---
   const calculation = useMemo(() => {
@@ -202,6 +243,9 @@ export default function Calculator() {
       console.log('Oferta wysłana:', data);
       
       setIsSent(true);
+      
+      // Mark email as sent in localStorage
+      markEmailAsSent();
     } catch (error) {
       console.error('Błąd wysyłania:', error);
       alert('Wystąpił błąd podczas wysyłania oferty. Spróbuj ponownie.');
@@ -384,7 +428,13 @@ export default function Calculator() {
                     {isSending ? 'Przetwarzanie...' : 'Odbierz Wycenę'}
                   </button>
                 </form>
-                <button onClick={() => dispatch({ type: 'RESET' })} className="mt-6 text-xs text-slate-500 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white underline">
+                <button 
+                  onClick={() => {
+                    dispatch({ type: 'RESET' });
+                    clearCalculatorData();
+                  }} 
+                  className="mt-6 text-xs text-slate-500 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white underline"
+                >
                   Zacznij od nowa
                 </button>
               </>
@@ -411,6 +461,11 @@ export default function Calculator() {
       <div className="absolute inset-0 opacity-40 dark:opacity-40 pointer-events-none hidden dark:block">
         <AnimatedConstellationBackground />
       </div>
+
+      {/* Saved calculation banner */}
+      {showBanner && (
+        <SavedCalculationBanner onRestoreCalculation={handleRestoreSavedCalculation} />
+      )}
 
       <div className="relative z-10 w-full max-w-2xl bg-white dark:bg-black/60 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
         {/* Pasek postępu */}

@@ -5,6 +5,13 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useDebounce } from './hooks/useDebounce';
 import { Lightbulb } from "lucide-react";
+import SavedCalculationBanner from './SavedCalculationBanner';
+import {
+  saveCalculatorData,
+  getSavedCalculatorData,
+  markEmailAsSent,
+  clearCalculatorData,
+} from '@/lib/calculatorStorage';
 
 // --- Typy ---
 type AnalysisResult = {
@@ -21,11 +28,20 @@ const AiCalculator: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null); // Dodajemy komunikat sukcesu
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [showBanner, setShowBanner] = useState(false);
     
     const debouncedDescription = useDebounce(description, 1200);
 
     const resultRef = useRef<HTMLDivElement>(null);
+
+    // Check for saved calculation on mount
+    useEffect(() => {
+        const saved = getSavedCalculatorData();
+        if (saved) {
+            setShowBanner(true);
+        }
+    }, []);
 
     // Animacja wejścia wyników
     useGSAP(() => {
@@ -60,6 +76,21 @@ const AiCalculator: React.FC = () => {
                 }
                 const data: AnalysisResult = await response.json();
                 setResult(data);
+                
+                // Save to localStorage (without email sent flag)
+                if (data && data.estimate) {
+                    const avgPrice = (data.estimate.min + data.estimate.max) / 2;
+                    saveCalculatorData(
+                        {
+                            type: data.extracted?.type || 'ai-analysis',
+                            design: data.extracted?.design || 'custom',
+                            features: [data.extracted?.features || 'ai-analyzed'],
+                            deadline: 'standard',
+                        },
+                        avgPrice,
+                        false
+                    );
+                }
             } catch (err) {
                 setError((err as Error).message);
             } finally {
@@ -99,6 +130,21 @@ const AiCalculator: React.FC = () => {
             // Zakładamy, że API odpowiada statusem 200/201, a PDF jest wysyłany e-mailem.
             setSuccessMessage(`Pełna oferta została wysłana na adres: ${email}. Sprawdź swoją skrzynkę!`);
             
+            // Mark email as sent and save to localStorage
+            if (result) {
+                const avgPrice = (result.estimate.min + result.estimate.max) / 2;
+                saveCalculatorData(
+                    {
+                        type: result.extracted.type,
+                        design: result.extracted.design,
+                        features: [result.extracted.features],
+                        deadline: 'standard',
+                    },
+                    avgPrice,
+                    true
+                );
+            }
+            
             // Opcjonalnie: Zerowanie formularza po sukcesie
             // setDescription(""); 
             // setEmail("");
@@ -112,7 +158,13 @@ const AiCalculator: React.FC = () => {
     // ----------------------------------------------
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        <>
+            {/* Saved calculation banner */}
+            {showBanner && (
+                <SavedCalculationBanner onRestoreCalculation={() => setShowBanner(false)} />
+            )}
+
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Lewy Panel */}
             <div className="w-full lg:w-1/2">
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Opisz swój pomysł</h3>
@@ -191,6 +243,7 @@ const AiCalculator: React.FC = () => {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 
