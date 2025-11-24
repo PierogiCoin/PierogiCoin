@@ -10,6 +10,8 @@ import WebVitalsReporter from '@/components/WebVitalsReporter';
 import PerformanceMonitor from '@/components/PerformanceMonitor';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import ErrorTracker from '@/components/ErrorTracker';
+import SkipToContent from '@/components/SkipToContent';
+import FocusManager from '@/components/FocusManager';
 import './globals.css';
 
 // --- Lokalne Dane Strukturalne (LocalBusiness - Wrocław & Dolny Śląsk) ---
@@ -152,6 +154,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#06b6d4" />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-white dark:bg-[#0B1121] text-slate-900 dark:text-slate-100`}>
+        <SkipToContent />
         <GTMNoscript />
         <ErrorBoundary>
           <ThemeProvider
@@ -164,6 +167,7 @@ export default function RootLayout({
             <CookieConsent />
           </ThemeProvider>
         </ErrorBoundary>
+        <FocusManager />
         <ErrorTracker />
         <WebVitalsReporter />
         <PerformanceMonitor />
