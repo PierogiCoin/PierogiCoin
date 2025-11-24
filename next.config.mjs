@@ -45,6 +45,17 @@ const nextConfig = {
   // 🚀 Dla Vercela – poprawne ścieżki publiczne
   output: 'standalone',
 
+  // ⚡ Webpack optimization
+  webpack: (config, { isServer }) => {
+    // Optimize large string serialization
+    config.optimization = {
+      ...config.optimization,
+      moduleIds: 'deterministic',
+    };
+
+    return config;
+  },
+
   // 🔒 Security headers
   async headers() {
     return [
