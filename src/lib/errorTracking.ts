@@ -36,10 +36,10 @@ export function trackError(
   }
 
   // Send to Google Analytics
-  if (window.gtag) {
-    window.gtag('event', 'exception', {
+  if ((window as any).gtag) {
+    ;(window as any).gtag('event', 'exception', {
       description: error.message,
-      fatal: severity === 'critical',
+      fatal: severity === 'critical' ? 1 : 0,
     })
   }
 
