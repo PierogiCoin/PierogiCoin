@@ -2,9 +2,12 @@ import type { Metadata, Viewport } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ThemeProvider } from '@/components/theme-provider';
 import CookieConsent from '@/components/CookieConsent';
 import GTMNoscript from '@/components/GTMNoscript';
+import WebVitalsReporter from '@/components/WebVitalsReporter';
+import PerformanceMonitor from '@/components/PerformanceMonitor';
 import './globals.css';
 
 // --- Lokalne Dane Strukturalne (LocalBusiness - Wrocław & Dolny Śląsk) ---
@@ -157,7 +160,10 @@ export default function RootLayout({
           {children}
           <CookieConsent />
         </ThemeProvider>
+        <WebVitalsReporter />
+        <PerformanceMonitor />
         <Analytics />
+        <SpeedInsights />
         <script dangerouslySetInnerHTML={{
           __html: `
             if ('serviceWorker' in navigator) {
