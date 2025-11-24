@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { validatePromo } from '@/api/validatePromo';
 import { PromoValidationResult } from '@/types/promo';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface PromoCodeInputProps {
   onPromoApplied?: (discount: number, code: string, discountType?: string) => void;
@@ -39,9 +40,39 @@ export default function PromoCodeInput({
         setAppliedPromo({ code: result.code, discount: result.discount, discountType: result.discountType });
         setMessage(result.message);
         setCode('');
+        
+        // 🎉 Popup z sukcesem
+        toast.success(
+          `🎉 Kod ${result.code} aktywowany!\nZniżka: ${result.discount}${result.discountType === 'percentage' ? '%' : ' zł'}`,
+          {
+            duration: 5000,
+            position: 'top-center',
+            style: {
+              background: '#10b981',
+              color: '#fff',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              padding: '16px',
+              borderRadius: '10px',
+            },
+            icon: '🎁',
+          }
+        );
+        
         onPromoApplied?.(result.discount, result.code, result.discountType);
       } else {
         setMessage(result.message);
+        
+        // ❌ Popup z błędem
+        toast.error(result.message, {
+          duration: 3000,
+          position: 'top-center',
+          style: {
+            background: '#ef4444',
+            color: '#fff',
+          },
+        });
+        
         setTimeout(() => setMessage(''), 3000);
       }
     } catch (error) {
@@ -55,6 +86,12 @@ export default function PromoCodeInput({
   const handleRemove = () => {
     setAppliedPromo(null);
     setMessage('');
+    
+    toast('Kod promocyjny usunięty', {
+      icon: '🗑️',
+      duration: 2000,
+    });
+    
     onPromoRemoved?.();
   };
 
@@ -72,6 +109,7 @@ export default function PromoCodeInput({
 
   return (
     <div className={`promo-code-input ${className}`}>
+      <Toaster />
       {!appliedPromo ? (
         <div className="flex flex-col gap-3">
           <div className="flex gap-2">

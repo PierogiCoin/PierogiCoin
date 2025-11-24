@@ -24,12 +24,33 @@ export const promoCodes: PromoCode[] = [
     code: 'BLACKFRIDAY',
     discount: 30,
     discountType: 'percentage',
-    isActive: false,
+    isActive: true, // ✅ Aktywny dla Black Friday
     createdAt: new Date().toISOString(),
     usedCount: 0,
     description: 'Black Friday - 30% zniżki',
+    expiresAt: '2024-11-30',
     minPurchaseAmount: 500,
     maxDiscount: 500
+  },
+  {
+    code: 'CHRISTMAS2024',
+    discount: 25,
+    discountType: 'percentage',
+    isActive: false,
+    createdAt: new Date().toISOString(),
+    usedCount: 0,
+    description: 'Świąteczna promocja - 25% zniżki',
+    expiresAt: '2024-12-31'
+  },
+  {
+    code: 'NEWYEAR2025',
+    discount: 20,
+    discountType: 'percentage',
+    isActive: false,
+    createdAt: new Date().toISOString(),
+    usedCount: 0,
+    description: 'Noworoczna promocja - 20% zniżki',
+    expiresAt: '2025-01-15'
   },
   {
     code: 'RABAT50',

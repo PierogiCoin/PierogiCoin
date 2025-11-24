@@ -13,6 +13,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import ErrorTracker from '@/components/ErrorTracker';
 import SkipToContent from '@/components/SkipToContent';
 import FocusManager from '@/components/FocusManager';
+import PromoPopupManager from '@/components/PromoPopupManager';
 import { GA_TRACKING_ID } from '@/lib/gtag';
 import './globals.css';
 
@@ -483,6 +484,7 @@ export default function RootLayout({
           >
             {children}
             <CookieConsent />
+            <PromoPopupManager />
           </ThemeProvider>
         </ErrorBoundary>
         <FocusManager />

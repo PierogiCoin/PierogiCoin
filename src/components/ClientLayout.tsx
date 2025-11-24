@@ -34,6 +34,7 @@ const Contact = lazy(() => import('@/components/Contact'));
 const HowItWorksDual = lazy(() => import('@/components/HowItWorksDual'));
 const FloatingPhone = lazy(() => import('@/components/FloatingPhone'));
 const FAQ = lazy(() => import('@/components/FAQ'));
+const PromoPopupManager = lazy(() => import('@/components/PromoPopupManager'));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -215,6 +216,9 @@ export function ClientLayout() {
                 </AppLayout>
                 
                 <CustomCursor />
+                <Suspense fallback={null}>
+                    <PromoPopupManager />
+                </Suspense>
             </Suspense>
         </div>
     );

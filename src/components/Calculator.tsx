@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import { Check, ChevronRight, RefreshCcw, Send, Sparkles, Info } from 'lucide-react';
 import CalculatorIcons from "./icons/CalculatorIcons";
 import SavedCalculationBanner from './SavedCalculationBanner';
+import PromoCodeInput from './PromoCodeInput';
 import {
   saveCalculatorData,
   getSavedCalculatorData,
@@ -92,6 +93,9 @@ export default function Calculator() {
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
+  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoCode, setPromoCode] = useState('');
+  const [promoDiscountType, setPromoDiscountType] = useState<'percentage' | 'fixed'>('percentage');
   
   const containerRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -179,11 +183,31 @@ export default function Calculator() {
     marketPrice *= multiplier;
 
     // TWOJA CENA (70% rynkowej)
-    const myPrice = Math.round(marketPrice * 0.7);
+    let myPrice = Math.round(marketPrice * 0.7);
     const savings = Math.round(marketPrice - myPrice);
 
-    return { marketPrice, myPrice, savings };
-  }, [state.selections]);
+    // Zastosuj kod promocyjny
+    let promoSavings = 0;
+    let finalPrice = myPrice;
+    
+    if (promoDiscount > 0) {
+      if (promoDiscountType === 'percentage') {
+        promoSavings = Math.round(myPrice * (promoDiscount / 100));
+        finalPrice = myPrice - promoSavings;
+      } else {
+        promoSavings = promoDiscount;
+        finalPrice = Math.max(0, myPrice - promoDiscount);
+      }
+    }
+
+    return { 
+      marketPrice, 
+      myPrice, 
+      savings, 
+      finalPrice,
+      promoSavings
+    };
+  }, [state.selections, promoDiscount, promoDiscountType]);
 
   // Animacja zmiany kroku
   useGSAP(() => {
@@ -256,12 +280,16 @@ export default function Calculator() {
         body: JSON.stringify({
           email: email,
           estimate: {
-            min: calculation.myPrice,
-            max: calculation.myPrice
+            min: promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice,
+            max: promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice
           },
           description: `Projekt typu: ${typeLabels[state.selections.type]}, Design: ${designLabels[state.selections.design]}, Funkcje: ${state.selections.features.map((f: string) => featureLabels[f]).join(', ')}`,
           selections: state.selections,
-          summary: summary
+          summary: summary,
+          promoCode: promoCode || undefined,
+          promoDiscount: promoDiscount > 0 ? promoDiscount : undefined,
+          originalPrice: calculation.myPrice,
+          finalPrice: promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice
         }),
       });
       
@@ -411,24 +439,43 @@ export default function Calculator() {
                   <div className="text-cyan-600 dark:text-cyan-400 text-sm uppercase tracking-widest mb-2 font-bold flex items-center justify-center gap-2">
                     <Sparkles className="w-4 h-4" /> Twoja Cena Specjalna
                   </div>
-                  <div className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">
+                  <div className={`text-5xl sm:text-6xl font-black mb-2 tracking-tight ${promoDiscount > 0 ? 'text-slate-400 dark:text-gray-500 line-through decoration-2' : 'text-slate-900 dark:text-white'}`}>
                     {calculation.myPrice.toLocaleString()} PLN
                   </div>
+                  
+                  {/* Cena z kodem promocyjnym */}
+                  {promoDiscount > 0 && (
+                    <>
+                      <div className="text-green-600 dark:text-green-400 text-xs uppercase tracking-widest mb-1 font-bold flex items-center justify-center gap-2">
+                        🎉 Z kodem {promoCode}
+                      </div>
+                      <div className="text-5xl sm:text-6xl font-black text-green-600 dark:text-green-400 mb-2 tracking-tight">
+                        {calculation.finalPrice.toLocaleString()} PLN
+                      </div>
+                    </>
+                  )}
+                  
                   <div className="inline-block bg-green-500/20 text-green-600 dark:text-green-400 px-3 py-1 rounded-full text-sm font-medium border border-green-500/30">
-                    Oszczędzasz: {calculation.savings.toLocaleString()} PLN
+                    Oszczędzasz: {(calculation.savings + calculation.promoSavings).toLocaleString()} PLN
                   </div>
+                  
+                  {promoDiscount > 0 && (
+                    <div className="mt-2 text-xs text-green-600 dark:text-green-500">
+                      (w tym {calculation.promoSavings.toLocaleString()} PLN z kodu promocyjnego)
+                    </div>
+                  )}
                   
                   {/* Installment info */}
                   <div className="mt-6 pt-4 border-t border-slate-200 dark:border-white/10">
                     <div className="text-xs text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-3">Płatność ratalna dostępna:</div>
                     <div className="flex justify-center gap-6">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round(calculation.myPrice / 6).toLocaleString()}</div>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round((promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice) / 6).toLocaleString()}</div>
                         <div className="text-xs text-slate-400 dark:text-gray-500 mt-1">PLN / 6 miesięcy</div>
                       </div>
                       <div className="w-px bg-slate-300 dark:bg-gray-800"></div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round(calculation.myPrice / 12).toLocaleString()}</div>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round((promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice) / 12).toLocaleString()}</div>
                         <div className="text-xs text-slate-400 dark:text-gray-500 mt-1">PLN / 12 miesięcy</div>
                       </div>
                     </div>
@@ -436,6 +483,24 @@ export default function Calculator() {
                       ✨ Raty 0% - bez dodatkowych kosztów
                     </div>
                   </div>
+                </div>
+
+                {/* Kod promocyjny */}
+                <div className="mb-6 max-w-md mx-auto">
+                  <h3 className="text-lg font-semibold mb-3 text-slate-900 dark:text-white">Masz kod promocyjny?</h3>
+                  <PromoCodeInput 
+                    onPromoApplied={(discount, code, discountType) => {
+                      setPromoDiscount(discount);
+                      setPromoCode(code);
+                      setPromoDiscountType(discountType as 'percentage' | 'fixed');
+                    }}
+                    onPromoRemoved={() => {
+                      setPromoDiscount(0);
+                      setPromoCode('');
+                    }}
+                    purchaseAmount={calculation.myPrice}
+                    showSuggestions={false}
+                  />
                 </div>
 
                 <form onSubmit={handleSend} className="space-y-4 max-w-sm mx-auto">
