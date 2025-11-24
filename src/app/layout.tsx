@@ -8,6 +8,8 @@ import CookieConsent from '@/components/CookieConsent';
 import GTMNoscript from '@/components/GTMNoscript';
 import WebVitalsReporter from '@/components/WebVitalsReporter';
 import PerformanceMonitor from '@/components/PerformanceMonitor';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import ErrorTracker from '@/components/ErrorTracker';
 import './globals.css';
 
 // --- Lokalne Dane Strukturalne (LocalBusiness - Wrocław & Dolny Śląsk) ---
@@ -151,15 +153,18 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-white dark:bg-[#0B1121] text-slate-900 dark:text-slate-100`}>
         <GTMNoscript />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange={false}
-        >
-          {children}
-          <CookieConsent />
-        </ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            {children}
+            <CookieConsent />
+          </ThemeProvider>
+        </ErrorBoundary>
+        <ErrorTracker />
         <WebVitalsReporter />
         <PerformanceMonitor />
         <Analytics />
