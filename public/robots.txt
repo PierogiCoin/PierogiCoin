@@ -1,0 +1,13 @@
+# robots.txt for LykKreacji.pl
+User-agent: *
+Allow: /
+
+# Disallow admin and test pages
+Disallow: /admin/
+Disallow: /test-calc
+Disallow: /test-simple-calc
+Disallow: /demo-promo
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://www.lykkreacji.pl/sitemap.xml

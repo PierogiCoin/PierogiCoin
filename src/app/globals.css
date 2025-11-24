@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fix dla przerw między sekcjami */
+section + section {
+  margin-top: -1px;
+}
+
+/* Usunięcie gap między elementami w main */
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Specjalny fix dla Hero → Services */
+#hero {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#uslugi {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* KROK 2: DEFINICJE ZMIENNYCH CSS w WARSTWIE BAZOWEJ */
+@layer base {
+  :root {
+    /* Zmienne kolorów dla motywu jasnego */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
+    --radius: 0.75rem;
+
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    /* Zmienne kolorów dla motywu ciemnego */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
+    
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 350 75% 55%;
+  }
+
+  /* Podstawowe style dla całej strony */
+  * {
+    border-color: hsl(var(--border)); 
+  }
+  
+  html {
+    height: 100%;
+    /* USUNIĘTO: scroll-behavior: smooth; */
+  }
+  
+  body {
+    height: 100%;
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Better focus styles for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+}
+
+/* KROK 3: KOMPONENTY */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-primary-foreground bg-primary shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-foreground bg-secondary border border-border shadow-sm transition-all duration-300 hover:bg-accent hover:shadow-md hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-foreground transition-all duration-300 hover:bg-accent hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .card {
+    @apply rounded-xl bg-card text-card-foreground shadow-premium border border-border transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1;
+  }
+
+  .card-glass {
+    @apply rounded-xl bg-white/10 dark:bg-black/10 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-premium transition-all duration-300 hover:shadow-premium-lg hover:-translate-y-1;
+  }
+
+  .input {
+    @apply flex h-12 w-full rounded-lg border border-input bg-input px-4 py-2 text-sm text-foreground ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200;
+  }
+
+  .section {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-balance mb-6;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-muted-foreground text-pretty max-w-3xl mx-auto;
+  }
+}
+
+/* KROK 4: KLASY UŻYTKOWE */
+@layer utilities {
+  .text-on-dark-bg {
+      @apply text-white dark:text-white;
+  }
+
+  .bg-gradient-radial {
+    background-image: radial-gradient(circle at center, var(--tw-gradient-stops));
+  }
+
+  .bg-gradient-conic {
+    background-image: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  
+  /* Better mobile touch targets */
+  @media (max-width: 768px) {
+    button,
+    a {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      font-size: 16px;
+    }
+  }
+
+  /* Lenis przejmuje kontrolę, ta klasa jest zbędna */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-premium-lg;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/50;
+  }
+}
