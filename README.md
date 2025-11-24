@@ -1,80 +1,143 @@
-# 🎯 LykKreacji - Landing Page
+# 🎯 LykKreacji - Professional Web Platform
 
-Profesjonalny landing page stworzony w Next.js 14 z fokusem na konwersję, performance i SEO.
+Enterprise-grade Next.js 14 application with complete development infrastructure, monitoring, and security.
 
 ![Next.js](https://img.shields.io/badge/Next.js-14.2.2-black?style=for-the-badge&logo=next.js)
 ![React](https://img.shields.io/badge/React-18.3.1-blue?style=for-the-badge&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue?style=for-the-badge&logo=typescript)
 ![Tailwind](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=for-the-badge&logo=tailwind-css)
+![Tests](https://img.shields.io/badge/Tests-Passing-success?style=for-the-badge)
+![Coverage](https://img.shields.io/badge/Coverage-80%25-success?style=for-the-badge)
 
 ---
 
 ## ✨ Features
 
-- 🚀 **Błyskawiczna szybkość** - Next.js 14 z SSR
-- 🎨 **Nowoczesny design** - Tailwind CSS + GSAP animations
-- 📱 **Full responsive** - od mobile do 4K
-- 🌓 **Dark/Light mode** - automatyczne przełączanie
-- 📊 **SEO optimized** - perfekcyjne meta tags & structured data
-- 💌 **Formularz kontaktowy** - integracja z EmailJS
-- 🎭 **Smooth animations** - GSAP + Lenis smooth scroll
-- ⚡ **Performance** - Lighthouse Score 90+
+### Core
+- 🚀 **Blazing Fast** - Next.js 14 with App Router & SSR
+- 🎨 **Modern Design** - Tailwind CSS + GSAP animations
+- 📱 **Fully Responsive** - Mobile to 4K displays
+- 🌓 **Dark/Light Mode** - Automatic theme switching
+- 📊 **SEO Optimized** - Perfect meta tags & structured data
+- 💌 **Contact Forms** - Email integration (Resend/Gmail)
+- 🤖 **AI Calculator** - Google Gemini integration
+- 🎭 **Smooth Animations** - GSAP + Framer Motion
+
+### Development Infrastructure
+- 🧪 **Testing** - Jest + React Testing Library
+- 🪝 **Pre-commit Hooks** - Husky + lint-staged
+- 📦 **Bundle Analysis** - Size optimization tools
+- ✅ **Type Safety** - Zod validation + TypeScript
+- 🔍 **Code Quality** - ESLint + Prettier
+
+### Security & Performance
+- 🚦 **Rate Limiting** - API protection (Upstash Redis)
+- 🛡️ **Error Handling** - Comprehensive error boundaries
+- 📊 **Performance Monitoring** - Web Vitals tracking
+- ♿ **Accessibility** - WCAG 2.1 AA compliance
+- 🔐 **Environment Validation** - Type-safe env vars
+
+### Monitoring
+- 📈 **Analytics** - Vercel Analytics + Google Analytics
+- ⚡ **Speed Insights** - Real-time performance data
+- 🐛 **Error Tracking** - Automatic error reporting
+- 📉 **Bundle Monitoring** - Size regression detection
 
 ---
 
 ## 🚀 Quick Start
 
 ```bash
-# 1. Instalacja
+# 1. Clone & Install
+git clone https://github.com/your-org/lykkreea.git
+cd lykkreea
 npm install
 
-# 2. Konfiguracja .env.local
+# 2. Environment Setup
 cp .env.example .env.local
-# Edytuj .env.local i dodaj swoje klucze EmailJS
+# Edit .env.local with your API keys
 
-# 3. Uruchom development server
+# 3. Run Development Server
 npm run dev
+# Open http://localhost:3000
 
-# Otwórz http://localhost:3000
+# 4. Run Tests
+npm test
+
+# 5. Build for Production
+npm run build
 ```
 
 ---
 
-## 📁 Struktura Projektu
+## 📁 Project Structure
 
 ```
 lykkreea/
-├── app/
-│   ├── layout.tsx          # Root layout z meta tags
-│   ├── page.tsx            # Strona główna
-│   └── globals.css         # Style globalne
 ├── src/
-│   ├── components/         # Komponenty React
-│   │   ├── Hero.tsx        # Sekcja hero
-│   │   ├── Services.tsx    # Korzyści
-│   │   ├── Portfolio.tsx   # Realizacje
-│   │   ├── Pricing.tsx     # Wycena
-│   │   └── Contact.tsx     # Kontakt
-│   ├── hooks/              # Custom hooks
-│   └── store/              # Zustand store
-├── public/
-│   ├── images/             # Obrazy
-│   └── sounds/             # Dźwięki
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/               # API routes
+│   │   ├── layout.tsx         # Root layout
+│   │   ├── page.tsx           # Home page
+│   │   ├── error.tsx          # Error page
+│   │   └── globals.css        # Global styles
+│   ├── components/            # React components
+│   │   ├── ui/               # Base UI components
+│   │   ├── sections/         # Page sections
+│   │   ├── ErrorBoundary.tsx
+│   │   ├── SkipToContent.tsx
+│   │   └── ...
+│   ├── lib/                   # Utilities
+│   │   ├── env.ts            # Environment validation
+│   │   ├── rateLimit.ts      # Rate limiting
+│   │   ├── errorTracking.ts  # Error tracking
+│   │   └── webVitals.ts      # Performance
+│   ├── hooks/                 # Custom hooks
+│   └── __tests__/            # Test files
+├── docs/                      # Documentation
+│   ├── TESTING.md
+│   ├── PERFORMANCE.md
+│   ├── DEPLOYMENT.md
+│   └── ...
+├── scripts/                   # Build scripts
+├── public/                    # Static files
 └── package.json
 ```
 
+See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed structure.
+
 ---
 
-## 🔧 Konfiguracja
+## 🔧 Configuration
 
-### Environment Variables
-
-Stwórz plik `.env.local` w root projektu:
+### Required Environment Variables
 
 ```env
-# EmailJS Configuration
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
-NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID=your_template_id
+# AI Configuration (REQUIRED)
+GEMINI_API_KEY=your_gemini_api_key
+
+# Email (REQUIRED - choose one)
+RESEND_API_KEY=re_xxx
+# OR
+EMAIL_SERVER_USER=your@gmail.com
+EMAIL_SERVER_PASSWORD=your_app_password
+
+EMAIL_TO=czesc@lykkreacji.pl
+```
+
+### Optional Environment Variables
+
+```env
+# Rate Limiting (Production)
+UPSTASH_REDIS_REST_URL=https://xxx.upstash.io
+UPSTASH_REDIS_REST_TOKEN=xxx
+
+# Analytics
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_CLARITY_ID=xxx
+
+# Admin
+ADMIN_SECRET=your_secret_here
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
 ```
 
@@ -91,48 +154,176 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
 
 ```bash
 # Development
-npm run dev          # Start dev server (localhost:3000)
+npm run dev                 # Start dev server (localhost:3000)
+npm run lint               # Run ESLint checks
+npm run format             # Format code with Prettier
+
+# Testing
+npm test                   # Run tests
+npm run test:watch         # Watch mode
+npm run test:coverage      # Coverage report
 
 # Production
-npm run build        # Build dla produkcji
-npm start            # Start production server
-npm run lint         # Linting (ESLint)
+npm run build              # Production build
+npm start                  # Start production server
 
-# Deploy
-vercel              # Preview deploy
-vercel --prod       # Production deploy
+# Analysis
+npm run analyze            # Bundle analysis (visual)
+npm run analyze:report     # Bundle report (text)
+
+# Deployment
+vercel                     # Preview deploy
+vercel --prod             # Production deploy
 ```
 
 ---
 
-## 🎨 Customizacja
+## 🎨 Customization
 
-### Kolory
+### Colors
 
-Edytuj `tailwind.config.ts` lub `app/globals.css`:
+Edit `tailwind.config.ts` or `src/app/globals.css`:
 
 ```css
-/* Główne kolory brand */
+/* Brand colors */
 --primary: cyan (#06B6D4)
 --secondary: teal (#14B8A6)
 --background: navy (#0B1121)
 ```
 
-### Treść
+### Content
 
-1. **Hero** - `src/components/Hero.tsx`
-2. **Korzyści** - `src/components/Services.tsx`
-3. **Portfolio** - dodaj projekty w komponencie
-4. **Kontakt** - zaktualizuj dane w `Contact.tsx`
+1. **Hero** - `src/components/sections/Hero.tsx`
+2. **Services** - `src/components/sections/Services.tsx`
+3. **Portfolio** - Add projects in component
+4. **Contact** - Update data in `Contact.tsx`
 
 ### Meta Tags
 
-Edytuj `app/layout.tsx`:
+Edit `src/app/layout.tsx`:
 - Title
 - Description
 - Keywords
 - Open Graph
 - Twitter Cards
+
+---
+
+## 📚 Documentation
+
+Complete documentation available in `/docs`:
+
+- **[TESTING.md](docs/TESTING.md)** - Testing guide
+- **[PRE-COMMIT.md](docs/PRE-COMMIT.md)** - Git hooks
+- **[PERFORMANCE.md](docs/PERFORMANCE.md)** - Performance monitoring
+- **[ERROR-HANDLING.md](docs/ERROR-HANDLING.md)** - Error handling
+- **[RATE-LIMITING.md](docs/RATE-LIMITING.md)** - API security
+- **[ENVIRONMENT.md](docs/ENVIRONMENT.md)** - Environment variables
+- **[BUNDLE-ANALYSIS.md](docs/BUNDLE-ANALYSIS.md)** - Bundle optimization
+- **[ACCESSIBILITY.md](docs/ACCESSIBILITY.md)** - a11y guidelines
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture
+- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - Deployment guide
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm test
+
+# Watch mode
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
+
+# Target coverage: 80%+
+```
+
+**Test Stack:**
+- Jest - Test runner
+- React Testing Library - Component testing
+- @testing-library/jest-dom - Custom matchers
+
+---
+
+## 🚦 CI/CD
+
+### Pre-commit Hooks
+
+Automatically runs on `git commit`:
+- ✅ ESLint
+- ✅ Prettier
+- ✅ TypeScript
+- ✅ Tests (changed files)
+
+### Continuous Integration
+
+Vercel automatically runs on push:
+- ✅ Build
+- ✅ Lint
+- ✅ Type check
+- ⚠️ Lighthouse
+- ⚠️ Bundle size
+
+---
+
+## 📊 Performance Targets
+
+### Lighthouse Scores
+- **Performance**: 95+
+- **Accessibility**: 95+
+- **Best Practices**: 100
+- **SEO**: 100
+
+### Web Vitals
+- **LCP**: < 2.5s
+- **INP**: < 200ms
+- **CLS**: < 0.1
+- **FCP**: < 1.8s
+- **TTFB**: < 800ms
+
+### Bundle Sizes
+- **First Load JS**: < 200 kB
+- **Route**: < 100 kB
+
+---
+
+## 🔒 Security
+
+### Features
+- ✅ Rate limiting (API protection)
+- ✅ Input validation (Zod schemas)
+- ✅ CSRF protection
+- ✅ Security headers (CSP, HSTS)
+- ✅ Environment validation
+- ✅ Error sanitization
+
+### Rate Limits
+- Contact form: 3 req/min
+- Calculator: 5 req/min
+- Default API: 10 req/10s
+
+---
+
+## ♿ Accessibility
+
+### WCAG 2.1 Compliance
+- ✅ **Level A** - Required
+- ✅ **Level AA** - Target
+- 🎯 **Level AAA** - Goal
+
+### Features
+- Keyboard navigation
+- Screen reader support
+- Skip to content link
+- Focus management
+- High contrast mode
+- Reduced motion support
+- ARIA labels
 
 ---
 
