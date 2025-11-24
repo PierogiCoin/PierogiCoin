@@ -13,7 +13,8 @@ import {
   getSavedCalculatorData,
   markEmailAsSent,
   clearCalculatorData,
-} from '@/lib/calculatorStorage'; 
+} from '@/lib/calculatorStorage';
+import { parseCalculatorParams } from '@/lib/calculatorLinks'; 
 
 gsap.registerPlugin(TextPlugin);
 
@@ -95,11 +96,41 @@ export default function Calculator() {
   const containerRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
-  // Check for saved calculation on mount
+  // Check for URL parameters and saved calculation on mount
   useEffect(() => {
-    const saved = getSavedCalculatorData();
-    if (saved) {
-      setShowBanner(true);
+    // Check URL parameters first
+    const urlParams = parseCalculatorParams();
+    if (urlParams?.preselect) {
+      const { projectType, design, features, deadline } = urlParams.preselect;
+      
+      if (projectType) {
+        dispatch({ type: 'SET_SELECTION', field: 'type', value: projectType });
+      }
+      if (design) {
+        dispatch({ type: 'SET_SELECTION', field: 'design', value: design });
+      }
+      if (features && features.length > 0) {
+        dispatch({ type: 'SET_SELECTION', field: 'features', value: features });
+      }
+      if (deadline) {
+        dispatch({ type: 'SET_SELECTION', field: 'deadline', value: deadline });
+      }
+      
+      // Track preselected calculator view
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'calculator_preselected', {
+          project_type: projectType,
+          design: design,
+          features: features?.join(','),
+          deadline: deadline
+        });
+      }
+    } else {
+      // Check for saved calculation only if no URL params
+      const saved = getSavedCalculatorData();
+      if (saved) {
+        setShowBanner(true);
+      }
     }
   }, []);
 

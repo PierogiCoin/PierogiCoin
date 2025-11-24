@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useEffect } from 'react';
 import { Zap, Sparkles, ArrowRight, Clock, Brain } from 'lucide-react';
+import { ShareCalculatorButton } from './ShareCalculatorButton';
+import { parseCalculatorParams } from '@/lib/calculatorLinks';
 
 // Lazy load kalkulatorów
 const Calculator = lazy(() => import('./Calculator'));
@@ -23,6 +25,14 @@ type CalculatorType = 'simple' | 'ai' | null;
 
 export default function CalculatorChoice() {
   const [selectedCalculator, setSelectedCalculator] = useState<CalculatorType>(null);
+
+  // Check URL parameters on mount
+  useEffect(() => {
+    const urlParams = parseCalculatorParams();
+    if (urlParams?.type) {
+      setSelectedCalculator(urlParams.type === 'ai' ? 'ai' : 'simple');
+    }
+  }, []);
 
   // Jeśli wybrano kalkulator, pokaż go
   if (selectedCalculator) {
@@ -177,8 +187,21 @@ export default function CalculatorChoice() {
 
       </div>
 
-      {/* Zaufanie */}
-      <div className="mt-12 text-center">
+      {/* Share buttons */}
+      <div className="mt-12 flex flex-col items-center gap-6">
+        <div className="flex flex-wrap justify-center gap-4">
+          <ShareCalculatorButton
+            options={{ type: 'simple' }}
+            message="Oblicz wycenę swojego projektu z prostym kalkulatorem! 💰"
+            variant="button"
+          />
+          <ShareCalculatorButton
+            options={{ type: 'ai' }}
+            message="Sprawdź AI Kalkulator - analiza projektu w sekundach! 🤖"
+            variant="button"
+          />
+        </div>
+        
         <p className="text-slate-500 dark:text-gray-500 text-sm">
           🔒 Bezpiecznie • Bez zobowiązań • Wynik natychmiast na email
         </p>
