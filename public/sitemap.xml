@@ -1,21 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage - Main Entry Point -->
   <url>
-    <loc>https://www.lykkreacji.pl</loc>
-    <lastmod>2024-11-21</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://lykkreacji.pl</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://lykkreacji.pl/og-image.jpg</image:loc>
+      <image:title>LykKreacji - Tworzenie Stron i Aplikacji Web</image:title>
+      <image:caption>Profesjonalne strony internetowe, sklepy online i aplikacje web we Wrocławiu. Next.js, React, AI</image:caption>
+    </image:image>
   </url>
+
+  <!-- Services Section -->
   <url>
-    <loc>https://www.lykkreacji.pl/polityka-prywatnosci</loc>
-    <lastmod>2024-11-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <loc>https://lykkreacji.pl/#uslugi</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
+
+  <!-- Portfolio Section -->
   <url>
-    <loc>https://www.lykkreacji.pl/regulamin</loc>
-    <lastmod>2024-11-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <loc>https://lykkreacji.pl/#portfolio</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
+
+  <!-- Pricing Calculator -->
+  <url>
+    <loc>https://lykkreacji.pl/#cennik</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Contact Section -->
+  <url>
+    <loc>https://lykkreacji.pl/#kontakt</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Legal Pages -->
+  <url>
+    <loc>https://lykkreacji.pl/polityka-prywatnosci</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://lykkreacji.pl/regulamin</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
 </urlset>

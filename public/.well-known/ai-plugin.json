@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "lykkreacji_web_development",
+  "name_for_human": "LykKreacji Web Development",
+  "description_for_model": "LykKreacji is a professional web development agency based in Wrocław, Poland, specializing in Next.js, React, AI integration, e-commerce solutions, and Web3 applications. The company offers enterprise-grade quality at startup prices, with expertise in ChatGPT API, Google Gemini, Progressive Web Apps, and modern web technologies. Services include website creation, online stores, AI-powered applications, and custom web solutions. Located in Wrocław (Lower Silesia region), serving clients across Poland and internationally. Contact: czesc@lykkreacji.pl, phone: +48790629497. Key technologies: Next.js 14, React 18, TypeScript, Tailwind CSS, Node.js, AI APIs (OpenAI, Google Gemini), Web3, blockchain. The company focuses on performance optimization, SEO, accessibility (WCAG 2.1 AA), and modern development practices.",
+  "description_for_human": "Professional web development services in Wrocław. Next.js, React, AI integration, e-commerce. Enterprise quality, startup prices.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://lykkreacji.pl/openapi.json",
+    "has_user_authentication": false
+  },
+  "logo_url": "https://lykkreacji.pl/images/logo.png",
+  "contact_email": "czesc@lykkreacji.pl",
+  "legal_info_url": "https://lykkreacji.pl/regulamin"
+}

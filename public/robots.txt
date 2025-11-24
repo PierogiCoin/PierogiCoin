@@ -1,13 +1,129 @@
-# robots.txt for LykKreacji.pl
+# robots.txt for LykKreacji - Optimized for AI crawlers & search engines
+
+# =============================================================================
+# AI CRAWLERS (ChatGPT, Gemini, Claude, Copilot, etc.)
+# =============================================================================
+
+# OpenAI (ChatGPT, GPT-4)
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Google AI (Gemini, Bard, Search Generative Experience)
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Video
+Allow: /
+
+# Bing / Microsoft (Copilot, Bing Chat)
+User-agent: Bingbot
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+# Anthropic Claude
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Meta AI (Facebook, Instagram)
+User-agent: FacebookBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# You.com AI
+User-agent: YouBot
+Allow: /
+
+# Apple Siri, Spotlight
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Amazon Alexa
+User-agent: ia_archiver
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+
+# Yandex (Russian search)
+User-agent: Yandex
+Allow: /
+
+# Baidu (Chinese search)
+User-agent: Baiduspider
+Allow: /
+
+# Other bots
+User-agent: Slackbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: TwitterBot
+Allow: /
+
+# =============================================================================
+# DEFAULT - Allow all other bots
+# =============================================================================
+
 User-agent: *
 Allow: /
 
-# Disallow admin and test pages
+# =============================================================================
+# DISALLOW - Private/Admin areas
+# =============================================================================
+
 Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
 Disallow: /test-calc
 Disallow: /test-simple-calc
 Disallow: /demo-promo
-Disallow: /api/
 
-# Sitemap
+# =============================================================================
+# SITEMAPS
+# =============================================================================
+
+Sitemap: https://lykkreacji.pl/sitemap.xml
 Sitemap: https://www.lykkreacji.pl/sitemap.xml
+
+# =============================================================================
+# CRAWL SETTINGS
+# =============================================================================
+
+# Crawl delay (seconds) - be nice to servers
+Crawl-delay: 1
+
+# Host preference (canonical domain)
+Host: https://lykkreacji.pl
