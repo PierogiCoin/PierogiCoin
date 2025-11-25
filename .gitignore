@@ -56,3 +56,8 @@ coverage/
 # Misc
 *.log
 .cache
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/e2e/screenshots/*.png

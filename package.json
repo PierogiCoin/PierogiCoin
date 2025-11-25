@@ -14,7 +14,11 @@
     "analyze": "ANALYZE=true npm run build",
     "analyze:server": "ANALYZE=true BUNDLE_ANALYZE=server npm run build",
     "analyze:browser": "ANALYZE=true BUNDLE_ANALYZE=browser npm run build",
-    "analyze:report": "node scripts/analyze-bundle.js"
+    "analyze:report": "node scripts/analyze-bundle.js",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@google/generative-ai": "^0.7.1",
@@ -88,6 +92,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^16.0.3",
+    "@playwright/test": "^1.56.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
