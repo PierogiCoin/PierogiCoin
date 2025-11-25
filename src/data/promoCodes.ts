@@ -24,7 +24,7 @@ export const promoCodes: PromoCode[] = [
     code: 'BLACKFRIDAY',
     discount: 30,
     discountType: 'percentage',
-    isActive: true, // ✅ Aktywny dla Black Friday
+    isActive: false, // ❌ Wygasł
     createdAt: new Date().toISOString(),
     usedCount: 0,
     description: 'Black Friday - 30% zniżki',
@@ -36,7 +36,7 @@ export const promoCodes: PromoCode[] = [
     code: 'CHRISTMAS2024',
     discount: 25,
     discountType: 'percentage',
-    isActive: false,
+    isActive: true, // ✅ Aktywny dla Świąt
     createdAt: new Date().toISOString(),
     usedCount: 0,
     description: 'Świąteczna promocja - 25% zniżki',
@@ -46,7 +46,7 @@ export const promoCodes: PromoCode[] = [
     code: 'NEWYEAR2025',
     discount: 20,
     discountType: 'percentage',
-    isActive: false,
+    isActive: true, // ✅ Aktywny dla Nowego Roku
     createdAt: new Date().toISOString(),
     usedCount: 0,
     description: 'Noworoczna promocja - 20% zniżki',

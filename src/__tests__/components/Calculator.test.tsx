@@ -35,7 +35,7 @@ describe('Calculator Component', () => {
   describe('Initial Render', () => {
     it('renders calculator with step 1', () => {
       render(<Calculator />);
-      expect(screen.getByText(/jaki typ projektu/i)).toBeInTheDocument();
+      expect(screen.getByText(/czego potrzebujesz/i)).toBeInTheDocument();
     });
 
     it('displays all project type options', () => {
@@ -70,7 +70,7 @@ describe('Calculator Component', () => {
       await waitFor(() => {
         expect(screen.getByText('Ekonomiczny')).toBeInTheDocument();
         expect(screen.getByText('Indywidualny')).toBeInTheDocument();
-        expect(screen.getByText(/Premium.*Animacje/i)).toBeInTheDocument();
+        expect(screen.getByText('Premium + Animacje')).toBeInTheDocument();
       });
     });
 
@@ -104,7 +104,7 @@ describe('Calculator Component', () => {
       await user.click(backButton!);
       
       await waitFor(() => {
-        expect(screen.getByText(/jaki typ projektu/i)).toBeInTheDocument();
+        expect(screen.getByText(/czego potrzebujesz/i)).toBeInTheDocument();
       });
     });
   });
@@ -208,7 +208,8 @@ describe('Calculator Component', () => {
       await user.click(nextButton!);
       
       await waitFor(() => {
-        expect(screen.getByText(/PLN/i)).toBeInTheDocument();
+        const plnElements = screen.getAllByText(/PLN/i);
+        expect(plnElements.length).toBeGreaterThan(0);
       });
     });
   });
@@ -218,8 +219,19 @@ describe('Calculator Component', () => {
       const user = userEvent.setup();
       render(<Calculator />);
       
+      // Navigate to result step to trigger save
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
+      
+      await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
+      
+      const templateDesign = screen.getByText('Ekonomiczny').closest('button');
+      await user.click(templateDesign!);
+      
+      await waitFor(() => expect(screen.getByText(/dodatki/i)).toBeInTheDocument());
+      
+      const nextButton = screen.getByText(/dalej/i).closest('button');
+      await user.click(nextButton!);
       
       await waitFor(() => {
         expect(calculatorStorage.saveCalculatorData).toHaveBeenCalled();
@@ -240,7 +252,7 @@ describe('Calculator Component', () => {
       
       render(<Calculator />);
       
-      expect(screen.getByText(/kontynuuj/i)).toBeInTheDocument();
+      expect(screen.getByText(/witaj ponownie/i)).toBeInTheDocument();
     });
   });
 

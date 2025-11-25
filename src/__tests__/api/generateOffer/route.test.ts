@@ -27,10 +27,12 @@ jest.mock('pdf-lib', () => ({
         drawRectangle: jest.fn(),
         drawText: jest.fn(),
         drawLine: jest.fn(),
+        drawCircle: jest.fn(),
       }),
       embedFont: jest.fn().mockResolvedValue({
         widthOfTextAtSize: jest.fn().mockReturnValue(100),
       }),
+      getPages: jest.fn().mockReturnValue([{}, {}]),
       save: jest.fn().mockResolvedValue(Buffer.from('mock-pdf')),
     }),
   },
@@ -63,14 +65,16 @@ describe('GenerateOffer API Route', () => {
     mockResendSend.mockClear();
     mockResendSend.mockResolvedValue({ id: 'mock-email-id' });
     process.env.GEMINI_API_KEY = 'test-api-key';
-    process.env.RESEND_API_KEY = 'test-resend-key';
+    process.env.RESEND_API_KEY = 're_test-resend-key';
     process.env.EMAIL_TO = 'test@example.com';
+    process.env.EMAIL_FROM = 'noreply@test.com';
   });
 
   afterEach(() => {
     delete process.env.GEMINI_API_KEY;
     delete process.env.RESEND_API_KEY;
     delete process.env.EMAIL_TO;
+    delete process.env.EMAIL_FROM;
   });
 
   describe('Request Validation', () => {

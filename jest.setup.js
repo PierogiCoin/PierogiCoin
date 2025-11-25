@@ -34,6 +34,16 @@ if (typeof window !== 'undefined') {
   window.scrollTo = jest.fn()
 }
 
+// Mock TransformStream for Playwright e2e tests
+if (typeof global.TransformStream === 'undefined') {
+  global.TransformStream = class TransformStream {
+    constructor() {
+      this.readable = {};
+      this.writable = {};
+    }
+  }
+}
+
 // Mock GSAP
 const gsapMock = {
   registerPlugin: jest.fn(),

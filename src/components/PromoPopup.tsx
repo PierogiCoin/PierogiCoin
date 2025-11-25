@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { X, Copy, Check, Sparkles, Gift } from 'lucide-react';
 
 interface PromoPopupProps {
   title?: string;
@@ -9,172 +11,168 @@ interface PromoPopupProps {
   code?: string;
   discount?: string;
   validUntil?: string;
-  image?: string;
   autoShow?: boolean;
   delay?: number; // opóźnienie w ms
   showOnce?: boolean; // pokazuj raz na sesję
 }
 
 export default function PromoPopup({
-  title = '🎉 Black Friday Sale!',
-  description = 'Zdobądź ekskluzywny rabat na wszystkie usługi!',
-  code = 'BLACKFRIDAY',
-  discount = '30%',
+  title = 'Oferta Specjalna',
+  description = 'Zdobądź zniżkę na pierwszą stronę internetową lub sklep.',
+  code = 'START2024',
+  discount = '-15%',
   validUntil = '30.11.2024',
-  image,
   autoShow = true,
-  delay = 3000,
+  delay = 5000,
   showOnce = true,
 }: PromoPopupProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // Czy komponent jest w DOM
   const [copied, setCopied] = useState(false);
+  
+  const popupRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
+  // Logika pokazywania
   useEffect(() => {
-    // Sprawdź czy popup był już pokazany w tej sesji
-    if (showOnce) {
-      const wasShown = sessionStorage.getItem('promoPopupShown');
-      if (wasShown) return;
-    }
+    if (!autoShow) return;
 
-    // Pokaż popup z opóźnieniem
-    if (autoShow) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-        if (showOnce) {
-          sessionStorage.setItem('promoPopupShown', 'true');
-        }
-      }, delay);
+    const timer = setTimeout(() => {
+      if (showOnce) {
+        const wasShown = sessionStorage.getItem('promoPopupShown');
+        if (wasShown) return;
+      }
+      setIsMounted(true); // Montujemy w DOM
+      // setIsVisible ustawimy w useGSAP po animacji wejścia
+    }, delay);
 
-      return () => clearTimeout(timer);
-    }
+    return () => clearTimeout(timer);
   }, [autoShow, delay, showOnce]);
 
+  // Animacja Wejścia / Wyjścia
+  useGSAP(() => {
+    if (isMounted && popupRef.current && overlayRef.current) {
+      // Wejście
+      setIsVisible(true);
+      const tl = gsap.timeline();
+      
+      tl.fromTo(overlayRef.current, 
+        { opacity: 0 }, 
+        { opacity: 1, duration: 0.5 }
+      )
+      .fromTo(popupRef.current,
+        { scale: 0.8, opacity: 0, y: 50 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" },
+        "-=0.3"
+      );
+
+      if (showOnce) {
+        sessionStorage.setItem('promoPopupShown', 'true');
+      }
+    }
+  }, [isMounted]);
+
   const handleClose = () => {
-    setIsVisible(false);
+    if (!popupRef.current || !overlayRef.current) return;
+
+    // Animacja Wyjścia
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setIsVisible(false);
+        setIsMounted(false);
+      }
+    });
+
+    tl.to(popupRef.current, { scale: 0.8, opacity: 0, y: 50, duration: 0.4, ease: "power3.in" })
+      .to(overlayRef.current, { opacity: 0, duration: 0.3 }, "-=0.2");
   };
 
-  const handleCopyCode = () => {
+  const handleCopy = () => {
     navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (!isVisible) return null;
+  if (!isMounted) return null;
 
   return (
-    <>
-      {/* Overlay */}
+    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+      {/* Overlay (Tło) */}
       <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 animate-fadeIn"
+        ref={overlayRef}
         onClick={handleClose}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === 'Escape' && handleClose()}
-        aria-label="Zamknij popup promocyjny"
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
       />
 
-      {/* Popup */}
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md animate-slideUp">
-        <div className="bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-2xl shadow-2xl overflow-hidden">
-          {/* Close button */}
-          <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-10"
-            aria-label="Zamknij"
-          >
-            <X size={24} />
-          </button>
+      {/* Popup Card */}
+      <div 
+        ref={popupRef}
+        className="relative w-full max-w-md bg-[#0a0a0a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden"
+      >
+        {/* Dekoracyjne Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-cyan-500/20 blur-[80px] pointer-events-none" />
+        
+        {/* Przycisk Zamknięcia */}
+        <button 
+          onClick={handleClose}
+          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-20"
+        >
+          <X size={24} />
+        </button>
 
-          {/* Content */}
-          <div className="relative p-8 text-white">
-            {/* Image (optional) */}
-            {image && (
-              <div className="mb-4 rounded-lg overflow-hidden">
-                <img src={image} alt="Promocja" className="w-full h-40 object-cover" />
-              </div>
-            )}
-
-            {/* Title */}
-            <h2 className="text-3xl font-bold mb-2 text-center">
-              {title}
-            </h2>
-
-            {/* Discount badge */}
-            <div className="flex justify-center mb-4">
-              <span className="inline-block bg-white text-purple-600 px-6 py-2 rounded-full text-2xl font-black shadow-lg">
-                -{discount} ZNIŻKI
-              </span>
-            </div>
-
-            {/* Description */}
-            <p className="text-center text-white/90 mb-6">
-              {description}
-            </p>
-
-            {/* Code box */}
-            <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 mb-4 border border-white/20">
-              <p className="text-sm text-white/80 mb-2 text-center">
-                Użyj kodu:
-              </p>
-              <div className="flex items-center justify-center gap-3">
-                <code className="text-2xl font-mono font-bold tracking-wider">
-                  {code}
-                </code>
-                <button
-                  onClick={handleCopyCode}
-                  className="px-4 py-2 bg-white text-purple-600 rounded-lg font-semibold hover:bg-white/90 transition-all transform hover:scale-105"
-                >
-                  {copied ? '✓ Skopiowano' : 'Kopiuj'}
-                </button>
-              </div>
-            </div>
-
-            {/* Valid until */}
-            <p className="text-center text-sm text-white/70">
-              ⏰ Oferta ważna do: <span className="font-semibold">{validUntil}</span>
-            </p>
-
-            {/* CTA Button */}
-            <button
-              onClick={handleClose}
-              className="w-full mt-6 px-6 py-4 bg-white text-purple-600 rounded-lg font-bold text-lg hover:bg-white/90 transition-all transform hover:scale-105 shadow-lg"
-            >
-              Skorzystaj teraz! 🎁
-            </button>
+        <div className="p-8 relative z-10 text-center">
+          
+          {/* Ikona / Badge */}
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 mb-6 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+            <Gift className="w-8 h-8 text-cyan-400" />
           </div>
 
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
+          <h3 className="text-2xl font-bold text-white mb-2 flex items-center justify-center gap-2">
+            {title} <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
+          </h3>
+          
+          <p className="text-gray-400 text-sm mb-8 leading-relaxed">
+            {description}
+          </p>
+
+          {/* Sekcja z Kodem */}
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div className="relative flex items-center justify-between gap-4">
+              <div className="text-left">
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Twój kod rabatowy</p>
+                <p className="text-2xl font-mono font-bold text-white tracking-widest">{code}</p>
+              </div>
+              
+              <div className="text-right">
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Zniżka</p>
+                <p className="text-2xl font-bold text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{discount}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Przycisk Kopiuj */}
+          <button
+            onClick={handleCopy}
+            className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+          >
+            {copied ? (
+              <>
+                <Check className="w-5 h-5" /> Skopiowano!
+              </>
+            ) : (
+              <>
+                <Copy className="w-5 h-5 group-hover:rotate-12 transition-transform" /> Odbierz Rabat
+              </>
+            )}
+          </button>
+
+          <p className="text-xs text-gray-600 mt-4">
+            Oferta ważna do: {validUntil}
+          </p>
         </div>
       </div>
-
-      {/* Animations */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translate(-50%, -40%) scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-
-        .animate-slideUp {
-          animation: slideUp 0.4s ease-out;
-        }
-      `}</style>
-    </>
+    </div>
   );
 }

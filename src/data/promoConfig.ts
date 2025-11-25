@@ -17,7 +17,7 @@ export interface PromoConfig {
 // 🎄 PROMOCJE DO AKTYWACJI
 export const PROMO_CAMPAIGNS: Record<string, PromoConfig> = {
   blackFriday: {
-    enabled: true, // ⚠️ Zmień na true aby aktywować
+    enabled: false, // ❌ Black Friday minął
     title: '🎉 Black Friday Sale!',
     description: 'Zdobądź ekskluzywny rabat na wszystkie usługi!',
     code: 'BLACKFRIDAY',
@@ -29,7 +29,7 @@ export const PROMO_CAMPAIGNS: Record<string, PromoConfig> = {
   },
   
   christmas: {
-    enabled: false, // ⚠️ Zmień na true aby aktywować
+    enabled: true, // ✅ Aktywna promocja świąteczna!
     title: '🎄 Świąteczna Promocja!',
     description: 'Najlepszy prezent dla Twojego biznesu!',
     code: 'CHRISTMAS2024',
@@ -41,7 +41,7 @@ export const PROMO_CAMPAIGNS: Record<string, PromoConfig> = {
   },
   
   newYear: {
-    enabled: false, // ⚠️ Zmień na true aby aktywować
+    enabled: false, // ⏳ Aktywuj od 26.12.2024
     title: '🎆 Nowy Rok, Nowe Możliwości!',
     description: 'Rozpocznij rok z rabatem na usługi!',
     code: 'NEWYEAR2025',

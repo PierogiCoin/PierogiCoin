@@ -12,9 +12,9 @@ gsap.registerPlugin(TextPlugin);
 // --- Tło (Zoptymalizowane) ---
 const AnimatedBackground = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black via-[#050505] to-black z-0" />
-    <div className="absolute top-[-20%] left-[20%] w-[40vw] h-[40vw] bg-cyan-900/10 rounded-full blur-[100px] animate-pulse duration-[4s]" />
-    <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-blue-900/10 rounded-full blur-[100px] animate-pulse delay-1000 duration-[5s]" />
+    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white via-slate-50 to-white dark:from-black dark:via-[#050505] dark:to-black z-0" />
+    <div className="absolute top-[-20%] left-[20%] w-[40vw] h-[40vw] bg-cyan-200/20 dark:bg-cyan-900/10 rounded-full blur-[100px]" style={{ animation: 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
+    <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-blue-200/20 dark:bg-blue-900/10 rounded-full blur-[100px]" style={{ animation: 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite', animationDelay: '1s' }} />
     <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]" style={{ opacity: 0.15 }} />
   </div>
 );
@@ -33,7 +33,7 @@ export default function Hero() {
     );
 
     // 2. Typewriter Effect (Bardziej agresywny sprzedażowo)
-    const words = ["Zarabiają", "Konwertują", "Dominują"];
+    const words = ["Zarabia", "Konwertuje", "Dominuje"];
     const masterTl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
 
     words.forEach((word) => {
@@ -59,29 +59,29 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         
         {/* SCARCITY BADGE (Niedostępność) */}
-        <div className="hero-element inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 hover:bg-white/10 transition-colors cursor-default">
+        <div className="hero-element inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-slate-100/80 dark:bg-white/5 border border-slate-300 dark:border-white/10 backdrop-blur-md mb-8 hover:bg-slate-200/80 dark:hover:bg-white/10 transition-colors cursor-default">
           <span className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
           </span>
-          <span className="text-xs sm:text-sm font-semibold text-gray-300 tracking-wide">
-            Dostępność: <span className="text-white">Ostatnie 2 miejsca</span> na ten miesiąc
+          <span className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-gray-300 tracking-wide">
+            Dostępność: <span className="text-slate-900 dark:text-white font-bold">Ostatnie 2 miejsca</span> na ten miesiąc
           </span>
         </div>
 
         {/* GŁÓWNY NAGŁÓWEK */}
-        <h1 className="hero-element text-5xl sm:text-7xl md:text-8xl font-bold text-white tracking-tight mb-8 leading-[1.1]">
+        <h1 className="hero-element text-5xl sm:text-7xl md:text-8xl font-bold text-slate-900 dark:text-white tracking-tight mb-8 leading-[1.1]">
           Nie buduj strony. <br />
           Buduj maszynę, która <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 dark:from-cyan-400 dark:via-blue-500 dark:to-purple-600">
             <span ref={textRef}></span>
-            <span className="animate-blink text-white">|</span>
+            <span className="animate-blink text-slate-900 dark:text-white">|</span>
           </span>
         </h1>
 
-        <p className="hero-element text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="hero-element text-lg sm:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           Większość stron to tylko ładne wizytówki, które przepalają budżet reklamowy. 
-          Ja tworzę systemy oparte o <strong>Next.js</strong> i psychologię sprzedaży, które zamieniają ruch w pieniądze.
+          Ja tworzę systemy oparte o <strong className="text-slate-900 dark:text-white">Next.js</strong> i psychologię sprzedaży, które zamieniają ruch w pieniądze.
         </p>
 
         {/* CTA SECTION */}
@@ -90,10 +90,10 @@ export default function Hero() {
             
             {/* PRIMARY CTA - CALCULATOR */}
             <Link 
-              href="/kalkulator" 
-              className="cta-pulse group relative px-8 py-5 bg-white text-black font-bold text-lg rounded-full hover:bg-gray-100 transition-all flex items-center justify-center gap-3 w-full sm:w-auto min-w-[260px]"
+              href="/#kalkulator" 
+              className="cta-pulse group relative px-8 py-5 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold text-lg rounded-full hover:shadow-xl transition-all flex items-center justify-center gap-3 w-full sm:w-auto min-w-[260px]"
             >
-              <Calculator className="w-6 h-6 text-cyan-600" />
+              <Calculator className="w-6 h-6" />
               Sprawdź cenę w 30s
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -101,14 +101,14 @@ export default function Hero() {
             {/* SECONDARY CTA */}
             <Link 
               href="#portfolio" 
-              className="px-8 py-5 bg-white/5 text-white border border-white/10 font-bold text-lg rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-w-[260px] backdrop-blur-sm"
+              className="px-8 py-5 bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 font-bold text-lg rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-w-[260px] backdrop-blur-sm"
             >
               Zobacz Realizacje
             </Link>
           </div>
           
           {/* MICRO COPY (Trust builder) */}
-          <p className="text-xs text-gray-500 mt-2 flex items-center gap-2">
+          <p className="text-xs text-slate-500 dark:text-gray-500 mt-2 flex items-center gap-2">
             <ShieldCheck className="w-3 h-3 text-green-500" />
             Bez rozmów telefonicznych. Wynik natychmiast.
           </p>

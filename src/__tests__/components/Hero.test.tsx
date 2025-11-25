@@ -28,6 +28,6 @@ describe('Hero Component', () => {
     
     const ctaButton = screen.getByRole('link', { name: /sprawdź cenę/i })
     expect(ctaButton).toBeInTheDocument()
-    expect(ctaButton).toHaveAttribute('href', '/kalkulator')
+    expect(ctaButton).toHaveAttribute('href', '/#kalkulator')
   })
 })

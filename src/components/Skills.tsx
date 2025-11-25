@@ -1,83 +1,88 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { NextjsIcon, ReactIcon, TypeScriptIcon, TailwindCssIcon, NodejsIcon, VercelIcon, MetaIconModern, GoogleIcon } from './icons/TechIcons';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { 
+  Code2, Database, Globe, Layout, Server, Smartphone, Cpu, Layers, Zap, ShieldCheck 
+} from 'lucide-react';
 
-// Powielamy tablicę, aby uzyskać efekt nieskończoności bez przerw
+gsap.registerPlugin(ScrollTrigger);
+
+// Lista technologii (możesz podmienić ikony na SVG logotypy dla lepszego efektu)
 const SKILLS = [
-  { icon: NextjsIcon, name: 'Next.js' },
-  { icon: ReactIcon, name: 'React' },
-  { icon: TypeScriptIcon, name: 'TypeScript' },
-  { icon: TailwindCssIcon, name: 'Tailwind CSS' },
-  { icon: NodejsIcon, name: 'Node.js' },
-  { icon: VercelIcon, name: 'Vercel' },
-  { icon: MetaIconModern, name: 'Meta Ads' },
-  { icon: GoogleIcon, name: 'Google Ads' },
+  { name: "Next.js", icon: Globe },
+  { name: "React", icon: Code2 },
+  { name: "TypeScript", icon: Layout },
+  { name: "Tailwind CSS", icon: Layers },
+  { name: "Node.js", icon: Server },
+  { name: "PostgreSQL", icon: Database },
+  { name: "GSAP", icon: Zap },
+  { name: "Mobile First", icon: Smartphone },
+  { name: "SEO", icon: Cpu },
+  { name: "Security", icon: ShieldCheck },
 ];
 
-// Tworzymy potrójną listę dla płynnego loopa
+// Duplikujemy listę, aby uzyskać efekt nieskończoności
 const MARQUEE_ITEMS = [...SKILLS, ...SKILLS, ...SKILLS];
 
 export default function Skills() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    const marquee = marqueeRef.current;
-    if (!marquee) return;
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const marquee = marqueeRef.current;
+      if (!marquee) return;
 
-    // Obliczamy szerokość pojedynczego zestawu (1/3 całości)
-    const totalWidth = marquee.scrollWidth;
-    const singleSetWidth = totalWidth / 3;
+      // Obliczamy szerokość pojedynczego zestawu (1/3 całości)
+      const totalWidth = marquee.scrollWidth;
+      const singleSetWidth = totalWidth / 3;
 
-    // Animacja nieskończonego przewijania
-    const tl = gsap.to(marquee, {
-      x: -singleSetWidth, // Przesuwamy o jedną długość zestawu
-      duration: 20, // Czas trwania jednego cyklu (im więcej, tym wolniej)
-      ease: "none",
-      repeat: -1, // Nieskończoność
-      modifiers: {
-        x: gsap.utils.unitize((x) => parseFloat(x) % singleSetWidth) // Resetuje pozycję bez przeskoku
-      }
-    });
+      // Animacja nieskończonego przewijania
+      gsap.to(marquee, {
+        x: -singleSetWidth, // Przesuwamy tylko o jedną długość zestawu
+        duration: 20,       // Czas trwania jednego cyklu (im więcej, tym wolniej)
+        ease: "none",
+        repeat: -1,         // Nieskończona pętla
+        modifiers: {
+          x: gsap.utils.unitize((x) => parseFloat(x) % singleSetWidth) // Resetuje pozycję bez skoku
+        }
+      });
+    }, sectionRef);
 
-    // Pauza po najechaniu myszką
-    marquee.addEventListener('mouseenter', () => tl.pause());
-    marquee.addEventListener('mouseleave', () => tl.play());
-
-  }, { scope: containerRef });
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="technologie" ref={containerRef} className="py-20 bg-white dark:bg-black border-y border-slate-200 dark:border-white/5 overflow-hidden relative">
+    <section ref={sectionRef} className="py-16 bg-black border-y border-white/5 relative overflow-hidden">
       
-      {/* Gradientowe maski po bokach (fade effect) */}
-      <div className="absolute top-0 left-0 w-20 sm:w-40 h-full bg-gradient-to-r from-slate-50 dark:from-black to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-20 sm:w-40 h-full bg-gradient-to-l from-slate-50 dark:from-black to-transparent z-10 pointer-events-none" />
-
-      <div className="text-center mb-12 px-4">
-        <p className="text-sm font-bold text-cyan-600 dark:text-cyan-500 uppercase tracking-widest mb-2">Technologie</p>
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
-          Narzędzia, których używam do <span className="text-slate-500 dark:text-gray-500">budowania Twojego sukcesu</span>
-        </h2>
+      {/* Nagłówek sekcji (opcjonalny, mały) */}
+      <div className="text-center mb-10">
+        <p className="text-sm font-bold text-gray-500 uppercase tracking-[0.2em]">
+          Technologie, których używam
+        </p>
       </div>
 
+      {/* Gradientowe maski po bokach (Fade effect) */}
+      <div className="absolute top-0 left-0 w-20 sm:w-40 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-20 sm:w-40 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+
       {/* Marquee Container */}
-      <div className="relative w-full flex overflow-hidden py-4">
-        <div ref={marqueeRef} className="flex items-center gap-12 sm:gap-24 px-12 whitespace-nowrap will-change-transform">
+      <div className="relative w-full flex overflow-hidden">
+        <div ref={marqueeRef} className="flex items-center gap-16 sm:gap-24 px-4 whitespace-nowrap will-change-transform">
           {MARQUEE_ITEMS.map((skill, index) => (
             <div 
               key={`${skill.name}-${index}`} 
-              className="group flex flex-col items-center justify-center gap-4 opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-default"
+              className="group flex flex-col items-center justify-center gap-4 opacity-40 hover:opacity-100 transition-all duration-500 cursor-default"
             >
-              {/* Ikona */}
-              <div className="w-16 h-16 sm:w-20 sm:h-20 grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110">
-                <skill.icon className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(100,100,100,0.2)] dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:drop-shadow-[0_0_20px_rgba(6,182,212,0.4)]" />
+              {/* Ikona z efektem Glow */}
+              <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center text-gray-300 group-hover:text-cyan-400 transition-colors duration-300 group-hover:drop-shadow-[0_0_15px_rgba(6,182,212,0.6)] transform group-hover:scale-110">
+                <skill.icon strokeWidth={1.5} className="w-full h-full" />
               </div>
               
-              {/* Nazwa (pojawia się po najechaniu) */}
-              <span className="text-sm font-medium text-slate-500 dark:text-gray-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+              {/* Nazwa */}
+              <span className="text-xs sm:text-sm font-bold text-gray-500 group-hover:text-white transition-colors uppercase tracking-wider">
                 {skill.name}
               </span>
             </div>

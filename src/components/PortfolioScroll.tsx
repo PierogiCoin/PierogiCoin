@@ -15,7 +15,7 @@ const PROJECTS = [
     title: "BHP Stronie Śląskie",
     category: "Strona Firmowa",
     description: "Kompletny rebranding i wdrożenie strony dla firmy szkoleniowej. System zapisów, szybki kontakt i SEO lokalne.",
-    image: "/projects/bhp.jpg", // Upewnij się, że masz plik lub placeholder
+    image: "/projects/bhp.png",
     link: "https://bhpstronieslaskie.pl",
     tech: ["Next.js", "Tailwind", "EmailJS"],
     color: "from-blue-600 to-cyan-500"
@@ -220,7 +220,7 @@ export const PortfolioScroll: React.FC = () => {
                 <h3 className="text-3xl font-bold text-white mb-2">Twój Projekt?</h3>
                 <p className="text-gray-400 mb-8">Dołącz do grona zadowolonych klientów.</p>
                 
-                <Link href="/kalkulator" className="px-8 py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 transition-colors">
+                <Link href="/#kalkulator" className="px-8 py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 transition-colors">
                   Rozpocznij Wycenę
                 </Link>
              </div>

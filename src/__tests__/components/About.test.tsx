@@ -6,7 +6,7 @@ describe('About Component', () => {
   describe('Initial Render', () => {
     it('renders section heading', () => {
       render(<About />);
-      expect(screen.getByText(/o nas/i)).toBeInTheDocument();
+      expect(screen.getByText(/więcej niż kod/i)).toBeInTheDocument();
     });
 
     it('renders component without crashing', () => {
@@ -18,14 +18,14 @@ describe('About Component', () => {
   describe('Content', () => {
     it('displays company information', () => {
       render(<About />);
-      const content = screen.getByText(/o nas/i);
+      const content = screen.getByText(/partnerstwo w cyfrowej kreacji/i);
       expect(content).toBeInTheDocument();
     });
 
     it('has proper section id for navigation', () => {
       const { container } = render(<About />);
-      const section = container.querySelector('#o-nas');
-      expect(section || container.querySelector('section')).toBeInTheDocument();
+      const section = container.querySelector('#o-mnie');
+      expect(section).toBeInTheDocument();
     });
   });
 
@@ -38,7 +38,7 @@ describe('About Component', () => {
 
     it('renders semantic HTML', () => {
       const { container } = render(<About />);
-      const section = container.querySelector('section');
+      const section = container.querySelector('.section');
       expect(section).toBeInTheDocument();
     });
   });
