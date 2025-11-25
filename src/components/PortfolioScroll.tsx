@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { ArrowRight, ExternalLink, Code2, Layers } from 'lucide-react';
+import { ArrowRight, ExternalLink, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,7 +15,7 @@ const PROJECTS = [
     title: "BHP Stronie Śląskie",
     category: "Strona Firmowa",
     description: "Kompletny rebranding i wdrożenie strony dla firmy szkoleniowej. System zapisów, szybki kontakt i SEO lokalne.",
-    image: "/projects/bhp.png",
+    image: "/projects/bhp.jpg", // Upewnij się, że plik istnieje w public/projects/
     link: "https://bhpstronieslaskie.pl",
     tech: ["Next.js", "Tailwind", "EmailJS"],
     color: "from-blue-600 to-cyan-500"
@@ -25,30 +25,10 @@ const PROJECTS = [
     title: "PierogiMeme.io",
     category: "Krypto / Web3",
     description: "Landing page dla projektu kryptowalutowego. Wysoka wydajność, animacje GSAP i integracja z social media.",
-    image: "/projects/pierogi.jpg",
+    image: "/projects/pierogi.jpg", // Upewnij się, że plik istnieje w public/projects/
     link: "https://pierogimeme.io",
     tech: ["React", "GSAP", "Web3"],
     color: "from-yellow-500 to-orange-600"
-  },
-  {
-    id: 3,
-    title: "E-Commerce Concept",
-    category: "Sklep Online",
-    description: "Projekt koncepcyjny nowoczesnego sklepu z odzieżą streetwear. Nacisk na UX i konwersję mobilną.",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
-    link: "#",
-    tech: ["Shopify", "Liquid", "JS"],
-    color: "from-purple-600 to-pink-500"
-  },
-  {
-    id: 4,
-    title: "Architektura Wnętrz",
-    category: "Portfolio",
-    description: "Minimalistyczne portfolio dla biura projektowego. Galeria masonry i płynne przejścia między podstronami.",
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop",
-    link: "#",
-    tech: ["Next.js", "Framer Motion"],
-    color: "from-emerald-600 to-teal-500"
   }
 ];
 
@@ -70,6 +50,9 @@ export const PortfolioScroll: React.FC = () => {
       const viewportWidth = window.innerWidth;
       const scrollLength = totalWidth - viewportWidth;
 
+      // Jeśli zawartość jest węższa niż ekran, nie scrollujemy poziomo
+      if (scrollLength <= 0) return;
+
       // Główny Scroll Poziomy
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -83,11 +66,11 @@ export const PortfolioScroll: React.FC = () => {
       });
 
       tl.to(container, {
-        x: -scrollLength - 100, // Przesuwamy kontener w lewo
+        x: -scrollLength - 50, // Przesuwamy kontener w lewo (z małym marginesem)
         ease: "none",
       });
 
-      // Paralaksa Napisu w tle (Przesuwa się wolniej)
+      // Paralaksa Napisu w tle
       gsap.to(bgText, {
         x: 200,
         ease: "none",
@@ -133,7 +116,7 @@ export const PortfolioScroll: React.FC = () => {
         SELECTED WORK
       </div>
 
-      {/* Nagłówek Sekcji (Sticky na mobile, statyczny na desktop) */}
+      {/* Nagłówek Sekcji */}
       <div className="container mx-auto px-4 lg:px-8 mb-12 lg:absolute lg:top-12 lg:left-8 lg:z-20 lg:mb-0">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-px bg-cyan-500" />
@@ -162,7 +145,7 @@ export const PortfolioScroll: React.FC = () => {
                   className="project-image w-[120%] h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{ 
                     backgroundImage: `url(${project.image})`,
-                    backgroundPosition: "0% center" // Startowa pozycja dla paralaksy
+                    backgroundPosition: "0% center"
                   }}
                 />
                 {/* Overlay */}
@@ -202,7 +185,7 @@ export const PortfolioScroll: React.FC = () => {
                 </Link>
               </div>
 
-              {/* Ikona w rogu (Dekoracja) */}
+              {/* Ikona w rogu */}
               <div className="absolute top-6 right-6 w-14 h-14 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
                 <ExternalLink size={24} />
               </div>
@@ -220,7 +203,7 @@ export const PortfolioScroll: React.FC = () => {
                 <h3 className="text-3xl font-bold text-white mb-2">Twój Projekt?</h3>
                 <p className="text-gray-400 mb-8">Dołącz do grona zadowolonych klientów.</p>
                 
-                <Link href="/#kalkulator" className="px-8 py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 transition-colors">
+                <Link href="/kalkulator" className="px-8 py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 transition-colors">
                   Rozpocznij Wycenę
                 </Link>
              </div>
