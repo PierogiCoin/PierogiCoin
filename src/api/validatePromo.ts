@@ -13,7 +13,8 @@ export async function validatePromo(code: string): Promise<PromoValidationResult
   
   return {
     valid: result.valid,
-    discount: result.discount,
+    discount: result.discountValue,
+    discountType: result.discountType || undefined,
     message: result.message,
     code: result.valid ? code.toUpperCase() : undefined
   };

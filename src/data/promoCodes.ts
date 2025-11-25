@@ -1,60 +1,55 @@
-export interface PromoCode {
-  code: string;
-  discountType: 'PERCENTAGE' | 'FIXED'; // Procentowy lub Kwotowy
-  value: number; // Wartość (np. 15 dla 15%, 500 dla 500 PLN)
-  isActive: boolean;
-  description: string; // Krótki opis dla użytkownika
-  minPurchaseAmount?: number; // Minimalna kwota zamówienia
-  expiresAt?: string; // Data wygaśnięcia (ISO string)
-  usageLimit?: number; // Limit użyć globalnie
-  usedCount: number; // Ile razy użyto
-}
+import { PromoCode } from '@/types/promo';
 
-const promoCodes: PromoCode[] = [
+export const promoCodes: PromoCode[] = [
   {
     code: 'START2024',
-    discountType: 'PERCENTAGE',
-    value: 10,
+    discount: 10,
+    discountType: 'percentage',
     isActive: true,
     description: '10% rabatu na pierwsze zlecenie',
     usedCount: 45,
-    usageLimit: 100
+    usageLimit: 100,
+    createdAt: new Date().toISOString()
   },
   {
     code: 'LYKKREEA_PRO',
-    discountType: 'PERCENTAGE',
-    value: 15,
+    discount: 15,
+    discountType: 'percentage',
     isActive: true,
     description: 'Specjalny rabat dla subskrybentów',
     expiresAt: '2024-12-31',
-    usedCount: 12
+    usedCount: 12,
+    createdAt: new Date().toISOString()
   },
   {
     code: 'ECOM_BOOST',
-    discountType: 'FIXED',
-    value: 500,
+    discount: 500,
+    discountType: 'fixed',
     isActive: true,
     description: '500 PLN taniej na sklep internetowy',
-    minPurchaseAmount: 3000, // Działa tylko przy większych projektach
-    usedCount: 5
+    minPurchaseAmount: 3000,
+    usedCount: 5,
+    createdAt: new Date().toISOString()
   },
   {
     code: 'DEV_SECRET',
-    discountType: 'PERCENTAGE',
-    value: 20,
+    discount: 20,
+    discountType: 'percentage',
     isActive: true,
     description: 'Nagroda za ciekawość (Easter Egg)',
-    usageLimit: 10, // Bardzo limitowany
-    usedCount: 2
+    usageLimit: 10,
+    usedCount: 2,
+    createdAt: new Date().toISOString()
   },
   {
     code: 'PREMIUM_DEAL',
-    discountType: 'PERCENTAGE',
-    value: 12,
+    discount: 12,
+    discountType: 'percentage',
     isActive: true,
     description: 'Rabat dla projektów Premium',
     minPurchaseAmount: 5000,
-    usedCount: 0
+    usedCount: 0,
+    createdAt: new Date().toISOString()
   }
 ];
 
@@ -67,15 +62,14 @@ export const getPromoCode = (code: string): PromoCode | undefined => {
 export interface ValidationResult {
   valid: boolean;
   discountValue: number;
-  discountType: 'PERCENTAGE' | 'FIXED' | null;
+  discountType: 'percentage' | 'fixed' | null;
   message: string;
-  formattedDiscount: string; // np. "-15%" lub "-500 PLN"
+  formattedDiscount: string;
 }
 
 export const validatePromoCode = (code: string, currentTotal: number = 0): ValidationResult => {
   const promo = getPromoCode(code);
   
-  // 1. Czy kod istnieje?
   if (!promo) {
     return { 
       valid: false, 
@@ -86,7 +80,6 @@ export const validatePromoCode = (code: string, currentTotal: number = 0): Valid
     };
   }
   
-  // 2. Czy jest aktywny?
   if (!promo.isActive) {
     return { 
       valid: false, 
@@ -97,7 +90,6 @@ export const validatePromoCode = (code: string, currentTotal: number = 0): Valid
     };
   }
   
-  // 3. Czy wygasł czasowo?
   if (promo.expiresAt && new Date(promo.expiresAt) < new Date()) {
     return { 
       valid: false, 
@@ -108,7 +100,6 @@ export const validatePromoCode = (code: string, currentTotal: number = 0): Valid
     };
   }
   
-  // 4. Czy wyczerpano limit użyć?
   if (promo.usageLimit && promo.usedCount >= promo.usageLimit) {
     return { 
       valid: false, 
@@ -119,7 +110,6 @@ export const validatePromoCode = (code: string, currentTotal: number = 0): Valid
     };
   }
 
-  // 5. Czy spełniono minimalną kwotę zamówienia?
   if (promo.minPurchaseAmount && currentTotal < promo.minPurchaseAmount) {
     return { 
       valid: false, 
@@ -130,16 +120,15 @@ export const validatePromoCode = (code: string, currentTotal: number = 0): Valid
     };
   }
   
-  // SUKCES
-  const formattedDiscount = promo.discountType === 'PERCENTAGE' 
-    ? `-${promo.value}%` 
-    : `-${promo.value} PLN`;
+  const formattedDiscount = promo.discountType === 'percentage' 
+    ? `-${promo.discount}%` 
+    : `-${promo.discount} PLN`;
 
   return { 
     valid: true, 
-    discountValue: promo.value, 
+    discountValue: promo.discount, 
     discountType: promo.discountType,
-    message: promo.description,
+    message: promo.description || '',
     formattedDiscount
   };
 };

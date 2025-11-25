@@ -22,7 +22,7 @@ export default function PromoPopupManager() {
       title={activePromo.title}
       description={activePromo.description}
       code={activePromo.code}
-      discount={activePromo.discount}
+      discount={activePromo.discountLabel}
       validUntil={activePromo.validUntil}
       autoShow={activePromo.autoShow}
       delay={activePromo.delay}

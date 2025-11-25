@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PromoCode } from '@/types/promo';
-import { promoCodes, addPromoCode, togglePromoCode, removePromoCode } from '@/data/promoCodes';
+import { promoCodes } from '@/data/promoCodes';
 import PromoStats from './PromoStats';
 
 export default function PromoCodeManager() {
@@ -41,19 +41,17 @@ export default function PromoCodeManager() {
     setCodes(filtered);
   }, [searchTerm, filterActive]);
 
-  const handleToggle = (code: string) => {
-    togglePromoCode(code);
-    setCodes([...promoCodes]);
+  const handleToggle = async (code: string) => {
+    alert('Ta funkcja wymaga API KV - dodaj endpoint /api/promo-codes/toggle');
   };
 
-  const handleRemove = (code: string) => {
+  const handleRemove = async (code: string) => {
     if (confirm(`Czy na pewno usunąć kod ${code}?`)) {
-      removePromoCode(code);
-      setCodes([...promoCodes]);
+      alert('Ta funkcja wymaga API KV - dodaj endpoint /api/promo-codes/delete');
     }
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!newCode.code.trim()) {
       alert('Wpisz kod promocyjny');
       return;
@@ -64,27 +62,7 @@ export default function PromoCodeManager() {
       return;
     }
 
-    addPromoCode({
-      code: newCode.code.toUpperCase(),
-      discount: newCode.discount,
-      discountType: newCode.discountType,
-      isActive: true,
-      description: newCode.description,
-      expiresAt: newCode.expiresAt || undefined,
-      usageLimit: newCode.usageLimit,
-      minPurchaseAmount: newCode.minPurchaseAmount
-    });
-
-    setCodes([...promoCodes]);
-    setNewCode({ 
-      code: '', 
-      discount: 10, 
-      discountType: 'percentage',
-      description: '', 
-      expiresAt: '', 
-      usageLimit: undefined,
-      minPurchaseAmount: undefined
-    });
+    alert('Ta funkcja wymaga API KV - dodaj endpoint /api/promo-codes/add');
     setShowAddForm(false);
   };
 
