@@ -26,7 +26,8 @@ describe('Hero Component', () => {
   it('displays CTA button', () => {
     render(<Hero />)
     
-    const ctaButton = screen.getByRole('button', { name: /rozpocznij wycenę/i })
+    const ctaButton = screen.getByRole('link', { name: /sprawdź cenę/i })
     expect(ctaButton).toBeInTheDocument()
+    expect(ctaButton).toHaveAttribute('href', '/kalkulator')
   })
 })
