@@ -100,71 +100,8 @@ export default function Calculator() {
   const containerRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
-  // Check for URL parameters and saved calculation on mount
-  useEffect(() => {
-    // Check URL parameters first
-    const urlParams = parseCalculatorParams();
-    if (urlParams?.preselect) {
-      const { projectType, design, features, deadline } = urlParams.preselect;
-      
-      if (projectType) {
-        dispatch({ type: 'SET_SELECTION', field: 'type', value: projectType });
-      }
-      if (design) {
-        dispatch({ type: 'SET_SELECTION', field: 'design', value: design });
-      }
-      if (features && features.length > 0) {
-        dispatch({ type: 'SET_SELECTION', field: 'features', value: features });
-      }
-      if (deadline) {
-        dispatch({ type: 'SET_SELECTION', field: 'deadline', value: deadline });
-      }
-      
-      // Track preselected calculator view
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'calculator_preselected', {
-          project_type: projectType,
-          design: design,
-          features: features?.join(','),
-          deadline: deadline
-        });
-      }
-    } else {
-      // Check for saved calculation only if no URL params
-      const saved = getSavedCalculatorData();
-      if (saved) {
-        setShowBanner(true);
-      }
-    }
-  }, []);
-
-  // Save calculation whenever selections or price changes
-  useEffect(() => {
-    // Only save if we have at least type and design selected
-    if (state.selections.type && state.selections.design) {
-      const price = calculation.myPrice;
-      saveCalculatorData(state.selections, price, isSent);
-    }
-  }, [state.selections, calculation.myPrice, isSent]);
-
-  // Handle restore from saved calculation
-  const handleRestoreSavedCalculation = (selections: any) => {
-    dispatch({ type: 'SET_SELECTION', field: 'type', value: selections.type });
-    dispatch({ type: 'SET_SELECTION', field: 'design', value: selections.design });
-    dispatch({ type: 'SET_SELECTION', field: 'features', value: selections.features });
-    dispatch({ type: 'SET_SELECTION', field: 'deadline', value: selections.deadline });
-    
-    // Go to summary step
-    dispatch({ type: 'NEXT_STEP' });
-    dispatch({ type: 'NEXT_STEP' });
-    dispatch({ type: 'NEXT_STEP' });
-    dispatch({ type: 'NEXT_STEP' });
-    
-    setShowBanner(false);
-  };
-
   // --- 3. OBLICZANIE CENY (MAGIA) ---
-  const calculation = useMemo(() => {
+  const calc = useMemo(() => {
     let marketPrice = BASE_PRICE;
 
     // Dodaj typ
@@ -208,6 +145,69 @@ export default function Calculator() {
       promoSavings
     };
   }, [state.selections, promoDiscount, promoDiscountType]);
+
+  // Check for URL parameters and saved calculation on mount
+  useEffect(() => {
+    // Check URL parameters first
+    const urlParams = parseCalculatorParams();
+    if (urlParams?.preselect) {
+      const { projectType, design, features, deadline } = urlParams.preselect;
+      
+      if (projectType) {
+        dispatch({ type: 'SET_SELECTION', field: 'type', value: projectType });
+      }
+      if (design) {
+        dispatch({ type: 'SET_SELECTION', field: 'design', value: design });
+      }
+      if (features && features.length > 0) {
+        dispatch({ type: 'SET_SELECTION', field: 'features', value: features });
+      }
+      if (deadline) {
+        dispatch({ type: 'SET_SELECTION', field: 'deadline', value: deadline });
+      }
+      
+      // Track preselected calculator view
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'calculator_preselected', {
+          project_type: projectType,
+          design: design,
+          features: features?.join(','),
+          deadline: deadline
+        });
+      }
+    } else {
+      // Check for saved calculation only if no URL params
+      const saved = getSavedCalculatorData();
+      if (saved) {
+        setShowBanner(true);
+      }
+    }
+  }, []);
+
+  // Save calculation whenever selections or price changes
+  useEffect(() => {
+    // Only save if we have at least type and design selected
+    if (state.selections.type && state.selections.design) {
+      const price = calc.myPrice;
+      saveCalculatorData(state.selections, price, isSent);
+    }
+  }, [state.selections, calc, isSent]);
+
+  // Handle restore from saved calculation
+  const handleRestoreSavedCalculation = (selections: any) => {
+    dispatch({ type: 'SET_SELECTION', field: 'type', value: selections.type });
+    dispatch({ type: 'SET_SELECTION', field: 'design', value: selections.design });
+    dispatch({ type: 'SET_SELECTION', field: 'features', value: selections.features });
+    dispatch({ type: 'SET_SELECTION', field: 'deadline', value: selections.deadline });
+    
+    // Go to summary step
+    dispatch({ type: 'NEXT_STEP' });
+    dispatch({ type: 'NEXT_STEP' });
+    dispatch({ type: 'NEXT_STEP' });
+    dispatch({ type: 'NEXT_STEP' });
+    
+    setShowBanner(false);
+  };
 
   // Animacja zmiany kroku
   useGSAP(() => {
@@ -280,16 +280,16 @@ export default function Calculator() {
         body: JSON.stringify({
           email: email,
           estimate: {
-            min: promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice,
-            max: promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice
+            min: promoDiscount > 0 ? calc.finalPrice : calc.myPrice,
+            max: promoDiscount > 0 ? calc.finalPrice : calc.myPrice
           },
           description: `Projekt typu: ${typeLabels[state.selections.type]}, Design: ${designLabels[state.selections.design]}, Funkcje: ${state.selections.features.map((f: string) => featureLabels[f]).join(', ')}`,
           selections: state.selections,
           summary: summary,
           promoCode: promoCode || undefined,
           promoDiscount: promoDiscount > 0 ? promoDiscount : undefined,
-          originalPrice: calculation.myPrice,
-          finalPrice: promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice
+          originalPrice: calc.myPrice,
+          finalPrice: promoDiscount > 0 ? calc.finalPrice : calc.myPrice
         }),
       });
       
@@ -431,7 +431,7 @@ export default function Calculator() {
                 <div className="mb-8 relative p-6 rounded-2xl bg-gradient-to-b from-slate-100 to-slate-50 dark:from-gray-900 dark:to-black border border-slate-200 dark:border-gray-800">
                   <div className="text-slate-500 dark:text-gray-400 text-sm uppercase tracking-widest mb-2">Szacunkowa wartość rynkowa</div>
                   <div className="text-3xl font-bold text-slate-400 dark:text-gray-500 line-through decoration-red-500/50 decoration-2">
-                    {calculation.marketPrice.toLocaleString()} PLN
+                    {calc.marketPrice.toLocaleString()} PLN
                   </div>
                   
                   <div className="my-6 h-px bg-slate-300 dark:bg-gray-800 w-full" />
@@ -440,7 +440,7 @@ export default function Calculator() {
                     <Sparkles className="w-4 h-4" /> Twoja Cena Specjalna
                   </div>
                   <div className={`text-5xl sm:text-6xl font-black mb-2 tracking-tight ${promoDiscount > 0 ? 'text-slate-400 dark:text-gray-500 line-through decoration-2' : 'text-slate-900 dark:text-white'}`}>
-                    {calculation.myPrice.toLocaleString()} PLN
+                    {calc.myPrice.toLocaleString()} PLN
                   </div>
                   
                   {/* Cena z kodem promocyjnym */}
@@ -450,18 +450,18 @@ export default function Calculator() {
                         🎉 Z kodem {promoCode}
                       </div>
                       <div className="text-5xl sm:text-6xl font-black text-green-600 dark:text-green-400 mb-2 tracking-tight">
-                        {calculation.finalPrice.toLocaleString()} PLN
+                        {calc.finalPrice.toLocaleString()} PLN
                       </div>
                     </>
                   )}
                   
                   <div className="inline-block bg-green-500/20 text-green-600 dark:text-green-400 px-3 py-1 rounded-full text-sm font-medium border border-green-500/30">
-                    Oszczędzasz: {(calculation.savings + calculation.promoSavings).toLocaleString()} PLN
+                    Oszczędzasz: {(calc.savings + calc.promoSavings).toLocaleString()} PLN
                   </div>
                   
                   {promoDiscount > 0 && (
                     <div className="mt-2 text-xs text-green-600 dark:text-green-500">
-                      (w tym {calculation.promoSavings.toLocaleString()} PLN z kodu promocyjnego)
+                      (w tym {calc.promoSavings.toLocaleString()} PLN z kodu promocyjnego)
                     </div>
                   )}
                   
@@ -470,12 +470,12 @@ export default function Calculator() {
                     <div className="text-xs text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-3">Płatność ratalna dostępna:</div>
                     <div className="flex justify-center gap-6">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round((promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice) / 6).toLocaleString()}</div>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round((promoDiscount > 0 ? calc.finalPrice : calc.myPrice) / 6).toLocaleString()}</div>
                         <div className="text-xs text-slate-400 dark:text-gray-500 mt-1">PLN / 6 miesięcy</div>
                       </div>
                       <div className="w-px bg-slate-300 dark:bg-gray-800"></div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round((promoDiscount > 0 ? calculation.finalPrice : calculation.myPrice) / 12).toLocaleString()}</div>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">{Math.round((promoDiscount > 0 ? calc.finalPrice : calc.myPrice) / 12).toLocaleString()}</div>
                         <div className="text-xs text-slate-400 dark:text-gray-500 mt-1">PLN / 12 miesięcy</div>
                       </div>
                     </div>
@@ -498,7 +498,7 @@ export default function Calculator() {
                       setPromoDiscount(0);
                       setPromoCode('');
                     }}
-                    purchaseAmount={calculation.myPrice}
+                    purchaseAmount={calc.myPrice}
                     showSuggestions={false}
                   />
                 </div>

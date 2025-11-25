@@ -1,205 +1,140 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useRef } from 'react';
 import { gsap } from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
 import { useGSAP } from '@gsap/react';
-import { Menu, X, Calculator, Phone } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
+import Link from 'next/link';
+import { ArrowRight, Calculator, Zap, TrendingUp, ShieldCheck } from 'lucide-react';
 
-const NAV_ITEMS = [
-  { label: 'Usługi', href: '#uslugi' },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Opinie', href: '#opinie' },
-  { label: 'Kontakt', href: '#kontakt' },
-];
+gsap.registerPlugin(TextPlugin);
 
-export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
-  const headerRef = useRef<HTMLElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const tl = useRef<gsap.core.Timeline | null>(null);
+// --- Tło (Zoptymalizowane) ---
+const AnimatedBackground = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black via-[#050505] to-black z-0" />
+    <div className="absolute top-[-20%] left-[20%] w-[40vw] h-[40vw] bg-cyan-900/10 rounded-full blur-[100px] animate-pulse duration-[4s]" />
+    <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-blue-900/10 rounded-full blur-[100px] animate-pulse delay-1000 duration-[5s]" />
+    <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]" style={{ opacity: 0.15 }} />
+  </div>
+);
 
-  // Obsługa Scrolla (Zmiana tła)
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+export default function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
 
-  // Animacja Menu Mobilnego
   useGSAP(() => {
-    gsap.set(mobileMenuRef.current, { xPercent: 100 });
-    
-    tl.current = gsap.timeline({ paused: true })
-      .to(mobileMenuRef.current, {
-        xPercent: 0,
-        duration: 0.5,
-        ease: 'power3.inOut',
-      })
-      .from('.mobile-nav-link', {
-        x: 50,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.4,
-      });
-  }, { scope: headerRef });
+    const tl = gsap.timeline();
 
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      tl.current?.play();
-      document.body.style.overflow = 'hidden'; // Blokada scrolla strony
-    } else {
-      tl.current?.reverse();
-      document.body.style.overflow = '';
-    }
-  }, [isMobileMenuOpen]);
+    // 1. Sekwencja wejścia
+    tl.fromTo(".hero-element", 
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" }
+    );
 
-  // Płynne przewijanie do sekcji
-  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    setIsMobileMenuOpen(false); // Zamknij mobile menu jeśli otwarte
+    // 2. Typewriter Effect (Bardziej agresywny sprzedażowo)
+    const words = ["Zarabiają", "Konwertują", "Dominują"];
+    const masterTl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
 
-    if (href.startsWith('/')) {
-        // Jeśli to link do innej podstrony (np. /kalkulator)
-        window.location.href = href;
-        return;
-    }
+    words.forEach((word) => {
+      const wordTl = gsap.timeline({ repeat: 1, yoyo: true, repeatDelay: 1.5 });
+      wordTl.to(textRef.current, { duration: 0.8, text: word, ease: "none" });
+      masterTl.add(wordTl);
+    });
 
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    // 3. Pulsowanie przycisku CTA
+    gsap.to(".cta-pulse", {
+      boxShadow: "0 0 20px 5px rgba(6, 182, 212, 0.4)",
+      repeat: -1,
+      yoyo: true,
+      duration: 1.5
+    });
+
+  }, { scope: containerRef });
 
   return (
-    <header 
-      ref={headerRef}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${
-        isScrolled 
-          ? 'bg-white/90 dark:bg-black/80 backdrop-blur-md border-slate-200 dark:border-white/10 py-4' 
-          : 'bg-transparent border-transparent py-6'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+      <AnimatedBackground />
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         
-        {/* 1. LOGO */}
-        <Link href="/" className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight z-50 relative">
-          LykKreacji<span className="text-cyan-500">.pl</span>
-        </Link>
-
-        {/* 2. DESKTOP NAV */}
-        <nav className="hidden md:flex items-center gap-8">
-          {NAV_ITEMS.map((item) => (
-            <a 
-              key={item.label} 
-              href={item.href}
-              onClick={(e) => handleScrollTo(e, item.href)}
-              className={`text-sm font-medium transition-colors relative group ${
-                isScrolled 
-                  ? 'text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white'
-                  : 'text-slate-900 dark:text-white/90 hover:text-slate-700 dark:hover:text-white'
-              }`}
-            >
-              {item.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-500 transition-all duration-300 group-hover:w-full" />
-            </a>
-          ))}
-        </nav>
-
-        {/* 3. CTA BUTTONS (Desktop) */}
-        <div className="hidden md:flex items-center gap-4">
-          {/* Przełącznik motywu */}
-          <ThemeToggle />
-          
-          {/* Link do Kalkulatora */}
-          <a 
-            href="#kalkulator"
-            onClick={(e) => handleScrollTo(e, '#kalkulator')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium ${
-              isScrolled
-                ? 'bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-white/10'
-                : 'bg-slate-900/10 dark:bg-white/10 border border-slate-300 dark:border-white/20 text-slate-900 dark:text-white hover:bg-slate-900/20 dark:hover:bg-white/20'
-            }`}
-          >
-            <Calculator size={16} className="text-cyan-400" />
-            Wyceń projekt
-          </a>
-
-          {/* Przycisk Kontakt */}
-          <a 
-            href="#kontakt"
-            onClick={(e) => handleScrollTo(e, '#kontakt')}
-            className="px-5 py-2 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold transition-all shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)]"
-          >
-            Współpraca
-          </a>
+        {/* SCARCITY BADGE (Niedostępność) */}
+        <div className="hero-element inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 hover:bg-white/10 transition-colors cursor-default">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+          </span>
+          <span className="text-xs sm:text-sm font-semibold text-gray-300 tracking-wide">
+            Dostępność: <span className="text-white">Ostatnie 2 miejsca</span> na ten miesiąc
+          </span>
         </div>
 
-        {/* 4. MOBILE HAMBURGER */}
-        <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className={`md:hidden z-50 p-2 ${
-            isScrolled 
-              ? 'text-slate-900 dark:text-white' 
-              : 'text-slate-900 dark:text-white'
-          }`}
-        >
-          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        {/* GŁÓWNY NAGŁÓWEK */}
+        <h1 className="hero-element text-5xl sm:text-7xl md:text-8xl font-bold text-white tracking-tight mb-8 leading-[1.1]">
+          Nie buduj strony. <br />
+          Buduj maszynę, która <br className="hidden sm:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+            <span ref={textRef}></span>
+            <span className="animate-blink text-white">|</span>
+          </span>
+        </h1>
 
-        {/* 5. MOBILE MENU OVERLAY */}
-        <div 
-          ref={mobileMenuRef}
-          className="fixed inset-0 bg-slate-950 dark:bg-black backdrop-blur-xl z-40 flex flex-col justify-center items-center md:hidden"
-        >
-          {/* Tło dekoracyjne */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 blur-[100px] rounded-full pointer-events-none" />
+        <p className="hero-element text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+          Większość stron to tylko ładne wizytówki, które przepalają budżet reklamowy. 
+          Ja tworzę systemy oparte o <strong>Next.js</strong> i psychologię sprzedaży, które zamieniają ruch w pieniądze.
+        </p>
+
+        {/* CTA SECTION */}
+        <div className="hero-element flex flex-col items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            
+            {/* PRIMARY CTA - CALCULATOR */}
+            <Link 
+              href="/kalkulator" 
+              className="cta-pulse group relative px-8 py-5 bg-white text-black font-bold text-lg rounded-full hover:bg-gray-100 transition-all flex items-center justify-center gap-3 w-full sm:w-auto min-w-[260px]"
+            >
+              <Calculator className="w-6 h-6 text-cyan-600" />
+              Sprawdź cenę w 30s
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            
+            {/* SECONDARY CTA */}
+            <Link 
+              href="#portfolio" 
+              className="px-8 py-5 bg-white/5 text-white border border-white/10 font-bold text-lg rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-w-[260px] backdrop-blur-sm"
+            >
+              Zobacz Realizacje
+            </Link>
+          </div>
           
-          <nav className="flex flex-col gap-8 text-center relative z-10">
-            {NAV_ITEMS.map((item) => (
-              <a 
-                key={item.label} 
-                href={item.href}
-                onClick={(e) => handleScrollTo(e, item.href)}
-                className="mobile-nav-link text-3xl font-bold text-white drop-shadow-lg hover:text-cyan-400 transition-colors"
-              >
-                {item.label}
-              </a>
+          {/* MICRO COPY (Trust builder) */}
+          <p className="text-xs text-gray-500 mt-2 flex items-center gap-2">
+            <ShieldCheck className="w-3 h-3 text-green-500" />
+            Bez rozmów telefonicznych. Wynik natychmiast.
+          </p>
+        </div>
+
+        {/* VALUE PROPS (Zamiast samych ikon technologii) */}
+        <div className="hero-element mt-20 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+                { icon: Zap, label: "Szybkość", sub: "Google 95/100" },
+                { icon: TrendingUp, label: "Konwersja", sub: "Design Sprzedażowy" },
+                { icon: ShieldCheck, label: "Bezpieczeństwo", sub: "Szyfrowanie SSL" },
+                { icon: Calculator, label: "Przejrzystość", sub: "Stała Cena" },
+            ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center gap-2 group cursor-default">
+                    <div className="p-3 rounded-2xl bg-white/5 border border-white/10 group-hover:border-cyan-500/30 group-hover:bg-cyan-500/10 transition-all duration-300">
+                        <item.icon className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors" />
+                    </div>
+                    <div className="text-center">
+                        <div className="font-bold text-white text-sm">{item.label}</div>
+                        <div className="text-xs text-gray-500">{item.sub}</div>
+                    </div>
+                </div>
             ))}
-            
-            <div className="w-12 h-px bg-white/10 mx-auto my-4" />
-
-            {/* Przełącznik motywu w mobile menu */}
-            <div className="mobile-nav-link flex items-center justify-center">
-              <ThemeToggle />
-            </div>
-
-            <a 
-              href="#kalkulator"
-              onClick={(e) => handleScrollTo(e, '#kalkulator')}
-              className="mobile-nav-link flex items-center justify-center gap-3 text-xl text-gray-300 hover:text-white drop-shadow-lg transition-colors"
-            >
-              <Calculator size={24} className="text-cyan-500 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
-              Kalkulator Wyceny
-            </a>
-            
-            <a 
-              href="tel:+48790626497"
-              className="mobile-nav-link flex items-center justify-center gap-3 text-xl text-gray-300 hover:text-white drop-shadow-lg transition-colors"
-            >
-              <Phone size={24} className="text-green-500 drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-              +48 790 626 497
-            </a>
-          </nav>
         </div>
 
       </div>
-    </header>
+    </section>
   );
 }
