@@ -1,124 +1,145 @@
-import { PromoCode } from '@/types/promo';
+export interface PromoCode {
+  code: string;
+  discountType: 'PERCENTAGE' | 'FIXED'; // Procentowy lub Kwotowy
+  value: number; // Wartość (np. 15 dla 15%, 500 dla 500 PLN)
+  isActive: boolean;
+  description: string; // Krótki opis dla użytkownika
+  minPurchaseAmount?: number; // Minimalna kwota zamówienia
+  expiresAt?: string; // Data wygaśnięcia (ISO string)
+  usageLimit?: number; // Limit użyć globalnie
+  usedCount: number; // Ile razy użyto
+}
 
-// Baza kodów promocyjnych - w produkcji to by było w bazie danych
-export const promoCodes: PromoCode[] = [
+const promoCodes: PromoCode[] = [
   {
-    code: 'KLO15',
-    discount: 15,
-    discountType: 'percentage',
+    code: 'START2024',
+    discountType: 'PERCENTAGE',
+    value: 10,
     isActive: true,
-    createdAt: new Date().toISOString(),
-    usedCount: 0,
-    description: 'Zniżka 15% na wszystkie usługi'
+    description: '10% rabatu na pierwsze zlecenie',
+    usedCount: 45,
+    usageLimit: 100
   },
   {
-    code: 'WELCOME10',
-    discount: 10,
-    discountType: 'percentage',
+    code: 'LYKKREEA_PRO',
+    discountType: 'PERCENTAGE',
+    value: 15,
     isActive: true,
-    createdAt: new Date().toISOString(),
-    usedCount: 0,
-    description: 'Kod powitalny - 10% zniżki'
+    description: 'Specjalny rabat dla subskrybentów',
+    expiresAt: '2024-12-31',
+    usedCount: 12
   },
   {
-    code: 'BLACKFRIDAY',
-    discount: 30,
-    discountType: 'percentage',
-    isActive: false, // ❌ Wygasł
-    createdAt: new Date().toISOString(),
-    usedCount: 0,
-    description: 'Black Friday - 30% zniżki',
-    expiresAt: '2024-11-30',
-    minPurchaseAmount: 500,
-    maxDiscount: 500
-  },
-  {
-    code: 'CHRISTMAS2024',
-    discount: 25,
-    discountType: 'percentage',
-    isActive: true, // ✅ Aktywny dla Świąt
-    createdAt: new Date().toISOString(),
-    usedCount: 0,
-    description: 'Świąteczna promocja - 25% zniżki',
-    expiresAt: '2024-12-31'
-  },
-  {
-    code: 'NEWYEAR2025',
-    discount: 20,
-    discountType: 'percentage',
-    isActive: true, // ✅ Aktywny dla Nowego Roku
-    createdAt: new Date().toISOString(),
-    usedCount: 0,
-    description: 'Noworoczna promocja - 20% zniżki',
-    expiresAt: '2025-01-15'
-  },
-  {
-    code: 'RABAT50',
-    discount: 50,
-    discountType: 'fixed',
+    code: 'ECOM_BOOST',
+    discountType: 'FIXED',
+    value: 500,
     isActive: true,
-    createdAt: new Date().toISOString(),
-    usedCount: 0,
-    description: '50 zł rabatu',
-    minPurchaseAmount: 200
+    description: '500 PLN taniej na sklep internetowy',
+    minPurchaseAmount: 3000, // Działa tylko przy większych projektach
+    usedCount: 5
+  },
+  {
+    code: 'DEV_SECRET',
+    discountType: 'PERCENTAGE',
+    value: 20,
+    isActive: true,
+    description: 'Nagroda za ciekawość (Easter Egg)',
+    usageLimit: 10, // Bardzo limitowany
+    usedCount: 2
+  },
+  {
+    code: 'PREMIUM_DEAL',
+    discountType: 'PERCENTAGE',
+    value: 12,
+    isActive: true,
+    description: 'Rabat dla projektów Premium',
+    minPurchaseAmount: 5000,
+    usedCount: 0
   }
 ];
 
-// Funkcje pomocnicze do zarządzania kodami
+// --- Funkcje Logiczne ---
+
 export const getPromoCode = (code: string): PromoCode | undefined => {
   return promoCodes.find(promo => promo.code.toUpperCase() === code.toUpperCase());
 };
 
-export const validatePromoCode = (code: string): { valid: boolean; discount: number; message: string } => {
+export interface ValidationResult {
+  valid: boolean;
+  discountValue: number;
+  discountType: 'PERCENTAGE' | 'FIXED' | null;
+  message: string;
+  formattedDiscount: string; // np. "-15%" lub "-500 PLN"
+}
+
+export const validatePromoCode = (code: string, currentTotal: number = 0): ValidationResult => {
   const promo = getPromoCode(code);
   
+  // 1. Czy kod istnieje?
   if (!promo) {
-    return { valid: false, discount: 0, message: 'Kod nie istnieje' };
+    return { 
+      valid: false, 
+      discountValue: 0, 
+      discountType: null, 
+      message: 'Kod nie istnieje.', 
+      formattedDiscount: '' 
+    };
   }
   
+  // 2. Czy jest aktywny?
   if (!promo.isActive) {
-    return { valid: false, discount: 0, message: 'Kod nie jest już aktywny' };
+    return { 
+      valid: false, 
+      discountValue: 0, 
+      discountType: null, 
+      message: 'Ten kod jest nieaktywny.', 
+      formattedDiscount: '' 
+    };
   }
   
+  // 3. Czy wygasł czasowo?
   if (promo.expiresAt && new Date(promo.expiresAt) < new Date()) {
-    return { valid: false, discount: 0, message: 'Kod wygasł' };
+    return { 
+      valid: false, 
+      discountValue: 0, 
+      discountType: null, 
+      message: 'Kod wygasł.', 
+      formattedDiscount: '' 
+    };
   }
   
+  // 4. Czy wyczerpano limit użyć?
   if (promo.usageLimit && promo.usedCount >= promo.usageLimit) {
-    return { valid: false, discount: 0, message: 'Kod osiągnął limit użyć' };
+    return { 
+      valid: false, 
+      discountValue: 0, 
+      discountType: null, 
+      message: 'Limit użyć tego kodu został wyczerpany.', 
+      formattedDiscount: '' 
+    };
+  }
+
+  // 5. Czy spełniono minimalną kwotę zamówienia?
+  if (promo.minPurchaseAmount && currentTotal < promo.minPurchaseAmount) {
+    return { 
+      valid: false, 
+      discountValue: 0, 
+      discountType: null, 
+      message: `Kod wymaga zamówienia za min. ${promo.minPurchaseAmount} PLN.`, 
+      formattedDiscount: '' 
+    };
   }
   
+  // SUKCES
+  const formattedDiscount = promo.discountType === 'PERCENTAGE' 
+    ? `-${promo.value}%` 
+    : `-${promo.value} PLN`;
+
   return { 
     valid: true, 
-    discount: promo.discount, 
-    message: `Kod aktywowany! Zniżka ${promo.discount}%` 
+    discountValue: promo.value, 
+    discountType: promo.discountType,
+    message: promo.description,
+    formattedDiscount
   };
-};
-
-export const togglePromoCode = (code: string): boolean => {
-  const promo = getPromoCode(code);
-  if (promo) {
-    promo.isActive = !promo.isActive;
-    return true;
-  }
-  return false;
-};
-
-export const addPromoCode = (newPromo: Omit<PromoCode, 'createdAt' | 'usedCount'>): PromoCode => {
-  const promo: PromoCode = {
-    ...newPromo,
-    createdAt: new Date().toISOString(),
-    usedCount: 0
-  };
-  promoCodes.push(promo);
-  return promo;
-};
-
-export const removePromoCode = (code: string): boolean => {
-  const index = promoCodes.findIndex(promo => promo.code.toUpperCase() === code.toUpperCase());
-  if (index > -1) {
-    promoCodes.splice(index, 1);
-    return true;
-  }
-  return false;
 };
