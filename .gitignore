@@ -61,3 +61,8 @@ coverage/
 /playwright-report/
 /playwright/.cache/
 /e2e/screenshots/*.png
+
+# Force npm only - ignore pnpm
+pnpm-lock.yaml
+.pnpm-store
+.pnpm-debug.log
