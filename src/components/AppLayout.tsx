@@ -3,7 +3,7 @@
 import React, { memo, ReactNode, lazy, Suspense } from 'react';
 import Header from './Header';
 // Importujemy nowy hook do obsługi płynnego przewijania
-import { useLenisScroll } from '@/hooks/useLenisScroll'; 
+import { useLenisScroll } from '@/hooks/useLenisScroll';
 
 // Leniwe ładowanie BackToTop (prawdopodobnie używa useLenisScroll wewnętrznie)
 const BackToTop = lazy(() => import('./BackToTop'));
@@ -11,15 +11,15 @@ const BackToTop = lazy(() => import('./BackToTop'));
 // Typy dla propsów
 interface NavLink { href: string; label: string; id: string; }
 interface AppLayoutProps {
-  children: ReactNode;
-  navLinks: NavLink[];
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  mounted: boolean;
+    children: ReactNode;
+    navLinks: NavLink[];
+    theme: 'light' | 'dark';
+    toggleTheme: () => void;
+    mounted: boolean;
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, navLinks, theme, toggleTheme, mounted }) => {
-    
+
     // 1. POBIERAMY FUNKCJĘ SCROLLTO Z HOOKA
     const { scrollTo } = useLenisScroll();
 
@@ -31,13 +31,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, navLinks, theme, toggle
         e.preventDefault(); // Zablokuj domyślne zachowanie linku
         scrollTo(href);       // Użyj Lenis do płynnego przewinięcia
     };
-    
+
     return (
         <div className={mounted ? theme : 'dark'}>
             {/* Lenis działa na poziomie body, ale zachowujemy strukturę */}
-            <div id="smooth-wrapper"> 
+            <Header />
+            <div id="smooth-wrapper">
                 <div id="smooth-content">
-                    <Header /> 
                     <main id="main-content">
                         {children}
                     </main>

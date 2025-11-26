@@ -1,0 +1,124 @@
+{
+    "nav": {
+        "process": "Process",
+        "portfolio": "Portfolio",
+        "testimonials": "Testimonials",
+        "pricing": "Pricing",
+        "faq": "FAQ"
+    },
+    "hero": {
+        "badge": "Availability: Last 2 spots this month",
+        "title": "Don't build a website.",
+        "title2": "Build a machine that",
+        "subtitle": "Most websites are just pretty business cards that burn through your ad budget. I create systems based on Next.js and sales psychology that turn traffic into money.",
+        "cta_primary": "Get Quote in 30s",
+        "cta_secondary": "View Portfolio",
+        "trust": "No phone calls required. Instant results.",
+        "words": {
+            "earns": "Earns",
+            "converts": "Converts",
+            "dominates": "Dominates"
+        },
+        "values": {
+            "speed": "Speed",
+            "speed_sub": "Google 95/100",
+            "conversion": "Conversion",
+            "conversion_sub": "Sales Design",
+            "security": "Security",
+            "security_sub": "SSL Encryption",
+            "transparency": "Transparency",
+            "transparency_sub": "Fixed Price"
+        }
+    },
+    "services": {
+        "title": "What can I build for",
+        "title_highlight": "you?",
+        "subtitle": "I don't just create \"pretty pictures\". I deliver complete business solutions that generate revenue.",
+        "items": {
+            "design": {
+                "title": "UI/UX Design",
+                "desc": "Designs that not only look good but sell. I create intuitive interfaces where the user immediately knows what to do."
+            },
+            "dev": {
+                "title": "Web Development",
+                "desc": "I code in Next.js and React. Your site will be lightning fast, secure, and easy to expand in the future."
+            },
+            "mobile": {
+                "title": "RWD & Mobile First",
+                "desc": "Over 70% of traffic is mobile. Your site will look perfect on every screen - from iPhone to TV."
+            },
+            "seo": {
+                "title": "SEO & Performance",
+                "desc": "Google loves fast sites. I optimize code so you rank high in search results without spending a fortune on ads."
+            },
+            "conversion": {
+                "title": "Conversion & Sales",
+                "desc": "Every button and headline has a purpose. I design user journeys that turn visitors into paying customers."
+            },
+            "speed": {
+                "title": "Speed (Core Vitals)",
+                "desc": "Nobody likes waiting. My sites load in a fraction of a second, drastically reducing bounce rates."
+            }
+        }
+    },
+    "how_it_works": {
+        "badge": "Cooperation Process",
+        "title": "From idea to",
+        "title_highlight": "effect.",
+        "benefit_label": "What do you gain?",
+        "steps": {
+            "consultation": {
+                "title": "Consultation & Strategy",
+                "desc": "I don't start with coding. I start by asking: 'What should this site sell?'. We analyze your competition and set up a sales funnel.",
+                "benefit": "Action plan and UX mockup."
+            },
+            "design": {
+                "title": "Design & Prototype",
+                "desc": "I create a unique graphic design in Figma. No ready-made templates. Every pixel is designed for your brand and conversion.",
+                "benefit": "1:1 visualization before work starts."
+            },
+            "dev": {
+                "title": "Development (Next.js)",
+                "desc": "I implement the project using the latest technologies (Next.js 14, React). The site is ultra-fast, secure, and optimized for Google (SEO).",
+                "benefit": "Clean, fast, and scalable code."
+            },
+            "test": {
+                "title": "Testing & Deployment",
+                "desc": "I check operation on every device. I configure the domain, server, SSL certificate, and analytics. I hand over a finished product.",
+                "benefit": "Ready-to-sell machine."
+            }
+        }
+    },
+    "pricing": {
+        "badge": "Transparent Rules",
+        "title": "You decide the",
+        "title_highlight": "budget.",
+        "subtitle": "No more \"price ranges\" and hidden costs. Use the configurator to get a precise quote tailored to your needs.",
+        "loader": "Initializing pricing system...",
+        "features": {
+            "guarantee": "Fixed price guarantee",
+            "invoice": "VAT Invoice 23%",
+            "installments": "Payment in installments",
+            "zero_percent": "0% Installments"
+        }
+    },
+    "footer": {
+        "tagline": "I create websites that convert",
+        "company": "Company",
+        "about": "About",
+        "portfolio": "Portfolio",
+        "contact": "Contact",
+        "legal": "Legal",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "rights": "All rights reserved."
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "success": "Success!",
+        "close": "Close",
+        "submit": "Submit",
+        "cancel": "Cancel"
+    }
+}

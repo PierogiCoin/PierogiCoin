@@ -12,34 +12,21 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Footer() {
   const footerRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    gsap.fromTo(footerRef.current,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 95%', // Animacja startuje, gdy stopka ledwo wejdzie na ekran
-        }
-      }
-    );
-  }, { scope: footerRef });
+  // GSAP animation removed as it conflicts with StickyFooterWrapper's reveal effect.
+  // The footer is fixed at the bottom and revealed by scrolling, so fade-in is unnecessary/problematic.
 
   const currentYear = new Date().getFullYear();
 
   return (
     <footer ref={footerRef} className="bg-white dark:bg-black border-t border-slate-200 dark:border-white/10 pt-20 pb-10 relative overflow-hidden">
-      
+
       {/* Dekoracyjne tło */}
       <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-cyan-900/5 dark:from-cyan-900/10 to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          
+
           {/* 1. MARKA & OPIS */}
           <div className="space-y-6">
             <Link href="/" className="text-2xl font-bold text-slate-900 dark:text-white tracking-tighter">
@@ -54,8 +41,8 @@ export default function Footer() {
                 { icon: Linkedin, href: 'https://www.linkedin.com/company/lykkreacji/?viewAsMember=true' },
                 { icon: Facebook, href: 'https://www.facebook.com/LykKreacji/' }
               ].map((item, i) => (
-                <a 
-                  key={i} 
+                <a
+                  key={i}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -141,7 +128,7 @@ export default function Footer() {
           <p className="text-slate-500 dark:text-slate-400 text-sm text-center md:text-left">
             &copy; {currentYear} LykKreacji. Wszelkie prawa zastrzeżone.
           </p>
-          
+
           <div className="flex flex-wrap gap-6 items-center">
             <Link href="/polityka-prywatnosci" className="text-slate-500 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white text-sm transition-colors">
               Polityka Prywatności

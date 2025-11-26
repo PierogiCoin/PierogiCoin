@@ -29,7 +29,7 @@ export default function PromoPopup({
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false); // Czy komponent jest w DOM
   const [copied, setCopied] = useState(false);
-  
+
   const popupRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -55,16 +55,16 @@ export default function PromoPopup({
       // Wejście
       setIsVisible(true);
       const tl = gsap.timeline();
-      
-      tl.fromTo(overlayRef.current, 
-        { opacity: 0 }, 
+
+      tl.fromTo(overlayRef.current,
+        { opacity: 0 },
         { opacity: 1, duration: 0.5 }
       )
-      .fromTo(popupRef.current,
-        { scale: 0.8, opacity: 0, y: 50 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" },
-        "-=0.3"
-      );
+        .fromTo(popupRef.current,
+          { scale: 0.8, opacity: 0, y: 50 },
+          { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" },
+          "-=0.3"
+        );
 
       if (showOnce) {
         sessionStorage.setItem('promoPopupShown', 'true');
@@ -98,22 +98,29 @@ export default function PromoPopup({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
       {/* Overlay (Tło) */}
-      <div 
+      <div
         ref={overlayRef}
         onClick={handleClose}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleClose();
+          }
+        }}
         className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
       />
 
       {/* Popup Card */}
-      <div 
+      <div
         ref={popupRef}
         className="relative w-full max-w-md bg-[#0a0a0a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden"
       >
         {/* Dekoracyjne Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-cyan-500/20 blur-[80px] pointer-events-none" />
-        
+
         {/* Przycisk Zamknięcia */}
-        <button 
+        <button
           onClick={handleClose}
           className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors z-20"
         >
@@ -121,7 +128,7 @@ export default function PromoPopup({
         </button>
 
         <div className="p-8 relative z-10 text-center">
-          
+
           {/* Ikona / Badge */}
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 mb-6 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
             <Gift className="w-8 h-8 text-cyan-400" />
@@ -130,7 +137,7 @@ export default function PromoPopup({
           <h3 className="text-2xl font-bold text-white mb-2 flex items-center justify-center gap-2">
             {title} <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
           </h3>
-          
+
           <p className="text-gray-400 text-sm mb-8 leading-relaxed">
             {description}
           </p>
@@ -138,13 +145,13 @@ export default function PromoPopup({
           {/* Sekcja z Kodem */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
+
             <div className="relative flex items-center justify-between gap-4">
               <div className="text-left">
                 <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Twój kod rabatowy</p>
                 <p className="text-2xl font-mono font-bold text-white tracking-widest">{code}</p>
               </div>
-              
+
               <div className="text-right">
                 <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Zniżka</p>
                 <p className="text-2xl font-bold text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{discount}</p>

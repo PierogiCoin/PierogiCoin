@@ -199,14 +199,14 @@ const jsonLd = {
 // --- Enhanced SEO Metadata for AI & Search Engines ---
 export const metadata: Metadata = {
   metadataBase: new URL('https://lykkreacji.pl'),
-  
+
   // Primary SEO
   title: {
     default: "Tworzenie Stron Internetowych Wrocław | Next.js, React, AI | LykKreacji",
     template: "%s | LykKreacji - Web Development Wrocław"
   },
   description: "🚀 Profesjonalne strony internetowe Wrocław. Next.js 14, React, AI (ChatGPT, Gemini), sklepy e-commerce, PWA. Enterprise quality, startup prices. ☎ 790 629 497",
-  
+
   // Keywords - Enhanced for AI & Search
   keywords: [
     // Local SEO
@@ -218,7 +218,7 @@ export const metadata: Metadata = {
     "strony firmowe Wrocław",
     "aplikacje webowe Wrocław",
     "strony internetowe Dolny Śląsk",
-    
+
     // Technology Stack
     "Next.js Wrocław",
     "Next.js 14",
@@ -226,7 +226,7 @@ export const metadata: Metadata = {
     "TypeScript developer",
     "Tailwind CSS",
     "Node.js development",
-    
+
     // AI Integration
     "ChatGPT integration",
     "OpenAI API",
@@ -234,7 +234,7 @@ export const metadata: Metadata = {
     "AI applications",
     "machine learning web apps",
     "AI chatbots",
-    
+
     // Services
     "e-commerce Wrocław",
     "sklepy online",
@@ -244,32 +244,32 @@ export const metadata: Metadata = {
     "blockchain applications",
     "responsive web design",
     "mobile-first design",
-    
+
     // Features
     "fast websites",
     "SEO optimization",
     "performance optimization",
     "accessible websites",
     "WCAG compliance",
-    
+
     // Business
     "freelance web developer",
     "startup websites",
     "business websites",
     "corporate web development"
   ],
-  
+
   authors: [
     { name: "Arkadiusz Łyczkowski", url: "https://lykkreacji.pl" },
     { name: "LykKreacji Team" }
   ],
   creator: "Arkadiusz Łyczkowski",
   publisher: "LykKreacji",
-  
+
   // Category for search engines
   category: "Web Development",
   classification: "Business and Technology Services",
-  
+
   // Robots
   robots: {
     index: true,
@@ -282,7 +282,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  
+
   // Enhanced Open Graph
   openGraph: {
     type: "website",
@@ -322,7 +322,7 @@ export const metadata: Metadata = {
   // App configuration
   applicationName: "LykKreacji",
   referrer: "origin-when-cross-origin",
-  
+
   // Icons & Manifest
   icons: {
     icon: [
@@ -338,40 +338,40 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
-  
+
   // Additional metadata
   other: {
     // Structured Data
     'application/ld+json': JSON.stringify(jsonLd),
-    
+
     // Verification tags (add your codes after verification)
     // 'google-site-verification': 'your_google_verification_code',
     // 'msvalidate.01': 'your_bing_verification_code',
-    
+
     // Geographic targeting
     'geo.region': 'PL-DS',
     'geo.placename': 'Wrocław',
     'geo.position': '51.1079;17.0385',
     'ICBM': '51.1079, 17.0385',
-    
+
     // Language
     'language': 'Polish',
     'content-language': 'pl',
-    
+
     // Rating
     'rating': 'general',
     'distribution': 'global',
-    
+
     // Contact
     'contact': 'czesc@lykkreacji.pl',
     'reply-to': 'czesc@lykkreacji.pl',
-    
+
     // Copyright
     'copyright': 'LykKreacji 2024',
-    
+
     // Revisit
     'revisit-after': '7 days',
-    
+
     // AI Search Optimization
     'ai-content-declaration': 'This website uses AI-assisted content and services',
     'ai-content-type': 'Enhanced',
@@ -401,7 +401,7 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#06b6d4" />
-        
+
         {/* Google Analytics 4 */}
         {GA_TRACKING_ID && (
           <>
@@ -469,10 +469,11 @@ export default function RootLayout({
               height="0"
               width="0"
               style={{ display: 'none', visibility: 'hidden' }}
+              title="Google Tag Manager"
             />
           </noscript>
         )}
-        
+
         <SkipToContent />
         <GTMNoscript />
         <ErrorBoundary>

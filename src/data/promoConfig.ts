@@ -36,19 +36,19 @@ export const PROMO_CAMPAIGNS: Record<string, PromoConfig> = {
 
   // 2. Black Friday / Cyber Monday (Wysoki priorytet)
   BLACK_FRIDAY: {
-    id: 'bf_2024',
-    enabled: false, // Włączymy w listopadzie
+    id: 'bf_2024_v2', // Changed ID to force reshow
+    enabled: true,
     priority: 10,
-    title: '🖤 Black Week Deal',
-    description: 'Najlepszy czas na nową stronę. Zamów teraz, zrealizuj w styczniu.',
-    code: 'BLACK24',
-    discountLabel: '-25%',
-    validUntil: '30.11.2024',
+    title: '🖤 BLACK FRIDAY',
+    description: 'Zgarnij 30% zniżki na wszystko! Oferta limitowana czasowo.',
+    code: 'BLACKFRIDAY',
+    discountLabel: '-30%',
+    validUntil: 'Tylko do Piątku!',
     startDate: '2024-11-20T00:00:00.000Z',
-    endDate: '2024-12-01T23:59:59.999Z',
+    endDate: '2025-12-01T23:59:59.999Z',
     autoShow: true,
-    delay: 2000, // Agresywniejsze pokazywanie
-    showOnce: false, // Przypominamy przy każdej wizycie w tym okresie
+    delay: 1000, // Szybciej
+    showOnce: false, // Pokazuj przy każdym wejściu (dla pewności testów)
   },
 
   // 3. Nowy Rok - Nowa Strona
@@ -101,7 +101,7 @@ export function getActivePromo(): PromoConfig | null {
 
   // Sortujemy po priorytecie (malejąco) i bierzemy pierwszą
   if (activePromos.length === 0) return null;
-  
+
   return activePromos.sort((a, b) => b.priority - a.priority)[0];
 }
 

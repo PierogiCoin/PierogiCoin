@@ -11,10 +11,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 // --- Sub-komponent: Animowana Ramka ze Zdjęciem w SVG (POPRAWIONA) ---
 const SpinningProfileImage = memo(() => {
-  
+
   // KLUCZOWA POPRAWKA: Definicja zmiennej CSS dla koloru
   const strokeColor = 'hsl(var(--foreground))';
-  
+
   return (
     <div className="relative w-full max-w-md mx-auto aspect-square">
       <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -35,15 +35,15 @@ const SpinningProfileImage = memo(() => {
         `}</style>
 
         <circle
-          cx="50" 
-          cy="50" 
-          r="48" 
-          fill="none" 
+          cx="50"
+          cy="50"
+          r="48"
+          fill="none"
           // Użycie zmiennej CSS dla koloru ramki
-          stroke={strokeColor} 
-          strokeWidth="1.5" 
+          stroke={strokeColor}
+          strokeWidth="1.5"
           // Delikatna przezroczystość w jasnym motywie, pełna w ciemnym
-          className="opacity-50 dark:opacity-80 animate-pulse" 
+          className="opacity-50 dark:opacity-80 animate-pulse"
         />
         <image
           href="/images/arkadiusz-lyczkowski.jpg"
@@ -52,12 +52,12 @@ const SpinningProfileImage = memo(() => {
           preserveAspectRatio="xMidYMid slice"
           clipPath="url(#circleClip)"
         />
-        <text 
-          dy="-2" 
+        <text
+          dy="-2"
           // Użycie zmiennej CSS dla koloru tekstu
-          fill={strokeColor} 
-          fontSize="4.5" 
-          fontWeight="600" 
+          fill={strokeColor}
+          fontSize="4.5"
+          fontWeight="600"
           letterSpacing="0.2"
           className="opacity-70 dark:opacity-100"
         >
@@ -74,7 +74,7 @@ SpinningProfileImage.displayName = 'SpinningProfileImage';
 // --- Sub-komponent: Filar Pracy ---
 interface PillarItemProps { icon: React.ReactNode; title: string; children: React.ReactNode; }
 const PillarItem: React.FC<PillarItemProps> = ({ icon, title, children }) => (
-  <li className="flex items-start gap-4 animated-about-element" role="listitem">
+  <li className="flex items-start gap-4 animated-about-element">
     <span className="bg-blue-500/10 dark:bg-cyan-400/10 p-3 rounded-full mt-1">{icon}</span>
     <div>
       <h3 className="font-bold text-lg text-slate-800 dark:text-white">{title}</h3>
@@ -120,15 +120,15 @@ const About: React.FC = () => {
       const rect = section.getBoundingClientRect();
       const xPercent = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
       const yPercent = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-      
+
       // Delikatniejsze przesunięcia na kolumnie treści
-      xToContent(xPercent * 5); 
+      xToContent(xPercent * 5);
       yToContent(yPercent * 5);
       rotXToContent(-yPercent * 1);
       rotYToContent(xPercent * 1);
-      
+
       // Większe przesunięcia na obrazie
-      xToImg(-xPercent * 15); 
+      xToImg(-xPercent * 15);
       yToImg(-yPercent * 15);
       rotXToImg(yPercent * 2);
       rotYToImg(-xPercent * 2);
@@ -136,9 +136,9 @@ const About: React.FC = () => {
 
     const enableMotion = () => section.addEventListener("mousemove", handleMouseMove);
     const disableMotion = () => {
-        section.removeEventListener("mousemove", handleMouseMove);
-        // Resetowanie pozycji po opuszczeniu sekcji
-        gsap.to([contentCol, imageCol], { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.5 });
+      section.removeEventListener("mousemove", handleMouseMove);
+      // Resetowanie pozycji po opuszczeniu sekcji
+      gsap.to([contentCol, imageCol], { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.5 });
     };
 
     ScrollTrigger.create({
@@ -164,7 +164,7 @@ const About: React.FC = () => {
       ref={sectionRef}
       id="o-mnie"
       // Użycie klasy sekcji i tła
-      className="section bg-slate-50 dark:bg-slate-900 relative overflow-hidden" 
+      className="section bg-slate-50 dark:bg-slate-900 relative overflow-hidden"
       style={{ perspective: "1500px" }}
     >
       <div className="container mx-auto px-6 grid lg:grid-cols-5 gap-16 items-center">
@@ -176,8 +176,8 @@ const About: React.FC = () => {
             Więcej Niż Kod. <br />Partnerstwo w Cyfrowej Kreacji.
           </h2>
           <p className="animated-about-element text-lg text-slate-600 dark:text-slate-200 leading-relaxed mb-8">
-            Moja filozofia opiera się na rzemiośle. Przekształcam Twoją wizję w cyfrowe narzędzie, 
-            które autentycznie rezonuje z użytkownikami i napędza Twój biznes. 
+            Moja filozofia opiera się na rzemiośle. Przekształcam Twoją wizję w cyfrowe narzędzie,
+            które autentycznie rezonuje z użytkownikami i napędza Twój biznes.
             To proces, w którym technologia spotyka się z empatią.
           </p>
           <ul className="space-y-6 mb-10" aria-label="Filary mojej pracy">

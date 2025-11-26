@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import { Share2, Copy, Check, Facebook, Twitter, Linkedin, MessageCircle } from 'lucide-react';
-import { 
-  generateCalculatorLink, 
-  copyCalculatorLink, 
+import {
+  generateCalculatorLink,
+  copyCalculatorLink,
   formatSocialLink,
-  type CalculatorLinkOptions 
+  type CalculatorLinkOptions
 } from '@/lib/calculatorLinks';
 
 interface ShareCalculatorButtonProps {
@@ -16,8 +16,8 @@ interface ShareCalculatorButtonProps {
   message?: string;
 }
 
-export function ShareCalculatorButton({ 
-  options = {}, 
+export function ShareCalculatorButton({
+  options = {},
   className = '',
   variant = 'button',
   message = 'Sprawdź kalkulator wyceny projektu! 🚀'
@@ -76,11 +76,18 @@ export function ShareCalculatorButton({
         {showMenu && (
           <>
             {/* Backdrop */}
-            <div 
-              className="fixed inset-0 z-40" 
+            <div
+              className="fixed inset-0 z-40"
               onClick={() => setShowMenu(false)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setShowMenu(false);
+                }
+              }}
             />
-            
+
             {/* Menu */}
             <div className="absolute right-0 top-12 z-50 bg-slate-900 border border-slate-700 rounded-lg shadow-xl p-2 min-w-[200px]">
               <button
@@ -154,11 +161,18 @@ export function ShareCalculatorButton({
       {showMenu && (
         <>
           {/* Backdrop */}
-          <div 
-            className="fixed inset-0 z-40" 
+          <div
+            className="fixed inset-0 z-40"
             onClick={() => setShowMenu(false)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                setShowMenu(false);
+              }
+            }}
           />
-          
+
           {/* Menu */}
           <div className="absolute right-0 top-12 z-50 bg-slate-900 border border-slate-700 rounded-lg shadow-xl p-2 min-w-[200px]">
             <button
@@ -240,7 +254,7 @@ export function QuickShareLinks() {
 
       {/* Landing Page */}
       <ShareCalculatorButton
-        options={{ 
+        options={{
           type: 'simple',
           preselect: {
             projectType: 'landing',

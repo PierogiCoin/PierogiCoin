@@ -14,7 +14,7 @@ export default function GlobalError({
   }, [error])
 
   return (
-    <html>
+    <html lang="pl">
       <body>
         <div
           style={{
@@ -81,6 +81,12 @@ export default function GlobalError({
                 e.currentTarget.style.transform = 'scale(1.05)'
               }}
               onMouseOut={e => {
+                e.currentTarget.style.transform = 'scale(1)'
+              }}
+              onFocus={e => {
+                e.currentTarget.style.transform = 'scale(1.05)'
+              }}
+              onBlur={e => {
                 e.currentTarget.style.transform = 'scale(1)'
               }}
             >

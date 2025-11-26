@@ -58,15 +58,16 @@ export const PortfolioScroll: React.FC = () => {
         scrollTrigger: {
           trigger: sectionRef.current,
           pin: true, // Przyklejamy sekcję
-          scrub: 1,  // Płynność
+          anticipatePin: 1, // Redukuje drgania przy przypinaniu
+          scrub: 1,  // Bardziej responsywny (było 2.5)
           start: "top top",
-          end: () => `+=${totalWidth}`, // Długość scrolla
+          end: () => `+=${scrollLength + window.innerHeight}`, // Długość scrolla zależna od faktycznej drogi do przebycia + wysokość ekranu dla komfortu
           invalidateOnRefresh: true,
         }
       });
 
       tl.to(container, {
-        x: -scrollLength - 50, // Przesuwamy kontener w lewo (z małym marginesem)
+        x: () => -(totalWidth - viewportWidth), // Precyzyjne obliczenie końca
         ease: "none",
       });
 
@@ -78,7 +79,7 @@ export const PortfolioScroll: React.FC = () => {
           trigger: sectionRef.current,
           scrub: 1,
           start: "top top",
-          end: () => `+=${totalWidth}`,
+          end: () => `+=${totalWidth * 2}`,
         }
       });
 
@@ -102,15 +103,15 @@ export const PortfolioScroll: React.FC = () => {
 
   return (
     <section id="portfolio" ref={sectionRef} className="relative bg-black overflow-hidden min-h-screen flex flex-col justify-center">
-      
+
       {/* Tło Dekoracyjne */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10 pointer-events-none" />
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-10" />
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10" />
 
       {/* Gigantyczny Napis w Tle */}
-      <div 
-        ref={bgTextRef} 
+      <div
+        ref={bgTextRef}
         className="absolute top-1/2 -translate-y-1/2 left-0 whitespace-nowrap text-[20vw] font-black text-white/5 pointer-events-none select-none leading-none"
       >
         SELECTED WORK
@@ -130,20 +131,20 @@ export const PortfolioScroll: React.FC = () => {
 
       {/* Kontener Kart */}
       <div className="w-full overflow-hidden lg:h-screen lg:flex lg:items-center">
-        <div 
-          ref={containerRef} 
+        <div
+          ref={containerRef}
           className="flex flex-col lg:flex-row gap-8 lg:gap-16 px-4 lg:pl-[40vw] lg:pr-20 pb-20 lg:pb-0"
         >
           {PROJECTS.map((project) => (
-            <div 
-              key={project.id} 
+            <div
+              key={project.id}
               className="group relative w-full lg:w-[700px] aspect-[16/10] flex-shrink-0 rounded-3xl overflow-hidden bg-gray-900 border border-white/10 hover:border-cyan-500/50 transition-all duration-500 shadow-2xl"
             >
               {/* Obrazek z Paralaksą */}
               <div className="absolute inset-0 overflow-hidden">
-                <div 
+                <div
                   className="project-image w-[120%] h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ 
+                  style={{
                     backgroundImage: `url(${project.image})`,
                     backgroundPosition: "0% center"
                   }}
@@ -154,7 +155,7 @@ export const PortfolioScroll: React.FC = () => {
 
               {/* Treść Karty */}
               <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                
+
                 {/* Kategoria i Tech Stack */}
                 <div className="flex flex-wrap items-center gap-3 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   <span className={`px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${project.color}`}>
@@ -170,13 +171,13 @@ export const PortfolioScroll: React.FC = () => {
                 <h3 className="text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
                   {project.title}
                 </h3>
-                
+
                 <p className="text-gray-400 text-sm md:text-base max-w-md line-clamp-2 group-hover:line-clamp-none transition-all duration-500 mb-6">
                   {project.description}
                 </p>
 
-                <Link 
-                  href={project.link} 
+                <Link
+                  href={project.link}
                   target="_blank"
                   className="inline-flex items-center gap-3 text-white font-bold group/btn w-fit"
                 >
@@ -192,22 +193,7 @@ export const PortfolioScroll: React.FC = () => {
             </div>
           ))}
 
-          {/* Karta "Call to Action" na końcu */}
-          <div className="w-full lg:w-[500px] aspect-[16/10] flex-shrink-0 flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-white/10 hover:border-cyan-500 hover:bg-cyan-500/5 transition-all group cursor-pointer relative overflow-hidden">
-             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-             
-             <div className="relative z-10 text-center p-8">
-                <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6 text-gray-400 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-300 border border-white/10">
-                    <Layers size={40} />
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-2">Twój Projekt?</h3>
-                <p className="text-gray-400 mb-8">Dołącz do grona zadowolonych klientów.</p>
-                
-                <Link href="/kalkulator" className="px-8 py-3 rounded-full bg-white text-black font-bold hover:bg-cyan-400 transition-colors">
-                  Rozpocznij Wycenę
-                </Link>
-             </div>
-          </div>
+
 
         </div>
       </div>

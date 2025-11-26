@@ -19,7 +19,7 @@ export const useCodeTyper = (codeSnippets: { text: string }[], isVisible: boolea
     tl.to({ val: typedCode }, {
       duration: 0.3,
       val: typedCode.split('').map(() => "█▓▒░"[Math.floor(Math.random() * 4)]).join(''),
-      onUpdate: function() {
+      onUpdate: function () {
         setTypedCode(this.targets()[0].val);
       },
       ease: 'steps(10)'
@@ -28,7 +28,7 @@ export const useCodeTyper = (codeSnippets: { text: string }[], isVisible: boolea
     tl.to({ val: typedCode.length }, {
       duration: 0.5,
       val: 0,
-      onUpdate: function() {
+      onUpdate: function () {
         setTypedCode(prev => prev.substring(0, this.targets()[0].val));
       },
       ease: 'power2.inOut'
@@ -37,16 +37,17 @@ export const useCodeTyper = (codeSnippets: { text: string }[], isVisible: boolea
     tl.to({ val: "" }, {
       duration: fullCode.length * 0.02, // Szybkość pisania
       val: fullCode,
-      onUpdate: function() {
+      onUpdate: function () {
         setTypedCode(this.targets()[0].val);
       },
       ease: 'none'
     });
-    
+
     return () => {
       tl.kill(); // Wyczyść animację, gdy komponent się odmontuje
     };
-  }, [isVisible, activeStep]); // Uruchom ponownie tylko przy zmianie kroku
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isVisible, activeStep, codeSnippets]); // Uruchom ponownie tylko przy zmianie kroku lub widoczności
 
   return typedCode;
 };

@@ -13,11 +13,11 @@ interface PromoCodeInputProps {
   showSuggestions?: boolean; // pokazuj sugestie kodów
 }
 
-export default function PromoCodeInput({ 
-  onPromoApplied, 
+export default function PromoCodeInput({
+  onPromoApplied,
   onPromoRemoved,
   className = '',
-  purchaseAmount,
+  purchaseAmount = 0,
   showSuggestions = false
 }: PromoCodeInputProps) {
   const [code, setCode] = useState('');
@@ -34,13 +34,14 @@ export default function PromoCodeInput({
 
     setIsValidating(true);
     try {
-      const result: PromoValidationResult = await validatePromo(code);
-      
-      if (result.valid && result.discount && result.code) {
+      // Pass purchaseAmount to validation API
+      const result: PromoValidationResult = await validatePromo(code, purchaseAmount);
+
+      if (result.valid && result.discount !== undefined && result.code) {
         setAppliedPromo({ code: result.code, discount: result.discount, discountType: result.discountType });
         setMessage(result.message);
         setCode('');
-        
+
         // 🎉 Popup z sukcesem
         toast.success(
           `🎉 Kod ${result.code} aktywowany!\nZniżka: ${result.discount}${result.discountType === 'percentage' ? '%' : ' zł'}`,
@@ -58,11 +59,11 @@ export default function PromoCodeInput({
             icon: '🎁',
           }
         );
-        
+
         onPromoApplied?.(result.discount, result.code, result.discountType);
       } else {
         setMessage(result.message);
-        
+
         // ❌ Popup z błędem
         toast.error(result.message, {
           duration: 3000,
@@ -72,7 +73,7 @@ export default function PromoCodeInput({
             color: '#fff',
           },
         });
-        
+
         setTimeout(() => setMessage(''), 3000);
       }
     } catch (error) {
@@ -86,12 +87,12 @@ export default function PromoCodeInput({
   const handleRemove = () => {
     setAppliedPromo(null);
     setMessage('');
-    
+
     toast('Kod promocyjny usunięty', {
       icon: '🗑️',
       duration: 2000,
     });
-    
+
     onPromoRemoved?.();
   };
 
@@ -130,13 +131,12 @@ export default function PromoCodeInput({
               {isValidating ? 'Sprawdzam...' : 'Zastosuj'}
             </button>
           </div>
-          
+
           {message && (
-            <div className={`text-sm px-3 py-2 rounded ${
-              message.includes('aktywowany') || message.includes('Zniżka')
-                ? 'bg-green-100 text-green-800' 
+            <div className={`text-sm px-3 py-2 rounded ${message.includes('aktywowany') || message.includes('Zniżka')
+                ? 'bg-green-100 text-green-800'
                 : 'bg-red-100 text-red-800'
-            }`}>
+              }`}>
               {message}
             </div>
           )}
@@ -169,7 +169,7 @@ export default function PromoCodeInput({
           </div>
         </div>
       )}
-      
+
       {showSuggestions && !appliedPromo && (
         <div className="mt-2 text-xs text-gray-500">
           💡 Dostępne kody: KLO15, WELCOME10, RABAT50

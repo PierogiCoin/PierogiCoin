@@ -58,7 +58,7 @@ const useOnScreen = (
         // Jeśli element przecina się z viewportem (jest widoczny)
         if (entry.isIntersecting) {
           setIsVisible(true);
-          
+
           // Jeśli opcja `triggerOnce` jest włączona, natychmiast przestajemy obserwować.
           // To jest kluczowa optymalizacja wydajności dla animacji "wejścia".
           if (triggerOnce) {
@@ -81,8 +81,9 @@ const useOnScreen = (
     return () => {
       observer.disconnect();
     };
-  // Zależymy od zserializowanych opcji, aby uniknąć problemów z porównywaniem obiektów w React 18.
-  // To zapewnia, że useEffect uruchomi się ponownie tylko wtedy, gdy wartości w opcjach faktycznie się zmienią.
+    // Zależymy od zserializowanych opcji, aby uniknąć problemów z porównywaniem obiektów w React 18.
+    // To zapewnia, że useEffect uruchomi się ponownie tylko wtedy, gdy wartości w opcjach faktycznie się zmienią.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, JSON.stringify(observerOptions), triggerOnce]);
 
   return isVisible;

@@ -1,0 +1,124 @@
+{
+    "nav": {
+        "process": "Proces",
+        "portfolio": "Realizacje",
+        "testimonials": "Opinie",
+        "pricing": "Wycena",
+        "faq": "FAQ"
+    },
+    "hero": {
+        "badge": "Dostępność: Ostatnie 2 miejsca na ten miesiąc",
+        "title": "Nie buduj strony.",
+        "title2": "Buduj maszynę, która",
+        "subtitle": "Większość stron to tylko ładne wizytówki, które przepalają budżet reklamowy. Ja tworzę systemy oparte o Next.js i psychologię sprzedaży, które zamieniają ruch w pieniądze.",
+        "cta_primary": "Sprawdź cenę w 30s",
+        "cta_secondary": "Zobacz Realizacje",
+        "trust": "Bez rozmów telefonicznych. Wynik natychmiast.",
+        "words": {
+            "earns": "Zarabia",
+            "converts": "Konwertuje",
+            "dominates": "Dominuje"
+        },
+        "values": {
+            "speed": "Szybkość",
+            "speed_sub": "Google 95/100",
+            "conversion": "Konwersja",
+            "conversion_sub": "Design Sprzedażowy",
+            "security": "Bezpieczeństwo",
+            "security_sub": "Szyfrowanie SSL",
+            "transparency": "Przejrzystość",
+            "transparency_sub": "Stała Cena"
+        }
+    },
+    "services": {
+        "title": "Co mogę dla Ciebie",
+        "title_highlight": "zbudować?",
+        "subtitle": "Nie tworzę tylko \"ładnych obrazków\". Dostarczam kompletne rozwiązania biznesowe, które zarabiają.",
+        "items": {
+            "design": {
+                "title": "UI/UX Design",
+                "desc": "Projekty, które nie tylko wyglądają, ale sprzedają. Tworzę intuicyjne interfejsy, w których użytkownik od razu wie, co ma zrobić."
+            },
+            "dev": {
+                "title": "Web Development",
+                "desc": "Koduję w Next.js i React. Twoja strona będzie szybka jak błyskawica, bezpieczna i łatwa w rozbudowie w przyszłości."
+            },
+            "mobile": {
+                "title": "RWD & Mobile First",
+                "desc": "Ponad 70% ruchu to smartfony. Twoja strona będzie wyglądać perfekcyjnie na każdym ekranie - od iPhone'a po telewizor."
+            },
+            "seo": {
+                "title": "SEO & Wydajność",
+                "desc": "Google kocha szybkie strony. Optymalizuję kod tak, abyś był wysoko w wynikach wyszukiwania bez wydawania fortuny na reklamy."
+            },
+            "conversion": {
+                "title": "Konwersja & Sprzedaż",
+                "desc": "Każdy przycisk i nagłówek ma cel. Projektuję ścieżki użytkownika tak, aby zamieniały odwiedzających w płacących klientów."
+            },
+            "speed": {
+                "title": "Szybkość (Core Vitals)",
+                "desc": "Nikt nie lubi czekać. Moje strony ładują się w ułamku sekundy, co drastycznie zmniejsza współczynnik odrzuceń."
+            }
+        }
+    },
+    "how_it_works": {
+        "badge": "Proces Współpracy",
+        "title": "Od pomysłu do",
+        "title_highlight": "efektu.",
+        "benefit_label": "Co zyskujesz?",
+        "steps": {
+            "consultation": {
+                "title": "Konsultacja & Strategia",
+                "desc": "Nie zaczynam od kodowania. Zaczynam od pytania: 'Co ta strona ma sprzedawać?'. Analizujemy Twoją konkurencję i ustalamy lejek sprzedażowy.",
+                "benefit": "Plan działania i makieta UX."
+            },
+            "design": {
+                "title": "Design & Prototyp",
+                "desc": "Tworzę unikalny projekt graficzny w Figmie. Żadnych gotowych szablonów. Każdy piksel jest zaprojektowany pod Twoją markę i konwersję.",
+                "benefit": "Wizualizacja 1:1 przed startem prac."
+            },
+            "dev": {
+                "title": "Development (Next.js)",
+                "desc": "Wdrażam projekt przy użyciu najnowszych technologii (Next.js 14, React). Strona jest ultra-szybka, bezpieczna i zoptymalizowana pod Google (SEO).",
+                "benefit": "Kod czysty, szybki i skalowalny."
+            },
+            "test": {
+                "title": "Testy & Wdrożenie",
+                "desc": "Sprawdzam działanie na każdym urządzeniu. Konfiguruję domenę, serwer, certyfikat SSL i analitykę. Przekazuję Ci gotowy produkt.",
+                "benefit": "Gotowa maszyna do sprzedaży."
+            }
+        }
+    },
+    "pricing": {
+        "badge": "Transparentne Zasady",
+        "title": "Ty decydujesz o",
+        "title_highlight": "budżecie.",
+        "subtitle": "Koniec z \"widełkami cenowymi\" i ukrytymi kosztami. Skorzystaj z konfiguratora, aby otrzymać precyzyjną wycenę dopasowaną do Twoich potrzeb.",
+        "loader": "Inicjalizacja systemu wyceny...",
+        "features": {
+            "guarantee": "Gwarancja stałej ceny",
+            "invoice": "Faktura VAT 23%",
+            "installments": "Płatność w transzach",
+            "zero_percent": "Raty 0%"
+        }
+    },
+    "footer": {
+        "tagline": "Tworzę strony internetowe, które konwertują",
+        "company": "Firma",
+        "about": "O mnie",
+        "portfolio": "Portfolio",
+        "contact": "Kontakt",
+        "legal": "Prawne",
+        "privacy": "Polityka Prywatności",
+        "terms": "Regulamin",
+        "rights": "Wszelkie prawa zastrzeżone."
+    },
+    "common": {
+        "loading": "Ładowanie...",
+        "error": "Wystąpił błąd",
+        "success": "Sukces!",
+        "close": "Zamknij",
+        "submit": "Wyślij",
+        "cancel": "Anuluj"
+    }
+}

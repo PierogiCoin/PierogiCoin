@@ -67,15 +67,23 @@ export default function CalculatorChoice() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        
+
         {/* PROSTY KALKULATOR */}
-        <div 
+        <div
           className="group relative bg-white dark:bg-slate-900/80 rounded-3xl p-8 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 transition-all duration-300 cursor-pointer hover:scale-[1.02] shadow-lg dark:shadow-none"
           onClick={() => setSelectedCalculator('simple')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setSelectedCalculator('simple');
+            }
+          }}
         >
           {/* Glow effect */}
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          
+
           <div className="relative z-10">
             {/* Ikona */}
             <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -95,7 +103,7 @@ export default function CalculatorChoice() {
 
             {/* Opis */}
             <p className="text-slate-600 dark:text-gray-400 mb-6 leading-relaxed">
-              Wybierasz opcje z listy, dostajesz natychmiastową wycenę. 
+              Wybierasz opcje z listy, dostajesz natychmiastową wycenę.
               Idealny dla jasno określonych projektów.
             </p>
 
@@ -125,9 +133,17 @@ export default function CalculatorChoice() {
         </div>
 
         {/* AI KALKULATOR */}
-        <div 
+        <div
           className="group relative bg-white dark:bg-slate-900/80 rounded-3xl p-8 border border-slate-200 dark:border-slate-700/50 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 transition-all duration-300 cursor-pointer hover:scale-[1.02] shadow-lg dark:shadow-none"
           onClick={() => setSelectedCalculator('ai')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setSelectedCalculator('ai');
+            }
+          }}
         >
           {/* Premium badge */}
           <div className="absolute -top-3 -right-3 px-4 py-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-black rounded-full shadow-lg">
@@ -136,7 +152,7 @@ export default function CalculatorChoice() {
 
           {/* Glow effect */}
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          
+
           <div className="relative z-10">
             {/* Ikona */}
             <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -156,7 +172,7 @@ export default function CalculatorChoice() {
 
             {/* Opis */}
             <p className="text-slate-600 dark:text-gray-400 mb-6 leading-relaxed">
-              Opisujesz projekt, AI analizuje i daje szczegółową wycenę 
+              Opisujesz projekt, AI analizuje i daje szczegółową wycenę
               z rekomendacjami. Dla większych projektów.
             </p>
 
@@ -201,7 +217,7 @@ export default function CalculatorChoice() {
             variant="button"
           />
         </div>
-        
+
         <p className="text-slate-500 dark:text-gray-500 text-sm">
           🔒 Bezpiecznie • Bez zobowiązań • Wynik natychmiast na email
         </p>

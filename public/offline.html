@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offline - Lykkreacja</title>
+  <title>Offline - LykKreacji</title>
   <style>
     * {
       margin: 0;
@@ -11,8 +11,8 @@
       box-sizing: border-box;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #0B1121 0%, #1a2942 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #0B1121 0%, #1a2332 100%);
       color: white;
       min-height: 100vh;
       display: flex;
@@ -27,23 +27,30 @@
     .icon {
       font-size: 80px;
       margin-bottom: 20px;
-      opacity: 0.8;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
     h1 {
       font-size: 32px;
       margin-bottom: 16px;
-      font-weight: 700;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     p {
       font-size: 18px;
+      color: #94a3b8;
+      margin-bottom: 32px;
       line-height: 1.6;
-      opacity: 0.9;
-      margin-bottom: 30px;
     }
     .btn {
       display: inline-block;
       padding: 14px 32px;
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
       color: white;
       text-decoration: none;
       border-radius: 8px;
@@ -53,14 +60,39 @@
     .btn:hover {
       transform: translateY(-2px);
     }
+    .status {
+      margin-top: 24px;
+      font-size: 14px;
+      color: #64748b;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="icon">📡</div>
     <h1>Brak połączenia z internetem</h1>
-    <p>Wygląda na to, że jesteś offline. Sprawdź połączenie i spróbuj ponownie.</p>
-    <a href="/" class="btn">Odśwież stronę</a>
+    <p>Nie martw się! Ta strona działa offline. Gdy wrócisz online, wszystko będzie działać normalnie.</p>
+    <a href="/" class="btn" onclick="window.location.reload(); return false;">Spróbuj ponownie</a>
+    <div class="status" id="status">Sprawdzam połączenie...</div>
   </div>
+
+  <script>
+    // Auto-reload when online
+    window.addEventListener('online', () => {
+      document.getElementById('status').textContent = 'Połączenie przywrócone! Odświeżam...';
+      setTimeout(() => window.location.reload(), 1000);
+    });
+
+    window.addEventListener('offline', () => {
+      document.getElementById('status').textContent = 'Offline - czekam na połączenie...';
+    });
+
+    // Check connection status
+    if (navigator.onLine) {
+      document.getElementById('status').textContent = 'Online - możesz odświeżyć stronę';
+    } else {
+      document.getElementById('status').textContent = 'Offline - czekam na połączenie...';
+    }
+  </script>
 </body>
 </html>

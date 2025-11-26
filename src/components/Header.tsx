@@ -4,10 +4,20 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Calculator, Sparkles, Code } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import { useLenisScroll } from '@/hooks/useLenisScroll';
+import { MagneticButton } from './ui/MagneticButton';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { scrollTo } = useLenisScroll();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+    scrollTo(href);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,19 +40,18 @@ export default function Header() {
   ];
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/90 dark:bg-black/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/10 shadow-xl' 
-          : 'bg-transparent'
-      }`}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? 'bg-white/90 dark:bg-black/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/10 shadow-xl'
+        : 'bg-transparent'
+        }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          
+
           {/* LOGO */}
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="flex items-center gap-2 group"
           >
             <div className="relative">
@@ -60,6 +69,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors relative group"
               >
                 {link.label}
@@ -70,15 +80,19 @@ export default function Header() {
 
           {/* CTA + THEME TOGGLE */}
           <div className="hidden lg:flex items-center gap-4">
+            <LanguageSwitcher />
             <ThemeToggle />
-            <Link
-              href="/#kalkulator"
-              className="group relative px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold rounded-full hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 flex items-center gap-2"
-            >
-              <Calculator className="w-4 h-4" />
-              Wycena 30s
-              <span className="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-20 transition-opacity" />
-            </Link>
+            <MagneticButton strength={0.4}>
+              <Link
+                href="/#kalkulator"
+                onClick={(e) => handleNavClick(e, '#kalkulator')}
+                className="group relative px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold rounded-full hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 flex items-center gap-2"
+              >
+                <Calculator className="w-4 h-4" />
+                Wycena 30s
+                <span className="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-20 transition-opacity" />
+              </Link>
+            </MagneticButton>
           </div>
 
           {/* MOBILE MENU BUTTON */}
@@ -100,7 +114,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-medium py-2 px-4 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-all"
               >
                 {link.label}
@@ -110,7 +124,7 @@ export default function Header() {
               <ThemeToggle />
               <Link
                 href="/#kalkulator"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, '#kalkulator')}
                 className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold rounded-full flex items-center gap-2"
               >
                 <Calculator className="w-4 h-4" />

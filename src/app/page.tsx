@@ -1,7 +1,9 @@
-'use client';
-
 import { Suspense } from 'react';
 import { ClientLayout } from '@/components/ClientLayout';
+
+// Force static generation for optimal TTFB
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidate every hour
 
 export default function HomePage() {
   return (

@@ -22,6 +22,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = memo(
     return (
       <div
         onClick={handleCardClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCardClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+          }
+        }}
+        role="button"
+        tabIndex={0}
         data-flip-id={`project-card-${index}`}
         className="w-full h-auto bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col overflow-hidden cursor-pointer"
       >

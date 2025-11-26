@@ -1,0 +1,28 @@
+{
+  "codes": [
+    {
+      "code": "BLACKFRIDAY",
+      "discount": 30,
+      "discountType": "percentage",
+      "isActive": true,
+      "description": "🖤 BLACK FRIDAY: Zgarnij 30% zniżki na wszystko! Tylko do poniedziałku.",
+      "expiresAt": "2025-12-01",
+      "usedCount": 2,
+      "createdAt": "2025-11-26T11:10:00.000Z"
+    },
+    {
+      "code": "START2024",
+      "discount": 10,
+      "discountType": "percentage",
+      "isActive": true,
+      "description": "10% rabatu na pierwsze zlecenie",
+      "usedCount": 45,
+      "usageLimit": 100,
+      "createdAt": "2025-01-01T00:00:00.000Z"
+    }
+  ],
+  "stats": {
+    "totalCodes": 2,
+    "totalUsages": 47
+  }
+}

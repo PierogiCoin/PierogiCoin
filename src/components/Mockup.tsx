@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
+import Image from 'next/image';
 
 export const Mockup: React.FC<{ isActive: boolean }> = ({ isActive }) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,15 @@ export const Mockup: React.FC<{ isActive: boolean }> = ({ isActive }) => {
 
     return (
         <div ref={containerRef} className="absolute inset-0 w-full h-full flex items-center justify-center p-8">
-            <img src="https://images.unsplash.com/photo-1549646639-f538356c9a35?q=80&w=2787&auto=format&fit=crop" alt="Przykładowa grafika" className="w-full h-full object-contain" />
+            <div className="relative w-full h-full">
+                <Image
+                    src="https://images.unsplash.com/photo-1549646639-f538356c9a35?q=80&w=2787&auto=format&fit=crop"
+                    alt="Przykładowa grafika"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                />
+            </div>
         </div>
     );
 };

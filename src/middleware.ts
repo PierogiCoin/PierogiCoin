@@ -18,7 +18,16 @@ export async function middleware(request: NextRequest) {
 
   // Only apply rate limiting to API routes
   if (!pathname.startsWith('/api/')) {
-    return NextResponse.next()
+    // Add performance headers for static pages
+    const response = NextResponse.next()
+
+    // Add timing headers for monitoring
+    response.headers.set('X-Response-Time', Date.now().toString())
+
+    // Enable compression hint
+    response.headers.set('Content-Encoding', 'gzip')
+
+    return response
   }
 
   // Get client IP
@@ -69,7 +78,7 @@ export async function middleware(request: NextRequest) {
       // Log excessive attempts
       if (attempts > 10) {
         console.error(`🚨 Excessive rate limit violations from IP: ${ip}`)
-        
+
         // Optional: Send alert to monitoring service
         if (process.env.NEXT_PUBLIC_ERROR_ENDPOINT) {
           fetch(process.env.NEXT_PUBLIC_ERROR_ENDPOINT, {
@@ -83,7 +92,7 @@ export async function middleware(request: NextRequest) {
               endpoint: pathname,
               timestamp: new Date().toISOString(),
             }),
-          }).catch(() => {}) // Silent fail
+          }).catch(() => { }) // Silent fail
         }
       }
 

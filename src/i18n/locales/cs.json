@@ -1,0 +1,124 @@
+{
+    "nav": {
+        "process": "Proces",
+        "portfolio": "Portfolio",
+        "testimonials": "Recenze",
+        "pricing": "Cena",
+        "faq": "FAQ"
+    },
+    "hero": {
+        "badge": "Dostupnost: Poslední 2 místa tento měsíc",
+        "title": "Nestavějte web.",
+        "title2": "Postavte stroj, který",
+        "subtitle": "Většina webů jsou jen pěkné vizitky, které spalují reklamní rozpočet. Vytvářím systémy založené na Next.js a psychologii prodeje, které mění návštěvnost v peníze.",
+        "cta_primary": "Získat cenu za 30s",
+        "cta_secondary": "Zobrazit Portfolio",
+        "trust": "Bez telefonních hovorů. Okamžité výsledky.",
+        "words": {
+            "earns": "Vydělává",
+            "converts": "Konvertuje",
+            "dominates": "Dominuje"
+        },
+        "values": {
+            "speed": "Rychlost",
+            "speed_sub": "Google 95/100",
+            "conversion": "Konverze",
+            "conversion_sub": "Prodejní Design",
+            "security": "Bezpečnost",
+            "security_sub": "SSL Šifrování",
+            "transparency": "Transparentnost",
+            "transparency_sub": "Pevná Cena"
+        }
+    },
+    "services": {
+        "title": "Co pro vás mohu",
+        "title_highlight": "postavit?",
+        "subtitle": "Nevytvářím jen \"hezké obrázky\". Dodávám kompletní obchodní řešení, která vydělávají.",
+        "items": {
+            "design": {
+                "title": "UI/UX Design",
+                "desc": "Designy, které nejen vypadají, ale prodávají. Vytvářím intuitivní rozhraní, kde uživatel okamžitě ví, co má dělat."
+            },
+            "dev": {
+                "title": "Web Development",
+                "desc": "Kóduji v Next.js a React. Váš web bude bleskově rychlý, bezpečný a snadno rozšiřitelný v budoucnu."
+            },
+            "mobile": {
+                "title": "RWD & Mobile First",
+                "desc": "Více než 70% provozu tvoří smartphony. Váš web bude vypadat perfektně na každé obrazovce - od iPhone po TV."
+            },
+            "seo": {
+                "title": "SEO & Výkon",
+                "desc": "Google miluje rychlé weby. Optimalizuji kód tak, abyste byli vysoko ve výsledcích vyhledávání bez utrácení jmění za reklamy."
+            },
+            "conversion": {
+                "title": "Konverze & Prodej",
+                "desc": "Každé tlačítko a nadpis má účel. Navrhuji cesty uživatele tak, aby měnily návštěvníky v platící zákazníky."
+            },
+            "speed": {
+                "title": "Rychlost (Core Vitals)",
+                "desc": "Nikdo nerad čeká. Moje weby se načítají ve zlomku sekundy, což drasticky snižuje míru okamžitého opuštění."
+            }
+        }
+    },
+    "how_it_works": {
+        "badge": "Proces Spolupráce",
+        "title": "Od nápadu k",
+        "title_highlight": "efektu.",
+        "benefit_label": "Co získáte?",
+        "steps": {
+            "consultation": {
+                "title": "Konzultace & Strategie",
+                "desc": "Nezačínám kódováním. Začínám otázkou: 'Co má tento web prodávat?'. Analyzujeme vaši konkurenci a nastavíme prodejní trychtýř.",
+                "benefit": "Akční plán a UX maketa."
+            },
+            "design": {
+                "title": "Design & Prototyp",
+                "desc": "Vytvářím unikátní grafický design ve Figmě. Žádné hotové šablony. Každý pixel je navržen pro vaši značku a konverzi.",
+                "benefit": "Vizualizace 1:1 před zahájením prací."
+            },
+            "dev": {
+                "title": "Development (Next.js)",
+                "desc": "Realizuji projekt pomocí nejnovějších technologií (Next.js 14, React). Web je ultra-rychlý, bezpečný a optimalizovaný pro Google (SEO).",
+                "benefit": "Čistý, rychlý a škálovatelný kód."
+            },
+            "test": {
+                "title": "Testy & Nasazení",
+                "desc": "Kontroluji funkčnost na každém zařízení. Konfiguruji doménu, server, SSL certifikát a analytiku. Předávám vám hotový produkt.",
+                "benefit": "Stroj připravený k prodeji."
+            }
+        }
+    },
+    "pricing": {
+        "badge": "Transparentní Pravidla",
+        "title": "Vy rozhodujete o",
+        "title_highlight": "rozpočtu.",
+        "subtitle": "Už žádné \"cenové rozpětí\" a skryté náklady. Použijte konfigurátor pro získání přesné nabídky přizpůsobené vašim potřebám.",
+        "loader": "Inicializace cenového systému...",
+        "features": {
+            "guarantee": "Garance pevné ceny",
+            "invoice": "Faktura DPH 23%",
+            "installments": "Platba na splátky",
+            "zero_percent": "Splátky 0%"
+        }
+    },
+    "footer": {
+        "tagline": "Vytvářím weby, které konvertují",
+        "company": "Společnost",
+        "about": "O nás",
+        "portfolio": "Portfolio",
+        "contact": "Kontakt",
+        "legal": "Právní",
+        "privacy": "Zásady ochrany osobních údajů",
+        "terms": "Podmínky služby",
+        "rights": "Všechna práva vyhrazena."
+    },
+    "common": {
+        "loading": "Načítání...",
+        "error": "Došlo k chybě",
+        "success": "Úspěch!",
+        "close": "Zavřít",
+        "submit": "Odeslat",
+        "cancel": "Zrušit"
+    }
+}
