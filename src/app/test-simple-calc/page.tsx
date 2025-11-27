@@ -1,6 +1,6 @@
 'use client';
 
-import Calculator from '@/components/Calculator';
+import Calculator from '@/components/Calculator/Calculator';
 
 export default function TestSimpleCalcPage() {
   return (
@@ -14,7 +14,7 @@ export default function TestSimpleCalcPage() {
             Prosty kalkulator z predefiniowanymi opcjami
           </p>
         </div>
-        
+
         <Calculator />
       </div>
     </div>

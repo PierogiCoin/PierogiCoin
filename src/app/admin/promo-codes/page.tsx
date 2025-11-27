@@ -1,4 +1,4 @@
-import PromoCodeManager from '@/components/PromoCodeManager';
+import PromoCodeManager from '@/components/Promo/PromoCodeManager';
 
 export default function PromoCodesAdminPage() {
   return (

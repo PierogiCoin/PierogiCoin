@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Calculator from '@/components/Calculator';
+import Calculator from '@/components/Calculator/Calculator';
 import * as calculatorStorage from '@/lib/calculatorStorage';
 import * as calculatorLinks from '@/lib/calculatorLinks';
 
@@ -24,8 +24,8 @@ describe('Calculator Component', () => {
     jest.clearAllMocks();
     (calculatorStorage.getSavedCalculatorData as jest.Mock).mockReturnValue(null);
     (calculatorLinks.parseCalculatorParams as jest.Mock).mockReturnValue(null);
-    (calculatorStorage.saveCalculatorData as jest.Mock).mockImplementation(() => {});
-    (calculatorStorage.markEmailAsSent as jest.Mock).mockImplementation(() => {});
+    (calculatorStorage.saveCalculatorData as jest.Mock).mockImplementation(() => { });
+    (calculatorStorage.markEmailAsSent as jest.Mock).mockImplementation(() => { });
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
       json: async () => ({ success: true }),
@@ -51,10 +51,10 @@ describe('Calculator Component', () => {
     it('moves to design step after selecting project type', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => {
         expect(screen.getByText(/jaki design/i)).toBeInTheDocument();
       });
@@ -63,10 +63,10 @@ describe('Calculator Component', () => {
     it('shows design options in step 2', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => {
         expect(screen.getByText('Ekonomiczny')).toBeInTheDocument();
         expect(screen.getByText('Indywidualny')).toBeInTheDocument();
@@ -77,15 +77,15 @@ describe('Calculator Component', () => {
     it('moves to features step after selecting design', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const customDesign = screen.getByText('Indywidualny').closest('button');
       await user.click(customDesign!);
-      
+
       await waitFor(() => {
         expect(screen.getByText(/dodatki/i)).toBeInTheDocument();
       });
@@ -94,15 +94,15 @@ describe('Calculator Component', () => {
     it('can go back to previous step', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const backButton = screen.getByText(/wróć/i).closest('button');
       await user.click(backButton!);
-      
+
       await waitFor(() => {
         expect(screen.getByText(/czego potrzebujesz/i)).toBeInTheDocument();
       });
@@ -113,25 +113,25 @@ describe('Calculator Component', () => {
     it('allows selecting multiple features', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       // Navigate to features step
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const customDesign = screen.getByText('Indywidualny').closest('button');
       await user.click(customDesign!);
-      
+
       await waitFor(() => expect(screen.getByText(/dodatki/i)).toBeInTheDocument());
-      
+
       // Select features
       const cmsFeature = screen.getByText('Panel CMS').closest('button');
       const seoFeature = screen.getByText('Pakiet SEO').closest('button');
-      
+
       await user.click(cmsFeature!);
       await user.click(seoFeature!);
-      
+
       // Features should be marked as selected
       expect(cmsFeature).toHaveClass(/green/);
       expect(seoFeature).toHaveClass(/green/);
@@ -140,24 +140,24 @@ describe('Calculator Component', () => {
     it('allows toggling features on and off', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       // Navigate to features step
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const customDesign = screen.getByText('Indywidualny').closest('button');
       await user.click(customDesign!);
-      
+
       await waitFor(() => expect(screen.getByText(/dodatki/i)).toBeInTheDocument());
-      
+
       const cmsFeature = screen.getByText('Panel CMS').closest('button');
-      
+
       // Toggle on
       await user.click(cmsFeature!);
       expect(cmsFeature).toHaveClass(/green/);
-      
+
       // Toggle off
       await user.click(cmsFeature!);
       expect(cmsFeature).not.toHaveClass(/green/);
@@ -168,22 +168,22 @@ describe('Calculator Component', () => {
     it('shows market price and special price', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       // Navigate through steps to see price
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const templateDesign = screen.getByText('Ekonomiczny').closest('button');
       await user.click(templateDesign!);
-      
+
       await waitFor(() => expect(screen.getByText(/dodatki/i)).toBeInTheDocument());
-      
+
       // Move to results
       const nextButton = screen.getByText(/dalej/i).closest('button');
       await user.click(nextButton!);
-      
+
       await waitFor(() => {
         expect(screen.getByText(/wartość rynkowa/i)).toBeInTheDocument();
         expect(screen.getByText(/twoja cena specjalna/i)).toBeInTheDocument();
@@ -193,20 +193,20 @@ describe('Calculator Component', () => {
     it('displays price in PLN', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const templateDesign = screen.getByText('Ekonomiczny').closest('button');
       await user.click(templateDesign!);
-      
+
       await waitFor(() => expect(screen.getByText(/dodatki/i)).toBeInTheDocument());
-      
+
       const nextButton = screen.getByText(/dalej/i).closest('button');
       await user.click(nextButton!);
-      
+
       await waitFor(() => {
         const plnElements = screen.getAllByText(/PLN/i);
         expect(plnElements.length).toBeGreaterThan(0);
@@ -218,21 +218,21 @@ describe('Calculator Component', () => {
     it('saves calculation data', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       // Navigate to result step to trigger save
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const templateDesign = screen.getByText('Ekonomiczny').closest('button');
       await user.click(templateDesign!);
-      
+
       await waitFor(() => expect(screen.getByText(/dodatki/i)).toBeInTheDocument());
-      
+
       const nextButton = screen.getByText(/dalej/i).closest('button');
       await user.click(nextButton!);
-      
+
       await waitFor(() => {
         expect(calculatorStorage.saveCalculatorData).toHaveBeenCalled();
       });
@@ -249,9 +249,9 @@ describe('Calculator Component', () => {
         price: 2800,
         timestamp: new Date().toISOString(),
       });
-      
+
       render(<Calculator />);
-      
+
       expect(screen.getByText(/witaj ponownie/i)).toBeInTheDocument();
     });
   });
@@ -266,9 +266,9 @@ describe('Calculator Component', () => {
           deadline: 'fast',
         },
       });
-      
+
       render(<Calculator />);
-      
+
       // Should have moved past step 1 if preselected
       expect(calculatorStorage.saveCalculatorData).toHaveBeenCalled();
     });
@@ -278,10 +278,10 @@ describe('Calculator Component', () => {
     it('has reset button available', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       // Look for reset/restart button
       const resetButton = screen.queryByText(/od nowa|reset/i);
       if (resetButton) {
@@ -294,21 +294,21 @@ describe('Calculator Component', () => {
     it('has promo code input component', async () => {
       const user = userEvent.setup();
       render(<Calculator />);
-      
+
       // Navigate to final step where promo code might be visible
       const landingOption = screen.getByText('Landing Page').closest('button');
       await user.click(landingOption!);
-      
+
       await waitFor(() => expect(screen.getByText(/jaki design/i)).toBeInTheDocument());
-      
+
       const templateDesign = screen.getByText('Ekonomiczny').closest('button');
       await user.click(templateDesign!);
-      
+
       await waitFor(() => expect(screen.getByText(/dodatki/i)).toBeInTheDocument());
-      
+
       const nextButton = screen.getByText(/dalej/i).closest('button');
       await user.click(nextButton!);
-      
+
       // Promo code input should be visible
       await waitFor(() => {
         const promoInput = screen.queryByPlaceholderText(/kod/i);

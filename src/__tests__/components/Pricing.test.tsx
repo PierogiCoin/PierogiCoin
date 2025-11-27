@@ -1,13 +1,33 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('@/components/CalculatorChoice', () => {
+jest.mock('@/components/Calculator/CalculatorChoice', () => {
   return function MockCalculatorChoice() {
     return <div data-testid="calculator-choice">Calculator Choice</div>;
   };
 });
 
-import Pricing from '@/components/Pricing';
+jest.mock('@/i18n/LocaleProvider', () => ({
+  useLocale: () => ({
+    dict: {
+      pricing: {
+        badge: 'Transparentne Zasady',
+        title: 'Ty decydujesz o',
+        title_highlight: 'kosztach',
+        subtitle: 'Subtitle text',
+        features: {
+          guarantee: 'Gwarancja stałej ceny',
+          invoice: 'Faktura VAT 23%',
+          installments: 'Płatność w transzach',
+          zero_percent: 'Raty 0%'
+        },
+        loader: 'Loading...'
+      }
+    }
+  })
+}));
+
+import Pricing from '@/components/Pricing/Pricing';
 
 describe('Pricing Component', () => {
   it('renders pricing section', () => {

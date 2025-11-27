@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { Linkedin, Github, Instagram, Facebook, Mail, Phone, MapPin, ArrowUpRight, Cookie } from 'lucide-react';
+import { siteConfig } from '@/data/siteConfig';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,9 +38,9 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               {[
-                { icon: Instagram, href: 'https://www.instagram.com/lyk_kreacji/' },
-                { icon: Linkedin, href: 'https://www.linkedin.com/company/lykkreacji/?viewAsMember=true' },
-                { icon: Facebook, href: 'https://www.facebook.com/LykKreacji/' }
+                { icon: Instagram, href: siteConfig.socials.instagram || 'https://www.instagram.com/lyk_kreacji/' },
+                { icon: Linkedin, href: siteConfig.socials.linkedin },
+                { icon: Facebook, href: siteConfig.socials.facebook }
               ].map((item, i) => (
                 <a
                   key={i}
@@ -97,8 +98,8 @@ export default function Footer() {
                 <Phone className="w-5 h-5 text-cyan-500 mt-0.5" />
                 <div>
                   <p className="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold">Telefon</p>
-                  <a href="tel:+48790626497" className="text-slate-900 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors font-medium">
-                    +48 790 626 497
+                  <a href={`tel:${siteConfig.contact.phone}`} className="text-slate-900 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors font-medium">
+                    {siteConfig.contact.displayPhone}
                   </a>
                 </div>
               </li>
@@ -106,8 +107,8 @@ export default function Footer() {
                 <Mail className="w-5 h-5 text-cyan-500 mt-0.5" />
                 <div>
                   <p className="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold">Email</p>
-                  <a href="mailto:czesc@lykkreacji.pl" className="text-slate-900 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors font-medium">
-                    czesc@lykkreacji.pl
+                  <a href={`mailto:${siteConfig.contact.email}`} className="text-slate-900 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors font-medium">
+                    {siteConfig.contact.email}
                   </a>
                 </div>
               </li>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Menu, X, Calculator, Sparkles, Code } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { useLenisScroll } from '@/hooks/useLenisScroll';
-import { MagneticButton } from './ui/MagneticButton';
+import { MagneticButton } from '../ui/MagneticButton';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
@@ -14,9 +14,13 @@ export default function Header() {
   const { scrollTo } = useLenisScroll();
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    setIsMobileMenuOpen(false);
-    scrollTo(href);
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      setIsMobileMenuOpen(false);
+      scrollTo(href);
+    } else {
+      setIsMobileMenuOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -29,14 +33,14 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: '#uslugi', label: 'Usługi' },
-    { href: '#jak-pracujemy', label: 'Proces' },
-    { href: '#technologie', label: 'Technologie' },
-    { href: '#portfolio', label: 'Portfolio' },
-    { href: '#opinie', label: 'Opinie' },
-    { href: '#kalkulator', label: 'Wycena' },
-    { href: '#faq', label: 'FAQ' },
-    { href: '#kontakt', label: 'Kontakt' },
+    { href: '/#uslugi', label: 'Usługi' },
+    { href: '/#jak-pracujemy', label: 'Proces' },
+    { href: '/#technologie', label: 'Technologie' },
+    { href: '/#portfolio', label: 'Portfolio' },
+    { href: '/#opinie', label: 'Opinie' },
+    { href: '/kalkulator', label: 'Wycena' },
+    { href: '/#faq', label: 'FAQ' },
+    { href: '/#kontakt', label: 'Kontakt' },
   ];
 
   return (
@@ -84,8 +88,8 @@ export default function Header() {
             <ThemeToggle />
             <MagneticButton strength={0.4}>
               <Link
-                href="/#kalkulator"
-                onClick={(e) => handleNavClick(e, '#kalkulator')}
+                href="/kalkulator"
+                onClick={(e) => handleNavClick(e, '/kalkulator')}
                 className="group relative px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold rounded-full hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 flex items-center gap-2"
               >
                 <Calculator className="w-4 h-4" />
@@ -123,8 +127,8 @@ export default function Header() {
             <div className="pt-4 border-t border-slate-200/50 dark:border-white/10 flex items-center justify-between">
               <ThemeToggle />
               <Link
-                href="/#kalkulator"
-                onClick={(e) => handleNavClick(e, '#kalkulator')}
+                href="/kalkulator"
+                onClick={(e) => handleNavClick(e, '/kalkulator')}
                 className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold rounded-full flex items-center gap-2"
               >
                 <Calculator className="w-4 h-4" />

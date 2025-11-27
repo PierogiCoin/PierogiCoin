@@ -17,29 +17,30 @@ import {
 } from '@/hooks/useAnalytics';
 
 // Importy komponentów
-import AppLayout from '@/components/AppLayout';
-import Hero from '@/components/Hero';
+import AppLayout from '@/components/Layout/AppLayout';
+import Hero from '@/components/Hero/Hero';
 import { PortfolioScroll } from '@/components/PortfolioScroll';
-import Footer from '@/components/Footer';
+import Footer from '@/components/Layout/Footer';
 import { SectionLoader } from '@/components/SectionLoader';
 import { CustomCursor } from '@/components/ui/CustomCursor';
-import StickyFooterWrapper from '@/components/StickyFooterWrapper';
+import StickyFooterWrapper from '@/components/Layout/StickyFooterWrapper';
 import ScrollProgressBar from '@/components/ScrollProgressBar';
 import { LocaleProvider } from '@/i18n/LocaleProvider';
 import SeoManager from '@/components/SeoManager';
 
 // Leniwe ładowanie
 const Services = lazy(() => import('@/components/Services'));
-const Pricing = lazy(() => import('@/components/Pricing'));
+const Pricing = lazy(() => import('@/components/Pricing/Pricing'));
 const Testimonials = lazy(() => import('@/components/Testimonials'));
-const BackToTop = lazy(() => import('@/components/BackToTop'));
+const BackToTop = lazy(() => import('@/components/Layout/BackToTop'));
 const Skills = lazy(() => import('@/components/Skills'));
-const Contact = lazy(() => import('@/components/Contact'));
+const Contact = lazy(() => import('@/components/Contact/Contact'));
 const HowItWorksDual = lazy(() => import('@/components/HowItWorksDual'));
 const FloatingPhone = lazy(() => import('@/components/FloatingPhone'));
-const FAQ = lazy(() => import('@/components/FAQ'));
-const PromoPopupManager = lazy(() => import('@/components/PromoPopupManager'));
-import PageTransitionWrapper from '@/components/PageTransitionWrapper';
+const FAQ = lazy(() => import('@/components/FAQ/FAQ'));
+const ServiceAreaMap = lazy(() => import('@/components/ServiceAreaMap'));
+const PromoPopupManager = lazy(() => import('@/components/Promo/PromoPopupManager'));
+import PageTransitionWrapper from '@/components/Layout/PageTransitionWrapper';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -204,6 +205,13 @@ export function ClientLayout() {
                                 <section id="faq" className="relative w-full -mt-px">
                                     <Suspense fallback={<SectionLoader label="FAQ..." />}>
                                         <FAQ />
+                                    </Suspense>
+                                </section>
+
+                                {/* 8.5. OBSZAR DZIAŁANIA (MAPA) */}
+                                <section id="obszar-dzialania" className="relative w-full -mt-px">
+                                    <Suspense fallback={<SectionLoader label="Mapa..." />}>
+                                        <ServiceAreaMap />
                                     </Suspense>
                                 </section>
 

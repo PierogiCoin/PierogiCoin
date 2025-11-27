@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight, ExternalLink, Layers } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,7 +87,7 @@ export const PortfolioScroll: React.FC = () => {
       // Paralaksa Zdjęć wewnątrz kart
       gsap.utils.toArray<HTMLElement>(".project-image").forEach((img) => {
         gsap.to(img, {
-          backgroundPosition: "100% center",
+          objectPosition: "100% center",
           ease: "none",
           scrollTrigger: {
             trigger: img,
@@ -142,12 +143,13 @@ export const PortfolioScroll: React.FC = () => {
             >
               {/* Obrazek z Paralaksą */}
               <div className="absolute inset-0 overflow-hidden">
-                <div
-                  className="project-image w-[120%] h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{
-                    backgroundImage: `url(${project.image})`,
-                    backgroundPosition: "0% center"
-                  }}
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="project-image w-[120%] h-full object-cover object-left transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 700px"
+                  priority={project.id === 1}
                 />
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-500" />
@@ -192,8 +194,6 @@ export const PortfolioScroll: React.FC = () => {
               </div>
             </div>
           ))}
-
-
 
         </div>
       </div>

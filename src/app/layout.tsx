@@ -11,10 +11,11 @@ import WebVitalsReporter from '@/components/WebVitalsReporter';
 import PerformanceMonitor from '@/components/PerformanceMonitor';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import ErrorTracker from '@/components/ErrorTracker';
-import SkipToContent from '@/components/SkipToContent';
+import SkipToContent from '@/components/Layout/SkipToContent';
 import FocusManager from '@/components/FocusManager';
-import PromoPopupManager from '@/components/PromoPopupManager';
+import PromoPopupManager from '@/components/Promo/PromoPopupManager';
 import { GA_TRACKING_ID } from '@/lib/gtag';
+import { siteConfig } from '@/data/siteConfig';
 import './globals.css';
 
 // --- Enhanced Structured Data for AI & Search Engines ---
@@ -23,117 +24,57 @@ const jsonLd = {
   "@graph": [
     {
       "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
-      "@id": "https://lykkreacji.pl/#organization",
-      "name": "LykKreacji - Tworzenie Stron Internetowych Wrocław",
-      "legalName": "LykKreacji Arkadiusz Łyczkowski",
-      "url": "https://lykkreacji.pl",
-      "logo": "https://lykkreacji.pl/images/logo.png",
-      "image": "https://lykkreacji.pl/images/og-image-klodzko.jpg",
-      "description": "Profesjonalne tworzenie stron internetowych we Wrocławiu. Specjalizacja: Next.js, React, sklepy e-commerce, aplikacje AI. Enterprise-grade quality, startup prices.",
-      "telephone": "+48790629497",
-      "email": "czesc@lykkreacji.pl",
+      "@id": `${siteConfig.url}/#organization`,
+      "name": siteConfig.name,
+      "legalName": siteConfig.legalName,
+      "url": siteConfig.url,
+      "logo": siteConfig.logo,
+      "image": siteConfig.ogImage,
+      "description": siteConfig.description,
+      "telephone": siteConfig.contact.phone,
+      "email": siteConfig.contact.email,
       "priceRange": "$$-$$$",
       "foundingDate": "2023",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "",
-        "addressLocality": "Wrocław",
-        "postalCode": "50-000",
-        "addressRegion": "Dolnośląskie",
-        "addressCountry": "PL"
+        "streetAddress": siteConfig.contact.address.street,
+        "addressLocality": siteConfig.contact.address.city,
+        "postalCode": siteConfig.contact.address.zip,
+        "addressRegion": siteConfig.contact.address.region,
+        "addressCountry": siteConfig.contact.address.country
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": 51.1079,
-        "longitude": 17.0385
+        "latitude": siteConfig.contact.geo.lat,
+        "longitude": siteConfig.contact.geo.lng
       },
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "09:00",
-        "closes": "18:00"
+        "dayOfWeek": siteConfig.openingHours.days,
+        "opens": siteConfig.openingHours.opens,
+        "closes": siteConfig.openingHours.closes
       },
       "sameAs": [
-        "https://www.linkedin.com/in/arkadiusz-lyczkowski",
-        "https://github.com/yourusername",
-        "https://www.facebook.com/lykkreacji",
-        "https://twitter.com/lykkreacji"
+        siteConfig.socials.linkedin,
+        siteConfig.socials.github,
+        siteConfig.socials.facebook,
+        siteConfig.socials.twitter
       ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Wrocław"
-        },
-        {
-          "@type": "City",
-          "name": "Jelenia Góra"
-        },
-        {
-          "@type": "City",
-          "name": "Wałbrzych"
-        },
-        {
-          "@type": "City",
-          "name": "Legnica"
-        },
-        {
-          "@type": "City",
-          "name": "Kłodzko"
-        },
-        {
-          "@type": "State",
-          "name": "Dolnośląskie"
-        },
-        {
-          "@type": "Country",
-          "name": "Poland"
-        }
-      ],
+      "areaServed": siteConfig.areaServed.map(area => ({
+        "@type": area === "Poland" ? "Country" : (area === "Dolnośląskie" ? "State" : "City"),
+        "name": area
+      })),
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Usługi Web Development",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Strony Internetowe Next.js",
-              "description": "Nowoczesne, szybkie strony internetowe w Next.js 14 z SSR i SEO"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Sklepy E-commerce",
-              "description": "Kompleksowe sklepy internetowe z integracją płatności i CMS"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Aplikacje AI",
-              "description": "Aplikacje z integracją ChatGPT, Gemini i innych modeli AI"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Progressive Web Apps",
-              "description": "PWA działające offline z push notifications"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Web3 & Blockchain",
-              "description": "Aplikacje DeFi, NFT marketplace, smart contracts"
-            }
+        "itemListElement": siteConfig.services.map(service => ({
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": service.name,
+            "description": service.description
           }
-        ]
+        }))
       },
       "aggregateRating": {
         "@type": "AggregateRating",
@@ -143,54 +84,42 @@ const jsonLd = {
         "worstRating": "1"
       },
       "knowsAbout": [
-        "Next.js",
-        "React",
-        "TypeScript",
-        "Web Development",
-        "E-commerce",
-        "AI Integration",
-        "ChatGPT API",
-        "Google Gemini",
-        "SEO Optimization",
-        "Web3",
-        "Blockchain",
-        "Progressive Web Apps",
-        "Tailwind CSS",
-        "Node.js",
-        "API Development"
+        "Next.js", "React", "TypeScript", "Web Development", "E-commerce",
+        "AI Integration", "ChatGPT API", "Google Gemini", "SEO Optimization",
+        "Web3", "Blockchain", "Progressive Web Apps", "Tailwind CSS", "Node.js"
       ],
       "slogan": "Enterprise-grade quality, startup prices"
     },
     {
       "@type": "WebSite",
-      "@id": "https://lykkreacji.pl/#website",
-      "url": "https://lykkreacji.pl",
-      "name": "LykKreacji - Tworzenie Stron Internetowych",
-      "description": "Profesjonalne tworzenie stron internetowych, sklepów e-commerce i aplikacji web we Wrocławiu",
+      "@id": `${siteConfig.url}/#website`,
+      "url": siteConfig.url,
+      "name": siteConfig.shortName,
+      "description": siteConfig.description,
       "publisher": {
-        "@id": "https://lykkreacji.pl/#organization"
+        "@id": `${siteConfig.url}/#organization`
       },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://lykkreacji.pl/?s={search_term_string}",
+        "target": `${siteConfig.url}/?s={search_term_string}`,
         "query-input": "required name=search_term_string"
       },
       "inLanguage": "pl-PL"
     },
     {
       "@type": "WebPage",
-      "@id": "https://lykkreacji.pl/#webpage",
-      "url": "https://lykkreacji.pl",
-      "name": "Tworzenie Stron Internetowych Wrocław | Next.js & AI | LykKreacji",
+      "@id": `${siteConfig.url}/#webpage`,
+      "url": siteConfig.url,
+      "name": siteConfig.name,
       "isPartOf": {
-        "@id": "https://lykkreacji.pl/#website"
+        "@id": `${siteConfig.url}/#website`
       },
       "about": {
-        "@id": "https://lykkreacji.pl/#organization"
+        "@id": `${siteConfig.url}/#organization`
       },
       "datePublished": "2023-01-01",
-      "dateModified": "2024-11-24",
-      "description": "Profesjonalne strony internetowe Wrocław. Next.js, React, AI, sklepy e-commerce. Enterprise-grade quality, startup prices.",
+      "dateModified": new Date().toISOString().split('T')[0],
+      "description": siteConfig.description,
       "inLanguage": "pl-PL"
     }
   ]
@@ -198,69 +127,31 @@ const jsonLd = {
 
 // --- Enhanced SEO Metadata for AI & Search Engines ---
 export const metadata: Metadata = {
-  metadataBase: new URL('https://lykkreacji.pl'),
+  metadataBase: new URL(siteConfig.url),
 
   // Primary SEO
   title: {
-    default: "Tworzenie Stron Internetowych Wrocław | Next.js, React, AI | LykKreacji",
-    template: "%s | LykKreacji - Web Development Wrocław"
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.shortName}`
   },
-  description: "🚀 Profesjonalne strony internetowe Wrocław. Next.js 14, React, AI (ChatGPT, Gemini), sklepy e-commerce, PWA. Enterprise quality, startup prices. ☎ 790 629 497",
+  description: `🚀 ${siteConfig.description} ☎ ${siteConfig.contact.displayPhone}`,
 
   // Keywords - Enhanced for AI & Search
   keywords: [
-    // Local SEO
-    "tworzenie stron internetowych Wrocław",
-    "strony www Wrocław",
-    "web developer Wrocław",
-    "sklepy internetowe Wrocław",
-    "programista Wrocław",
-    "strony firmowe Wrocław",
-    "aplikacje webowe Wrocław",
-    "strony internetowe Dolny Śląsk",
-
-    // Technology Stack
-    "Next.js Wrocław",
-    "Next.js 14",
-    "React developer Wrocław",
-    "TypeScript developer",
-    "Tailwind CSS",
-    "Node.js development",
-
-    // AI Integration
-    "ChatGPT integration",
-    "OpenAI API",
-    "Google Gemini",
-    "AI applications",
-    "machine learning web apps",
-    "AI chatbots",
-
-    // Services
-    "e-commerce Wrocław",
-    "sklepy online",
-    "Progressive Web Apps",
-    "PWA development",
-    "Web3 development",
-    "blockchain applications",
-    "responsive web design",
-    "mobile-first design",
-
-    // Features
-    "fast websites",
-    "SEO optimization",
-    "performance optimization",
-    "accessible websites",
-    "WCAG compliance",
-
-    // Business
-    "freelance web developer",
-    "startup websites",
-    "business websites",
-    "corporate web development"
+    "tworzenie stron internetowych Wrocław", "strony www Wrocław", "web developer Wrocław",
+    "Next.js Wrocław", "React developer Wrocław", "aplikacje AI", "ChatGPT integration",
+    "sklepy internetowe", "PWA development", "SEO optimization", "strony internetowe Dolny Śląsk",
+    "programista Wrocław", "strony firmowe Wrocław", "aplikacje webowe Wrocław",
+    "Next.js 14", "TypeScript developer", "Tailwind CSS", "Node.js development",
+    "OpenAI API", "Google Gemini", "machine learning web apps", "AI chatbots",
+    "e-commerce Wrocław", "sklepy online", "Web3 development", "blockchain applications",
+    "responsive web design", "mobile-first design", "fast websites", "performance optimization",
+    "accessible websites", "WCAG compliance", "freelance web developer", "startup websites",
+    "business websites", "corporate web development"
   ],
 
   authors: [
-    { name: "Arkadiusz Łyczkowski", url: "https://lykkreacji.pl" },
+    { name: "Arkadiusz Łyczkowski", url: siteConfig.url },
     { name: "LykKreacji Team" }
   ],
   creator: "Arkadiusz Łyczkowski",
@@ -269,6 +160,16 @@ export const metadata: Metadata = {
   // Category for search engines
   category: "Web Development",
   classification: "Business and Technology Services",
+
+  // Canonical URL
+  alternates: {
+    canonical: siteConfig.url,
+    languages: {
+      'pl': siteConfig.url,
+      'en': `${siteConfig.url}/en`,
+      'cs': `${siteConfig.url}/cs`,
+    },
+  },
 
   // Robots
   robots: {
@@ -288,21 +189,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pl_PL",
     alternateLocale: ["en_US"],
-    url: "https://lykkreacji.pl",
-    siteName: "LykKreacji - Web Development Wrocław",
-    title: "Tworzenie Stron Internetowych Wrocław | Next.js, React, AI",
-    description: "🚀 Profesjonalne strony internetowe Wrocław. Next.js 14, React, AI (ChatGPT, Gemini), sklepy e-commerce, PWA. Enterprise quality, startup prices.",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: siteConfig.name,
+    description: siteConfig.description,
     images: [
       {
-        url: "/images/og-image-klodzko.jpg",
+        url: `/api/og?title=${encodeURIComponent(siteConfig.name)}&description=${encodeURIComponent(siteConfig.description)}`,
         width: 1200,
         height: 630,
-        alt: "LykKreacji - Profesjonalne Tworzenie Stron Internetowych Wrocław",
-        type: "image/jpeg",
+        alt: siteConfig.name,
+        type: "image/png",
       }
     ],
-    emails: ["czesc@lykkreacji.pl"],
-    phoneNumbers: ["+48790629497"],
+    emails: [siteConfig.contact.email],
+    phoneNumbers: [siteConfig.contact.phone],
     countryName: "Poland",
   },
 
@@ -311,16 +212,16 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@lykkreacji",
     creator: "@lykkreacji",
-    title: "Strony Internetowe Wrocław | Next.js, React, AI",
-    description: "🚀 Profesjonalne strony www Wrocław. Next.js 14, React, AI, sklepy online. Enterprise quality, startup prices.",
+    title: siteConfig.name,
+    description: siteConfig.description,
     images: {
-      url: "/images/og-image-klodzko.jpg",
-      alt: "LykKreacji - Web Development Wrocław",
+      url: `/api/og?title=${encodeURIComponent(siteConfig.name)}&description=${encodeURIComponent(siteConfig.description)}`,
+      alt: siteConfig.name,
     },
   },
 
   // App configuration
-  applicationName: "LykKreacji",
+  applicationName: siteConfig.shortName,
   referrer: "origin-when-cross-origin",
 
   // Icons & Manifest
@@ -341,18 +242,11 @@ export const metadata: Metadata = {
 
   // Additional metadata
   other: {
-    // Structured Data
-    'application/ld+json': JSON.stringify(jsonLd),
-
-    // Verification tags (add your codes after verification)
-    // 'google-site-verification': 'your_google_verification_code',
-    // 'msvalidate.01': 'your_bing_verification_code',
-
     // Geographic targeting
-    'geo.region': 'PL-DS',
-    'geo.placename': 'Wrocław',
-    'geo.position': '51.1079;17.0385',
-    'ICBM': '51.1079, 17.0385',
+    'geo.region': `PL-${siteConfig.contact.address.region === 'Dolnośląskie' ? 'DS' : 'XX'}`,
+    'geo.placename': siteConfig.contact.address.city,
+    'geo.position': `${siteConfig.contact.geo.lat};${siteConfig.contact.geo.lng}`,
+    'ICBM': `${siteConfig.contact.geo.lat}, ${siteConfig.contact.geo.lng}`,
 
     // Language
     'language': 'Polish',
@@ -363,11 +257,11 @@ export const metadata: Metadata = {
     'distribution': 'global',
 
     // Contact
-    'contact': 'czesc@lykkreacji.pl',
-    'reply-to': 'czesc@lykkreacji.pl',
+    'contact': siteConfig.contact.email,
+    'reply-to': siteConfig.contact.email,
 
     // Copyright
-    'copyright': 'LykKreacji 2024',
+    'copyright': `LykKreacji ${new Date().getFullYear()}`,
 
     // Revisit
     'revisit-after': '7 days',
@@ -389,18 +283,49 @@ export const viewport: Viewport = {
   colorScheme: 'light dark',
 };
 
+import { headers } from 'next/headers';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+  const nonce = headers().get('x-nonce') || '';
 
   return (
     <html lang="pl" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#06b6d4" />
+        <link rel="canonical" href="https://lykkreacji.pl" />
+        <link rel="alternate" hrefLang="pl" href="https://lykkreacji.pl" />
+        <link rel="alternate" hrefLang="en" href="https://lykkreacji.pl/en" />
+        <link rel="alternate" hrefLang="cs" href="https://lykkreacji.pl/cs" />
+
+        {/* Main JSON-LD Graph */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          nonce={nonce}
+        />
+
+        {/* Breadcrumbs JSON-LD */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: `{
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://lykkreacji.pl"
+              }
+            ]
+          }` }}
+          nonce={nonce}
+        />
 
         {/* Google Analytics 4 */}
         {GA_TRACKING_ID && (
@@ -408,10 +333,12 @@ export default function RootLayout({
             <Script
               strategy="afterInteractive"
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+              nonce={nonce}
             />
             <Script
               id="google-analytics"
               strategy="afterInteractive"
+              nonce={nonce}
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
@@ -431,6 +358,7 @@ export default function RootLayout({
           <Script
             id="google-tag-manager"
             strategy="afterInteractive"
+            nonce={nonce}
             dangerouslySetInnerHTML={{
               __html: `
                 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -448,6 +376,7 @@ export default function RootLayout({
           <Script
             id="microsoft-clarity"
             strategy="afterInteractive"
+            nonce={nonce}
             dangerouslySetInnerHTML={{
               __html: `
                 (function(c,l,a,r,i,t,y){
@@ -502,7 +431,9 @@ export default function RootLayout({
               });
             }
           `
-        }} />
+        }}
+          nonce={nonce}
+        />
       </body>
     </html>
   );

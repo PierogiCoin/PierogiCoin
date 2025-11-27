@@ -10,7 +10,7 @@ import { useLocale } from '@/i18n/LocaleProvider';
 gsap.registerPlugin(ScrollTrigger);
 
 // Leniwe ładowanie Wyboru Kalkulatora (prosty + AI)
-const CalculatorChoice = lazy(() => import('./CalculatorChoice'));
+const CalculatorChoice = lazy(() => import('../Calculator/CalculatorChoice'));
 
 // --- Ulepszony Loader ---
 const PricingLoader = () => {

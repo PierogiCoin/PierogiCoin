@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { ClientLayout } from '@/components/ClientLayout';
+import { ClientLayout } from '@/components/Layout/ClientLayout';
 
 // Force static generation for optimal TTFB
 export const dynamic = 'force-static';

@@ -6,8 +6,9 @@ import { TextPlugin } from 'gsap/TextPlugin';
 import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
 import { ArrowRight, Calculator, Zap, TrendingUp, ShieldCheck } from 'lucide-react';
-import { MagneticButton } from './ui/MagneticButton';
-import { Hero3DBackground } from './Hero3DBackground';
+import { MagneticButton } from '../ui/MagneticButton';
+import { FallingDropsBackground } from './FallingDropsBackground';
+import { InkReveal } from './BrushReveal';
 import { useLocale } from '@/i18n/LocaleProvider';
 
 gsap.registerPlugin(TextPlugin);
@@ -63,7 +64,7 @@ export default function Hero() {
 
   return (
     <section ref={containerRef} className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-      <Hero3DBackground />
+      <FallingDropsBackground />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
@@ -79,52 +80,56 @@ export default function Hero() {
         </div>
 
         {/* GŁÓWNY NAGŁÓWEK */}
-        <h1 className="hero-element text-5xl sm:text-7xl md:text-8xl font-bold text-slate-900 dark:text-white tracking-tight mb-8 leading-[1.1]">
-          {dict.hero.title} <br />
-          {dict.hero.title2} <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 dark:from-cyan-400 dark:via-blue-500 dark:to-purple-600">
-            <span ref={textRef}></span>
-            <span className="animate-blink text-slate-900 dark:text-white">|</span>
-          </span>
-        </h1>
+        <InkReveal delay={0.5}>
+          <div className="relative">
+            <h1 className="hero-element text-5xl sm:text-7xl md:text-8xl font-bold text-slate-900 dark:text-white tracking-tight mb-8 leading-[1.1]">
+              {dict.hero.title} <br />
+              {dict.hero.title2} <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 dark:from-cyan-400 dark:via-blue-500 dark:to-purple-600">
+                <span ref={textRef}></span>
+                <span className="animate-blink text-slate-900 dark:text-white">|</span>
+              </span>
+            </h1>
 
-        <p className="hero-element text-lg sm:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-          {dict.hero.subtitle}
-        </p>
+            <p className="hero-element text-lg sm:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+              {dict.hero.subtitle}
+            </p>
 
-        {/* CTA SECTION */}
-        <div className="hero-element flex flex-col items-center gap-4">
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            {/* CTA SECTION */}
+            <div className="hero-element flex flex-col items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
 
-            {/* PRIMARY CTA - CALCULATOR */}
-            <MagneticButton strength={0.6}>
-              <Link
-                href="#kalkulator"
-                className="cta-pulse group relative px-8 py-5 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold text-lg rounded-full hover:shadow-xl transition-all flex items-center justify-center gap-3 w-full sm:w-auto min-w-[260px]"
-              >
-                <Calculator className="w-6 h-6" />
-                {dict.hero.cta_primary}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </MagneticButton>
+                {/* PRIMARY CTA - CALCULATOR */}
+                <MagneticButton strength={0.6}>
+                  <Link
+                    href="#kalkulator"
+                    className="cta-pulse group relative px-8 py-5 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 text-white font-bold text-lg rounded-full hover:shadow-xl transition-all flex items-center justify-center gap-3 w-full sm:w-auto min-w-[260px]"
+                  >
+                    <Calculator className="w-6 h-6" />
+                    {dict.hero.cta_primary}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </MagneticButton>
 
-            {/* SECONDARY CTA */}
-            <MagneticButton strength={0.3}>
-              <Link
-                href="#portfolio"
-                className="px-8 py-5 bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 font-bold text-lg rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-w-[260px] backdrop-blur-sm"
-              >
-                {dict.hero.cta_secondary}
-              </Link>
-            </MagneticButton>
+                {/* SECONDARY CTA */}
+                <MagneticButton strength={0.3}>
+                  <Link
+                    href="#portfolio"
+                    className="px-8 py-5 bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 font-bold text-lg rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto min-w-[260px] backdrop-blur-sm"
+                  >
+                    {dict.hero.cta_secondary}
+                  </Link>
+                </MagneticButton>
+              </div>
+
+              {/* MICRO COPY (Trust builder) */}
+              <p className="text-xs text-slate-500 dark:text-gray-500 mt-2 flex items-center gap-2">
+                <ShieldCheck className="w-3 h-3 text-green-500" />
+                {dict.hero.trust}
+              </p>
+            </div>
           </div>
-
-          {/* MICRO COPY (Trust builder) */}
-          <p className="text-xs text-slate-500 dark:text-gray-500 mt-2 flex items-center gap-2">
-            <ShieldCheck className="w-3 h-3 text-green-500" />
-            {dict.hero.trust}
-          </p>
-        </div>
+        </InkReveal>
 
         {/* VALUE PROPS (Zamiast samych ikon technologii) */}
         <div className="hero-element mt-20 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8">

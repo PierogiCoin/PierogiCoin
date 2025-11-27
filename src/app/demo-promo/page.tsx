@@ -1,6 +1,6 @@
 'use client';
 
-import PromoCodeInput from '@/components/PromoCodeInput';
+import PromoCodeInput from '@/components/Promo/PromoCodeInput';
 import { useState } from 'react';
 
 export default function DemoPromoPage() {
@@ -30,7 +30,7 @@ export default function DemoPromoPage() {
                 <span>Cena bazowa:</span>
                 <span className="font-semibold">{basePrice} zł</span>
               </div>
-              
+
               {discount > 0 && (
                 <>
                   <div className="flex justify-between text-green-600">
@@ -44,7 +44,7 @@ export default function DemoPromoPage() {
                   <hr className="my-2" />
                 </>
               )}
-              
+
               <div className="flex justify-between text-2xl font-bold text-blue-600">
                 <span>Do zapłaty:</span>
                 <span>{finalPrice.toFixed(2)} zł</span>
@@ -55,7 +55,7 @@ export default function DemoPromoPage() {
           {/* Pole na kod promocyjny */}
           <div className="mb-6">
             <h3 className="text-lg font-semibold mb-3">Masz kod promocyjny?</h3>
-            <PromoCodeInput 
+            <PromoCodeInput
               onPromoApplied={(disc, code) => {
                 setDiscount(disc);
                 setPromoCode(code);
@@ -80,7 +80,7 @@ export default function DemoPromoPage() {
 
           {/* Link do panelu admina */}
           <div className="mt-6 text-center">
-            <a 
+            <a
               href="/admin/promo-codes"
               className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >

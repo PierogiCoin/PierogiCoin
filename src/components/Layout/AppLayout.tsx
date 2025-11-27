@@ -2,6 +2,7 @@
 
 import React, { memo, ReactNode, lazy, Suspense } from 'react';
 import Header from './Header';
+import ServiceAreaMap from '@/components/ServiceAreaMap';
 // Importujemy nowy hook do obsługi płynnego przewijania
 import { useLenisScroll } from '@/hooks/useLenisScroll';
 
@@ -40,6 +41,12 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, navLinks, theme, toggle
                 <div id="smooth-content">
                     <main id="main-content">
                         {children}
+                        {/* Assuming FAQ, ServiceAreaMap, Contact, and Footer are part of the main content */}
+                        {/* Placeholder for FAQ, Contact, and Footer as they are not defined in the original imports */}
+                        {/* <FAQ /> */}
+                        <ServiceAreaMap />
+                        {/* <Contact /> */}
+                        {/* <Footer /> */}
                     </main>
                 </div>
             </div>

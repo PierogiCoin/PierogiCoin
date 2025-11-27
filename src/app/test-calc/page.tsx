@@ -1,6 +1,6 @@
 'use client';
 
-import AiCalculator from '@/components/AiCalculator';
+import AiCalculator from '@/components/Calculator/AiCalculator';
 
 export default function TestCalcPage() {
   return (
@@ -14,7 +14,7 @@ export default function TestCalcPage() {
             Testowa strona do sprawdzenia generowania PDF i kalkulacji ceny
           </p>
         </div>
-        
+
         <AiCalculator />
       </div>
     </div>

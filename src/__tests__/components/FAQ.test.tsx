@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import FAQ from '@/components/FAQ';
+import FAQ from '@/components/FAQ/FAQ';
 
 describe('FAQ Component', () => {
   describe('Initial Render', () => {
     it('renders FAQ heading', () => {
       render(<FAQ />);
-      expect(screen.getByText(/najczęściej zadawane pytania/i)).toBeInTheDocument();
+      expect(screen.getByText(/Pytania i/i)).toBeInTheDocument();
     });
 
     it('renders all FAQ items', () => {
@@ -26,9 +26,9 @@ describe('FAQ Component', () => {
     it('expands item when clicked', () => {
       render(<FAQ />);
       const firstQuestion = screen.getAllByRole('button')[0];
-      
+
       fireEvent.click(firstQuestion);
-      
+
       // Check if content is visible
       const buttons = screen.getAllByRole('button');
       expect(buttons.length).toBeGreaterThan(0);
@@ -37,10 +37,10 @@ describe('FAQ Component', () => {
     it('collapses item when clicked again', () => {
       render(<FAQ />);
       const firstQuestion = screen.getAllByRole('button')[0];
-      
+
       fireEvent.click(firstQuestion);
       fireEvent.click(firstQuestion);
-      
+
       // Item should collapse
       expect(firstQuestion).toBeInTheDocument();
     });
@@ -48,11 +48,11 @@ describe('FAQ Component', () => {
     it('allows multiple items to be open', () => {
       render(<FAQ />);
       const questions = screen.getAllByRole('button');
-      
+
       if (questions.length >= 2) {
         fireEvent.click(questions[0]);
         fireEvent.click(questions[1]);
-        
+
         // Both should be accessible
         expect(questions[0]).toBeInTheDocument();
         expect(questions[1]).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe('FAQ Component', () => {
     it('renders questions', () => {
       render(<FAQ />);
       const buttons = screen.getAllByRole('button');
-      
+
       buttons.forEach(button => {
         expect(button.textContent).toBeTruthy();
       });
@@ -87,7 +87,7 @@ describe('FAQ Component', () => {
     it('buttons are keyboard accessible', () => {
       render(<FAQ />);
       const firstButton = screen.getAllByRole('button')[0];
-      
+
       firstButton.focus();
       expect(document.activeElement).toBe(firstButton);
     });
