@@ -20,11 +20,10 @@ export async function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
 
   // 2. Construct CSP Header
-  // Note: 'unsafe-eval' is often needed for Next.js in dev/production depending on specific libraries (like framer-motion or some analytics)
-  // 'unsafe-inline' for styles is kept for now to avoid breaking UI frameworks that inject styles.
+  // Relaxed CSP to avoid blocking hydration scripts and extensions
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval' https: http:;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' data: https: blob:;
     font-src 'self' data: https://fonts.gstatic.com;
@@ -35,9 +34,7 @@ export async function middleware(request: NextRequest) {
     connect-src 'self' https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://*.vercel-scripts.com https://generativelanguage.googleapis.com;
   `
   // Replace newlines with spaces
-  const contentSecurityPolicyHeaderValue = cspHeader
-    .replace(/\s{2,}/g, ' ')
-    .trim()
+  const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim()
 
   // 3. Prepare Request Headers (pass nonce to server components)
   const requestHeaders = new Headers(request.headers)
@@ -135,7 +132,7 @@ export async function middleware(request: NextRequest) {
               endpoint: pathname,
               timestamp: new Date().toISOString(),
             }),
-          }).catch(() => { }) // Silent fail
+          }).catch(() => {}) // Silent fail
         }
       }
 
@@ -171,6 +168,6 @@ export const config = {
   matcher: [
     '/api/:path*',
     // Exclude static files
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|manifest.json).*)',
   ],
 }
